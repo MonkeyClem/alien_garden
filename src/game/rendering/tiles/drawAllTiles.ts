@@ -1,5 +1,5 @@
-import { halfWidth, halfHeight } from "../../../components/Canvas/Canvas";
 import type { Tile } from "../../type";
+import { HALF_TILE_WIDTH, HALF_TILE_HEIGHT } from "./drawScreenGrid";
 import { drawTile } from "./drawTile";
 
   export default function drawAllTiles (
@@ -11,8 +11,8 @@ import { drawTile } from "./drawTile";
         ctx,
         element.x,
         element.y,
-        halfWidth,
-        halfHeight,
+        HALF_TILE_WIDTH,
+        HALF_TILE_HEIGHT,
         element.selected,
       ),
     );

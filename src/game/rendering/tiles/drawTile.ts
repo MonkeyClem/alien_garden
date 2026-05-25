@@ -2,27 +2,27 @@
     ctx: CanvasRenderingContext2D,
     centerX: number,
     centerY: number,
-    halfWidth: number,
-    halfHeight: number,
+    HALF_TILE_WIDTH: number,
+    HALF_TILE_HEIGHT: number,
     isSelected: boolean,
   ) => {
     const top = {
       x: centerX,
-      y: centerY - halfHeight,
+      y: centerY - HALF_TILE_HEIGHT,
     };
 
     const right = {
-      x: centerX + halfWidth,
+      x: centerX + HALF_TILE_WIDTH,
       y: centerY,
     };
 
     const bottom = {
       x: centerX,
-      y: centerY + halfHeight,
+      y: centerY + HALF_TILE_HEIGHT,
     };
 
     const left = {
-      x: centerX - halfWidth,
+      x: centerX - HALF_TILE_WIDTH,
       y: centerY,
     };
 

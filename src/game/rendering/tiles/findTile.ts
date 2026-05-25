@@ -1,5 +1,5 @@
-import { halfWidth, halfHeight } from "../../../components/Canvas/Canvas";
 import type { Tile } from "../../type";
+import { HALF_TILE_WIDTH, HALF_TILE_HEIGHT } from "./drawScreenGrid";
 
  export default function findTile  (
     tilePositions: Tile[],
@@ -10,10 +10,10 @@ import type { Tile } from "../../type";
 
     for (let i = 0; i < tilePositions.length; i++) {
       if (
-        xPosToFind > tilePositions[i].x - halfWidth &&
-        xPosToFind < tilePositions[i].x + halfWidth &&
-        yPosToFind > tilePositions[i].y - halfHeight &&
-        yPosToFind < tilePositions[i].y + halfHeight
+        xPosToFind > tilePositions[i].x - HALF_TILE_WIDTH &&
+        xPosToFind < tilePositions[i].x + HALF_TILE_WIDTH &&
+        yPosToFind > tilePositions[i].y - HALF_TILE_HEIGHT &&
+        yPosToFind < tilePositions[i].y + HALF_TILE_HEIGHT
       ) {
         return tilePositions[i].id;
       }

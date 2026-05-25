@@ -1,19 +1,11 @@
 import { useEffect, useRef } from "react";
 import styles from "./canvas.module.css";
-import type { Tile } from "../../game/type";
 import findTile from "../../game/rendering/tiles/findTile";
 import drawAllTiles from "../../game/rendering/tiles/drawAllTiles";
 import drawBackground  from "../../game/rendering/background/drawBackground";
+import drawScreenGrid, { generateGrid, } from "../../game/rendering/tiles/drawScreenGrid";
 
-const tilePositions: Tile[] = [
-  { id: 1, x: 600, y: 200, selected: false },
-  { id: 2, x: 650, y: 215, selected: false },
-  { id: 3, x: 700, y: 200, selected: false },
-  { id: 4, x: 650, y: 185, selected: false },
-];
 
-export const halfWidth = 50;
-export const halfHeight = 15;
 
 export default function Canvas() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -34,7 +26,11 @@ export default function Canvas() {
     }
 
     drawBackground(ctx, canvas);
-    drawAllTiles(tilePositions, ctx);
+    // drawAllTiles(tilePositions, ctx);
+
+
+    const tilePositions = generateGrid(canvas.width)
+    drawScreenGrid(ctx, tilePositions)
 
     const render = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
