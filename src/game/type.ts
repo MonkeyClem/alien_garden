@@ -4,5 +4,6 @@ export type Tile = {
   y: number;
   selected: boolean;
   hovered: boolean;
+  hasSeed: boolean;
   path: Path2D;
 };

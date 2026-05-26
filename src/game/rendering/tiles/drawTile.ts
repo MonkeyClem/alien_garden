@@ -30,4 +30,22 @@ export const drawTile = (ctx: CanvasRenderingContext2D, tile: Tile) => {
 
   ctx.strokeStyle = tileColors.stroke;
   ctx.stroke(tile.path);
+
+  if (tile.selected === true && tile.hasSeed === true) {
+    console.log("Une graine est déjà plantée ici ! :'(");
+    return 
+  }
+  
+  if (tile.selected === true && tile.hasSeed === false) {
+    ctx.beginPath();
+    ctx.moveTo(tile.x, tile.y);
+    ctx.lineTo(tile.x, tile.y - 5);
+
+    ctx.strokeStyle = "#0bdb7a";
+
+    ctx.stroke();
+    ctx.closePath();
+
+    tile.hasSeed = true;
+  }
 };
