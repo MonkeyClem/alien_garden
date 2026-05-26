@@ -8,29 +8,44 @@ export const HALF_TILE_HEIGHT = 20;
 export const GRID_WIDTH = 8;
 export const GRID_HEIGHT = 8;
 
-export const generateGrid = (canvasWidth: number) : Tile[] => {
+export const generateGrid = (canvasWidth: number): Tile[] => {
   const originX = canvasWidth / 2;
   const originY = 150;
 
   const tilePositions: Tile[] = [];
 
-  let tileId = 0 
+  let tileId = 0;
 
   for (let i = 0; i < GRID_WIDTH; i++) {
     for (let j = 0; j < GRID_HEIGHT; j++) {
-      tileId = tileId + 1
+      tileId = tileId + 1;
       const gridX = i;
       const gridY = j;
       const screenX = originX + (gridX - gridY) * HALF_TILE_WIDTH;
       const screenY = originY + (gridX + gridY) * HALF_TILE_HEIGHT;
-      const path = createTilePath(screenX, screenY, HALF_TILE_WIDTH, HALF_TILE_HEIGHT)
-      tilePositions.push({ x: screenX, y: screenY, id: tileId, selected: false, hovered: false, path : path});
+      const path = createTilePath(
+        screenX,
+        screenY,
+        HALF_TILE_WIDTH,
+        HALF_TILE_HEIGHT,
+      );
+      tilePositions.push({
+        x: screenX,
+        y: screenY,
+        id: tileId,
+        selected: false,
+        hovered: false,
+        path: path,
+      });
     }
   }
 
-  return tilePositions
+  return tilePositions;
 };
 
-export default function drawScreenGrid(ctx: CanvasRenderingContext2D, tilePositions : Tile[]) {
+export default function drawScreenGrid(
+  ctx: CanvasRenderingContext2D,
+  tilePositions: Tile[],
+) {
   drawAllTiles(tilePositions, ctx);
 }

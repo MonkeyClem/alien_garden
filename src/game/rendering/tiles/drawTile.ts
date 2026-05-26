@@ -12,7 +12,6 @@ const defineTileColors = (tile: Tile) => {
     return {
       fill: "#3b2359",
       stroke: "#1f3d63",
-     
     };
   }
 
@@ -22,21 +21,13 @@ const defineTileColors = (tile: Tile) => {
   };
 };
 
-export const drawTile = (
-  ctx: CanvasRenderingContext2D,
-  tile: Tile,
-) => {
+export const drawTile = (ctx: CanvasRenderingContext2D, tile: Tile) => {
+  const tileColors = defineTileColors(tile);
 
+  ctx.fillStyle = tileColors.fill;
 
-    const tileColors = defineTileColors(tile)
+  ctx.fill(tile.path);
 
-
-    ctx.fillStyle = tileColors.fill
-//   ctx.fillStyle = tile.selected ? "#fb2ad8" : "#520445";
-//   ctx.fillStyle = tile.hovered ? "#efcae9" : "#520445";
-    ctx.fill(tile.path);
-
-//   ctx.strokeStyle = tile.selected ? "cyan" : "white";
-ctx.strokeStyle= tileColors.stroke
+  ctx.strokeStyle = tileColors.stroke;
   ctx.stroke(tile.path);
 };
