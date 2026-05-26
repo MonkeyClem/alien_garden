@@ -21,28 +21,9 @@ const defineTileColors = (tile: Tile) => {
   };
 };
 
-export const drawTile = (ctx: CanvasRenderingContext2D, tile: Tile) => {
-  const tileColors = defineTileColors(tile);
 
-  ctx.fillStyle = tileColors.fill;
-
-  ctx.fill(tile.path);
-
-  ctx.strokeStyle = tileColors.stroke;
-  ctx.stroke(tile.path);
-
-
-  
-  if (tile.selected === true ) {
-    // ctx.beginPath();
-    // ctx.moveTo(tile.x, tile.y);
-    // ctx.lineTo(tile.x, tile.y - 5);
-
-    // ctx.strokeStyle = "#0bdb7a";
-
-    // ctx.stroke();
-    // ctx.closePath();
-
+const drawSeed = (ctx : CanvasRenderingContext2D, tile : Tile) => {
+  if (tile.selected === true ) {;
     tile.hasSeed = true;
   }
     
@@ -58,4 +39,19 @@ export const drawTile = (ctx: CanvasRenderingContext2D, tile: Tile) => {
 
     tile.hasSeed = true;
   }
+}
+
+
+export const drawTile = (ctx: CanvasRenderingContext2D, tile: Tile) => {
+  const tileColors = defineTileColors(tile);
+
+  ctx.fillStyle = tileColors.fill;
+
+  ctx.fill(tile.path);
+
+  ctx.strokeStyle = tileColors.stroke;
+  ctx.stroke(tile.path);
+
+  drawSeed(ctx, tile)
+
 };
