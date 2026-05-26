@@ -2,14 +2,13 @@ import { useEffect, useRef } from "react";
 import styles from "./canvas.module.css";
 import findTile from "../../game/rendering/tiles/findTile";
 import drawAllTiles from "../../game/rendering/tiles/drawAllTiles";
-import drawBackground  from "../../game/rendering/background/drawBackground";
-import drawScreenGrid, { generateGrid, } from "../../game/rendering/tiles/drawScreenGrid";
-
-
+import drawBackground from "../../game/rendering/background/drawBackground";
+import drawScreenGrid, {
+  generateGrid,
+} from "../../game/rendering/tiles/drawScreenGrid";
 
 export default function Canvas() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
 
   useEffect(() => {
     if (!canvasRef.current) return;
@@ -26,17 +25,14 @@ export default function Canvas() {
     }
 
     drawBackground(ctx, canvas);
-    // drawAllTiles(tilePositions, ctx);
 
-
-    const tilePositions = generateGrid(canvas.width)
-    drawScreenGrid(ctx, tilePositions)
+    const tilePositions = generateGrid(canvas.width);
+    drawScreenGrid(ctx, tilePositions);
 
     const render = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawBackground(ctx, canvas);
       drawAllTiles(tilePositions, ctx);
-
     };
 
     const handleMouseClick = (event: MouseEvent) => {
@@ -56,10 +52,31 @@ export default function Canvas() {
       render();
     };
 
+    const handleMouseMove = (event: MouseEvent) => {
+      const hoveredPos = { x: event.clientX, y: event.clientY };
+      const hoveredTileId = findTile(tilePositions, hoveredPos, ctx);
+
+      if (!hoveredTileId || hoveredTileId === undefined) return;
+
+      const hoveredTile = tilePositions.find(
+        (tile) => tile.id === hoveredTileId,
+      );
+
+      if (!hoveredTile) return;
+
+      tilePositions.forEach((tile) => (tile.hovered = false));
+
+      hoveredTile.hovered = true;
+
+      render();
+    };
+
     canvas.addEventListener("click", handleMouseClick);
+    canvas.addEventListener("mousemove", handleMouseMove);
 
     return () => {
       canvas.removeEventListener("click", handleMouseClick);
+      canvas.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
 

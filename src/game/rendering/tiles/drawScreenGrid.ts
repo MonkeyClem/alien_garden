@@ -2,11 +2,11 @@ import type { Tile } from "../../type";
 import { createTilePath } from "./createTilePath";
 import drawAllTiles from "./drawAllTiles";
 
-export const HALF_TILE_WIDTH = 50;
-export const HALF_TILE_HEIGHT = 15;
+export const HALF_TILE_WIDTH = 60;
+export const HALF_TILE_HEIGHT = 20;
 
-export const GRID_WIDTH = 12;
-export const GRID_HEIGHT = 12;
+export const GRID_WIDTH = 8;
+export const GRID_HEIGHT = 8;
 
 export const generateGrid = (canvasWidth: number) : Tile[] => {
   const originX = canvasWidth / 2;
