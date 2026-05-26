@@ -41,7 +41,7 @@ export default function Canvas() {
 
     const handleMouseClick = (event: MouseEvent) => {
       const clickedPositions = { x: event.clientX, y: event.clientY };
-      const selectedTileId = findTile(tilePositions, clickedPositions);
+      const selectedTileId = findTile(tilePositions, clickedPositions, ctx);
 
       if (!selectedTileId) return;
 

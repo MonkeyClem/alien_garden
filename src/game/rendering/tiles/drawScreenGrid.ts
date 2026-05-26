@@ -1,4 +1,5 @@
 import type { Tile } from "../../type";
+import { createTilePath } from "./createTilePath";
 import drawAllTiles from "./drawAllTiles";
 
 export const HALF_TILE_WIDTH = 50;
@@ -22,8 +23,8 @@ export const generateGrid = (canvasWidth: number) : Tile[] => {
       const gridY = j;
       const screenX = originX + (gridX - gridY) * HALF_TILE_WIDTH;
       const screenY = originY + (gridX + gridY) * HALF_TILE_HEIGHT;
-
-      tilePositions.push({ x: screenX, y: screenY, id: tileId, selected: false });
+      const path = createTilePath(screenX, screenY, HALF_TILE_WIDTH, HALF_TILE_HEIGHT)
+      tilePositions.push({ x: screenX, y: screenY, id: tileId, selected: false, hovered: false, path : path});
     }
   }
 
