@@ -7,3 +7,11 @@ export type Tile = {
   hasSeed: boolean;
   path: Path2D;
 };
+
+
+export type Plant = {
+    id:number,
+    tileId : number,
+    growth : number,
+    stage: "seed" | "sprout" | "mature";
+}

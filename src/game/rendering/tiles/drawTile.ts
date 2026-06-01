@@ -22,11 +22,9 @@ const defineTileColors = (tile: Tile) => {
 };
 
 
-const drawSeed = (ctx : CanvasRenderingContext2D, tile : Tile) => {
-  if (tile.selected === true ) {;
-    tile.hasSeed = true;
-  }
-    
+
+
+export const drawSeed = (ctx : CanvasRenderingContext2D, tile : Tile) => {
   if (tile.hasSeed === true ) {
     ctx.beginPath();
     ctx.moveTo(tile.x, tile.y);
@@ -37,8 +35,13 @@ const drawSeed = (ctx : CanvasRenderingContext2D, tile : Tile) => {
     ctx.stroke();
     ctx.closePath();
 
-    tile.hasSeed = true;
+    // tile.hasSeed = true;
   }
+}
+
+
+const drawPlant = (ctx: CanvasRenderingContext2D, tile: Tile)=>{ 
+    drawSeed(ctx, tile)
 }
 
 
@@ -52,6 +55,6 @@ export const drawTile = (ctx: CanvasRenderingContext2D, tile: Tile) => {
   ctx.strokeStyle = tileColors.stroke;
   ctx.stroke(tile.path);
 
-  drawSeed(ctx, tile)
+  drawPlant(ctx, tile)
 
 };

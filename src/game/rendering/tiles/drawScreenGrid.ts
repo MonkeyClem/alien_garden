@@ -5,8 +5,8 @@ import drawAllTiles from "./drawAllTiles";
 export const HALF_TILE_WIDTH = 60;
 export const HALF_TILE_HEIGHT = 20;
 
-export const GRID_WIDTH = 8;
-export const GRID_HEIGHT = 8;
+export const GRID_WIDTH = 2;
+export const GRID_HEIGHT = 2;
 
 export const generateGrid = (canvasWidth: number): Tile[] => {
   const originX = canvasWidth / 2;
