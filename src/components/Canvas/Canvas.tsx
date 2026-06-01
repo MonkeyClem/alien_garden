@@ -56,6 +56,7 @@ export default function Canvas(
       if (!selectedTile) return;
 
       tiles.forEach((e) => (e.selected = false));
+      
     
       selectedTile.selected = true;
 
