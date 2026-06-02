@@ -9,7 +9,7 @@ import drawScreenGrid from "../../game/rendering/tiles/drawScreenGrid";
 interface Canvas {
   handleSideMenuOpen: () => void;
   handleTileSelection: (tile : Tile) => void;
-  setTiles: (tiles : Tile[]) => void;
+  setTiles:(value: Tile[] | ((prev: Tile[]) => Tile[])) => void
   tiles : Tile[]
 }
 export default function Canvas(
@@ -56,11 +56,20 @@ export default function Canvas(
       if (!selectedTile) return;
 
       tiles.forEach((e) => (e.selected = false));
-      
-    
       selectedTile.selected = true;
-
       handleTileSelection(selectedTile)
+
+setTiles((currentTiles: Tile[]) =>
+  currentTiles.map((tile : Tile) => ({
+    ...tile,
+    selected: tile.id === selectedTileId,
+  }))
+);
+
+handleTileSelection({
+  ...selectedTile,
+  selected: true,
+});
 
 
       render();
