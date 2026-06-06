@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import Canvas from "./components/Canvas/Canvas";
 import SideMenu from "./components/Hud/SideMenu";
-import type { Tile } from "./game/type";
+import { type Tile, type Inventory, type seedsType } from "./game/type";
 import { generateGrid } from "./game/rendering/tiles/drawScreenGrid";
 
 function App() {
@@ -11,6 +11,56 @@ function App() {
     generateGrid(window.innerWidth),
   );
   const [selectedTile, setSelectedTile] = useState<Tile | null>(null);
+
+
+  const [inventory, setInventory] = useState<Inventory>({
+    seeds: {
+      green: 1,
+      red: 2,
+      blue: 1,
+    },
+  });
+
+  const [selectedSeed, setSelectedSeed] = useState<seedsType | null>(null);
+
+  const handleSeedsCount = (selectedSeed: seedsType) => {
+    setInventory((prev) => ({
+      ...prev,
+      seeds: {
+        ...prev.seeds,
+        [selectedSeed]: prev.seeds[selectedSeed] - 1,
+      },
+    }));
+  };
+
+  const handlePlantSeed = (selectedSeed: seedsType, selectedTile: Tile) => {
+    if (!selectedTile) return;
+    if (inventory.seeds[selectedSeed] <= 0) {
+      window.alert("Vous n'avez pas suffisament de graines");
+      return;
+    }
+
+
+    setTiles((currentTiles) => {
+      const updatedTiles = currentTiles.map((tile) =>
+        tile.id === selectedTile.id
+          ? { ...tile, hasSeed: true, seedsType: selectedSeed }
+          : tile,
+      );
+
+      const updatedSelectedTile =
+        updatedTiles.find((tile) => tile.id === selectedTile.id) ?? null;
+      setSelectedTile(updatedSelectedTile);
+
+      return updatedTiles;
+    });
+
+    handleSeedsCount(selectedSeed);
+  };
+
+  const handleSeedSelection = (clickedSeed: seedsType) => {
+    setSelectedSeed(clickedSeed);
+  };
 
   //TO DO : Ajouter un toggle
   const handleSideMenuOpen = () => {
@@ -21,27 +71,15 @@ function App() {
     setSelectedTile(tile);
   };
 
-  const handlePlantSeed = (selectedTile: Tile) => {
-    setTiles((currentTiles) => {
-      const updatedTiles = currentTiles.map((tile) =>
-        tile.id === selectedTile.id ? { ...tile, hasSeed: true } : tile,
-      );
-
-      const updatedSelectedTile =
-        updatedTiles.find((tile) => tile.id === selectedTile.id) ?? null;
-
-      setSelectedTile(updatedSelectedTile);
-
-      return updatedTiles;
-    });
-  };
-
   return (
     <>
       <SideMenu
         isOpen={isSideMenuOpen}
         selectedTile={selectedTile}
         handlePlantSeed={handlePlantSeed}
+        inventory={inventory}
+        selectedSeed={selectedSeed}
+        handleSeedSelection={handleSeedSelection}
       />
       <Canvas
         handleSideMenuOpen={handleSideMenuOpen}

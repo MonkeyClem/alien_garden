@@ -1,4 +1,24 @@
 import type { Tile } from "../../type";
+import type { seedsType } from '../../type';
+
+
+const defineSeedColors = (seedsType : seedsType) =>  { 
+    if(!seedsType) return
+
+    if(seedsType === "blue") return {
+      stroke: "#8cdaf2",
+    };
+
+    if(seedsType === "green") return {
+      stroke: "#0bdb7a",
+    };
+
+    if(seedsType === "red") return {
+        stroke : "#b31010",
+    }
+}
+
+
 
 const defineTileColors = (tile: Tile) => {
   if (tile.selected) {
@@ -30,12 +50,14 @@ export const drawSeed = (ctx : CanvasRenderingContext2D, tile : Tile) => {
     ctx.moveTo(tile.x, tile.y);
     ctx.lineTo(tile.x, tile.y - 5);
 
-    ctx.strokeStyle = "#0bdb7a";
+
+    const strokeStyle = defineSeedColors(tile.seedsType)
+
+    ctx.strokeStyle = strokeStyle.stroke;
 
     ctx.stroke();
     ctx.closePath();
 
-    // tile.hasSeed = true;
   }
 }
 

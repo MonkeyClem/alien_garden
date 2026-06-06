@@ -1,17 +1,23 @@
-import type { Tile } from "../../game/type";
+import type { Inventory, seedsType, Tile } from "../../game/type";
+import InventoryComponents from "./Inventory/Inventory";
 
 interface SideMenuProps {
   isOpen: boolean;
   selectedTile: Tile;
-  handlePlantSeed : (selectedTile : Tile) => void 
+  inventory: Inventory;
+  selectedSeed: seedsType;
+  handlePlantSeed: (selectedSeed: seedsType, selectedTile: Tile) => void;
+  handleSeedSelection: (selectedSeed: seedsType) => void;
 }
 
-export default function SideMenu({ isOpen, selectedTile, handlePlantSeed }: SideMenuProps) {
-
-
-    console.log('SelectedTile in the SideMenu : ', selectedTile)
-
- 
+export default function SideMenu({
+  isOpen,
+  selectedTile,
+  inventory,
+  selectedSeed,
+  handleSeedSelection,
+  handlePlantSeed,
+}: SideMenuProps) {
   return (
     <div
       style={{
@@ -32,13 +38,6 @@ export default function SideMenu({ isOpen, selectedTile, handlePlantSeed }: Side
               {" "}
               <p>Tile ID : {selectedTile.id}</p>
               <p>Graine Plantée ? {selectedTile.hasSeed ? "oui" : "non"}</p>
-              {selectedTile.hasSeed ? null : (
-                <div style={{}}>
-                      <button
-                    onClick={() => handlePlantSeed(selectedTile)}
-                > Planter une graine </button> </div>
-              
-              )}
               <p>Central pos x : {selectedTile.x}</p>
               <p>Central pos x : {selectedTile.y}</p>
             </>
@@ -48,6 +47,13 @@ export default function SideMenu({ isOpen, selectedTile, handlePlantSeed }: Side
         </>
       ) : null}
       ------------
+      <InventoryComponents
+        selectedSeed={selectedSeed}
+        selectedTile={selectedTile}
+        handlePlantSeed={handlePlantSeed}
+        inventory={inventory}
+        handleSeedSelection={handleSeedSelection}
+      />
     </div>
   );
 }
