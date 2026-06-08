@@ -1,64 +1,51 @@
 import { type Tile } from "../../type";
-import type { seedsType } from "../../type";
-import bioBattery from "../../../assets/PNG/Assets/bioPalmtree.png";
+import type { GameAssets, seedsType } from "../../type";
+// import bioBattery from "../../../assets/PNG/Assets/bioPalmtree.png";
+// import lightTree from "../../../assets/PNG/Assets/Light_balls_tree1.png"
 
-export const drawTileEdges = (
-  ctx: CanvasRenderingContext2D,
-  tile: Tile,
-  tiles: Tile[]
-) => {
-  const TILE_W = 12
-  const TILE_H = 45
-  const EDGE_H = 40
 
-  const hasNeighbor = (dx: number, dy: number) => {
-    return tiles.some(t => t.x === tile.x + dx && t.y === tile.y + dy)
-  }
+// const bioBatterySprite = new Image();
+// bioBatterySprite.src = bioBattery;
 
-  const x = tile.x
-  const y = tile.y
+// bioBatterySprite.loading = "eager";
+// console.log("console.log(mushroomSprite.complete); ", bioBatterySprite.complete);
 
-  const right = { x: x + TILE_W / 2, y }
-  const bottom = { x, y: y + TILE_H / 2}
-  const left = { x: x - TILE_W / 2, y }
 
-  const bottomRight = { x: right.x, y: right.y + EDGE_H }
-  const bottomBottom = { x: bottom.x, y: bottom.y + EDGE_H }
-  const bottomLeft = { x: left.x, y: left.y + EDGE_H }
+// const lightTreeSprite = new Image()
+// lightTreeSprite.src = lightTree
+// lightTreeSprite.loading = "eager"
 
-  // Face droite visible
-  if (!hasNeighbor(1, 0)) {
-    ctx.beginPath()
-    ctx.moveTo(right.x , right.y)
-    ctx.lineTo(bottom.x , bottom.y)
-    ctx.lineTo(bottomBottom.x, bottomBottom.y)
-    ctx.lineTo(bottomRight.x, bottomRight.y)
-    ctx.closePath()
 
-    ctx.fillStyle = "#3a1f5c"
-    ctx.fill()
-  }
+export const loadImage = (src: string) : Promise<HTMLImageElement> => {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
 
-  // Face gauche visible
-  if (!hasNeighbor(0, 1)) {
-    ctx.beginPath()
-    ctx.moveTo(bottom.x , bottom.y )
-    ctx.lineTo(left.x, left.y)
-    ctx.lineTo(bottomLeft.x , bottomLeft.y  )
-    ctx.lineTo(bottomBottom.x, bottomBottom.y)
-    ctx.closePath()
+    image.onload = () => {
+        console.log("Image chargée :", src);
+      resolve(image);
+    }
+    image.onerror =() =>{ 
+            console.error("Image NON chargée :", src);
+      reject(new Error(`Image introuvable : ${src}`));
+      ;}
 
-    ctx.fillStyle = "#241044"
-    ctx.fill()
-  }
+    image.src = src
+  })
 }
 
 
-const bioBatterySprite = new Image();
-bioBatterySprite.src = bioBattery;
+export const loadAssets = async() => {
+  const bioBattery = await loadImage('/assets/PNG/Assets/biobattery.png')
+  const bioPalmtree = await loadImage("/assets/PNG/Assets/bioPalmtree.png")
 
-bioBatterySprite.loading = "eager";
-console.log("console.log(mushroomSprite.complete); ", bioBatterySprite.complete);
+  return {
+    bioBattery,
+    bioPalmtree
+  }
+
+}
+
+
 
 const defineSeedColors = (seedsType: seedsType) : {stroke : string } => {
   if (seedsType === "blue")
@@ -103,43 +90,53 @@ const defineTileColors = (tile: Tile) => {
   };
 };
 
-export const drawSeed = (ctx: CanvasRenderingContext2D, tile: Tile) => {
+export const drawSeed = (ctx: CanvasRenderingContext2D, tile: Tile, assets : GameAssets) => {
   if (!tile.hasSeed ) return;
 
   const spriteSize = 192;
+  
+    // if (bioBatterySprite.complete && tile.seedsType === "green") {
+    //   ctx.drawImage(
+    //     bioBatterySprite,
+    //     tile.x - spriteSize / 2,
+    //     tile.y - spriteSize / 1.6,
+    //     spriteSize,
+    //     spriteSize,
+    //   );
+    //   return 
+    // }else if(lightTreeSprite.complete && tile.seedsType === "blue") {
+    //   ctx.drawImage(
+    //     lightTreeSprite, 
+    //     tile.x - spriteSize,
+    //     tile.y  - spriteSize,
+    //     spriteSize,
+    //     spriteSize,
+    //   )
+    //   return
+    // }else {
+    //   ctx.beginPath();
+    //   ctx.moveTo(tile.x, tile.y);
+    //   ctx.lineTo(tile.x, tile.y - 5);
 
 
-  if (tile.hasSeed === true) {
-    if (bioBatterySprite.complete && tile.seedsType === "green") {
-      ctx.drawImage(
-        bioBatterySprite,
-        tile.x - spriteSize / 2,
-        tile.y - spriteSize / 1.6,
-        spriteSize,
-        spriteSize,
-      );
-    } else {
-      ctx.beginPath();
-      ctx.moveTo(tile.x, tile.y);
-      ctx.lineTo(tile.x, tile.y - 5);
+    //   if(!tile.seedsType) return
+    //   const strokeStyle = defineSeedColors(tile.seedsType);
 
+    //   ctx.strokeStyle = strokeStyle.stroke;
 
-      if(!tile.seedsType) return
-      const strokeStyle = defineSeedColors(tile.seedsType);
-
-      ctx.strokeStyle = strokeStyle.stroke;
-
-      ctx.stroke();
-      ctx.closePath();
-    }
-  }
+    //   ctx.stroke();
+    //   ctx.closePath();
+    // }
+  
 };
 
-const drawPlant = (ctx: CanvasRenderingContext2D, tile: Tile) => {
-  drawSeed(ctx, tile);
+const drawPlant = (ctx: CanvasRenderingContext2D, tile: Tile, assets : GameAssets) => {
+  drawSeed(ctx, tile, assets);
 };
 
-export const drawTile = (ctx: CanvasRenderingContext2D, tile: Tile) => {
+
+
+export const drawTile = (ctx: CanvasRenderingContext2D, tile: Tile,  assets : GameAssets) => {
 
   const tileColors = defineTileColors(tile);
 
@@ -150,7 +147,5 @@ export const drawTile = (ctx: CanvasRenderingContext2D, tile: Tile) => {
   ctx.strokeStyle = tileColors.stroke;
   ctx.stroke(tile.path);
 
-  drawPlant(ctx, tile);
-
-  
+  drawPlant(ctx, tile, assets);
 };

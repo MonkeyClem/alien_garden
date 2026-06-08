@@ -1,9 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import Canvas from "./components/Canvas/Canvas";
 import SideMenu from "./components/Hud/SideMenu";
-import { type Tile, type Inventory, type seedsType } from "./game/type";
+import {
+  type Tile,
+  type Inventory,
+  type seedsType,
+  type GameAssets,
+} from "./game/type";
 import { generateGrid } from "./game/rendering/tiles/drawScreenGrid";
+import { loadAssets } from "./game/rendering/tiles/drawTile";
 
 function App() {
   const [isSideMenuOpen, setIsSideMenuOpen] = useState<boolean>(true);
@@ -12,6 +18,15 @@ function App() {
   );
   const [selectedTile, setSelectedTile] = useState<Tile | null>(null);
 
+  const [assets, setAssets] = useState<GameAssets | null>(null);
+
+  useEffect(() => {
+    loadAssets()
+      .then(setAssets)
+      .catch((error) =>
+        console.error("Error lors du chargement des Assets : " + error),
+      );
+  }, []);
 
   const [inventory, setInventory] = useState<Inventory>({
     seeds: {
@@ -39,7 +54,6 @@ function App() {
       window.alert("Vous n'avez pas suffisament de graines");
       return;
     }
-
 
     setTiles((currentTiles) => {
       const updatedTiles = currentTiles.map((tile) =>
@@ -71,25 +85,30 @@ function App() {
     setSelectedTile(tile);
   };
 
-
- 
-
   return (
     <>
-      <SideMenu
-        isOpen={isSideMenuOpen}
-        selectedTile={selectedTile}
-        handlePlantSeed={handlePlantSeed}
-        inventory={inventory}
-        selectedSeed={selectedSeed}
-        handleSeedSelection={handleSeedSelection}
-      />
-      <Canvas
-        handleSideMenuOpen={handleSideMenuOpen}
-        handleTileSelection={handleTileSelection}
-        setTiles={setTiles}
-        tiles={tiles}
-      />
+      {assets ? (
+        <>
+          {" "}
+          <SideMenu
+            isOpen={isSideMenuOpen}
+            selectedTile={selectedTile}
+            handlePlantSeed={handlePlantSeed}
+            inventory={inventory}
+            selectedSeed={selectedSeed}
+            handleSeedSelection={handleSeedSelection}
+          />
+          <Canvas
+            handleSideMenuOpen={handleSideMenuOpen}
+            handleTileSelection={handleTileSelection}
+            setTiles={setTiles}
+            assets={assets}
+            tiles={tiles}
+          />{" "}
+        </>
+      ) : (
+        "Chargement"
+      )}
     </>
   );
 }

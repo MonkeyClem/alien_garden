@@ -18,6 +18,8 @@ export default function SideMenu({
   handleSeedSelection,
   handlePlantSeed,
 }: SideMenuProps) {
+
+
   return (
     <div
       style={{
@@ -29,10 +31,13 @@ export default function SideMenu({
       }}
     >
       {isOpen ? (
+        ///DEBUG DIV 
+
         <>
           <p>Menu Ouvert</p>
 
           <h4>SELECTED TILE </h4>
+          
           {selectedTile ? (
             <>
               {" "}
@@ -40,11 +45,17 @@ export default function SideMenu({
               <p>Graine Plantée ? {selectedTile.hasSeed ? "oui" : "non"}</p>
               <p>Central pos x : {selectedTile.x}</p>
               <p>Central pos x : {selectedTile.y}</p>
+              <p>GridX : {selectedTile.gridX}</p>
+              <p>Grid Y : {selectedTile.gridY}</p>
+
             </>
           ) : (
             <p>No tile selected</p>
           )}
         </>
+
+        ///DEBUG DIV 
+
       ) : null}
       ------------
       <InventoryComponents

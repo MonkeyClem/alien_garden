@@ -3,50 +3,70 @@ import styles from "./canvas.module.css";
 import findTile from "../../game/rendering/tiles/findTile";
 import drawAllTiles from "../../game/rendering/tiles/drawAllTiles";
 import drawBackground from "../../game/rendering/background/drawBackground";
-import { initialDecorations, type Tile } from "../../game/type";
-import drawScreenGrid from "../../game/rendering/tiles/drawScreenGrid";
+import { initialDecorations, type GameAssets, type Tile } from "../../game/type";
+import { HALF_TILE_HEIGHT } from "../../game/rendering/tiles/drawScreenGrid";
 
 interface Canvas {
   handleSideMenuOpen: () => void;
-  handleTileSelection: (tile : Tile) => void;
-  setTiles:(value: Tile[] | ((prev: Tile[]) => Tile[])) => void
-  tiles : Tile[];
+  handleTileSelection: (tile: Tile) => void;
+  setTiles: (value: Tile[] | ((prev: Tile[]) => Tile[])) => void;
+  tiles: Tile[];
+  assets : GameAssets
 }
 
+const imageCache = new Map<string, HTMLImageElement>();
 
-const drawDecoration = (ctx : CanvasRenderingContext2D, tilePositions : Tile[]) => {
-  
-        const decorations = initialDecorations
- 
-        decorations.forEach(decoration => {
-          const tile = tilePositions.find((tile) => tile.id === decoration.tileId)
+// const preload_image = (src: string): Promise<HTMLImageElement> => {
+//   const cached = imageCache.get(src);
+//   if (cached?.complete) return Promise.resolve(cached);
 
-          if(!tile) return 
+//   return new Promise((resolve, reject) => {
+//     const img = new Image();
+//     img.src = src;
 
-          const img = new Image(); 
-          img.src = decoration.asset
+//     img.onload = () => {
+//       imageCache.set(src, img);
+//       resolve(img);
+//     };
+
+//     img.onerror = reject;
+//   });
+// };
 
 
-          ctx.drawImage(
-            img, 
-           tile.x - decoration.width / 1.5 ,
-           tile.y - decoration.height * 1,
-            100,
-            158
-          )
-        });
-}
-export default function Canvas(
-    {
-    handleSideMenuOpen,
-    handleTileSelection,
-    setTiles,
-    tiles,
-} : Canvas
-) {
+const drawDecoration = (
+  ctx: CanvasRenderingContext2D,
+  tilePositions: Tile[],
+) => {
+  initialDecorations.forEach((decoration) => {
+    const tile = tilePositions.find(
+      (tile) =>
+        tile.gridX === decoration.gridX && tile.gridY === decoration.gridY,
+    );
+
+    if (!tile) return;
+
+    const img = imageCache.get(decoration.asset);
+
+    if (!img || !img.complete) return;
+
+    ctx.drawImage(
+      img,
+      tile.x - 150 / 2,
+      tile.y - 150 + HALF_TILE_HEIGHT * 2.75,
+      150,
+      150,
+    );
+  });
+};
+export default function Canvas({
+  // handleSideMenuOpen,
+  handleTileSelection,
+  setTiles,
+  tiles,
+  assets
+}: Canvas) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
-
 
   useEffect(() => {
     if (!canvasRef.current) return;
@@ -55,8 +75,6 @@ export default function Canvas(
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    
-
     const ctx = canvas.getContext("2d");
 
     if (!ctx) {
@@ -64,19 +82,19 @@ export default function Canvas(
       return;
     }
 
-    drawBackground(ctx, canvas);
-    drawScreenGrid(ctx, tiles);
-    drawDecoration(ctx, tiles)
-
     const render = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawBackground(ctx, canvas);
-      drawAllTiles(tiles, ctx);
-                drawDecoration(ctx, tiles)
-
+      drawAllTiles(tiles, ctx, assets);
+      drawDecoration(ctx, tiles);
     };
 
-
+    render()
+    // Promise.all(
+    //   initialDecorations.map((decoration) => preload_image(decoration.asset)),
+    // ).then(() => {
+    //   render();
+    // });
 
     const handleMouseClick = (event: MouseEvent) => {
       const clickedPositions = { x: event.clientX, y: event.clientY };
@@ -84,25 +102,24 @@ export default function Canvas(
 
       if (!selectedTileId) return;
       const selectedTile = tiles.find((e) => selectedTileId === e.id);
-      
+
       if (!selectedTile) return;
 
       tiles.forEach((e) => (e.selected = false));
       selectedTile.selected = true;
-      handleTileSelection(selectedTile)
+      handleTileSelection(selectedTile);
 
       setTiles((currentTiles: Tile[]) =>
-        currentTiles.map((tile : Tile) => ({
+        currentTiles.map((tile: Tile) => ({
           ...tile,
           selected: tile.id === selectedTileId,
-        }))
+        })),
       );
 
       handleTileSelection({
         ...selectedTile,
         selected: true,
       });
-
 
       render();
     };
@@ -113,14 +130,12 @@ export default function Canvas(
 
       if (!hoveredTileId || hoveredTileId === undefined) return;
 
-      const hoveredTile = tiles.find(
-        (tile) => tile.id === hoveredTileId,
-      );
+      const hoveredTile = tiles.find((tile) => tile.id === hoveredTileId);
 
       if (!hoveredTile) return;
 
       tiles.forEach((tile) => (tile.hovered = false));
-      setTiles(tiles)
+      setTiles(tiles);
 
       hoveredTile.hovered = true;
 
@@ -134,7 +149,7 @@ export default function Canvas(
       canvas.removeEventListener("click", handleMouseClick);
       canvas.removeEventListener("mousemove", handleMouseMove);
     };
-  }, [tiles]);
+  }, [tiles,]);
 
   return (
     <>
