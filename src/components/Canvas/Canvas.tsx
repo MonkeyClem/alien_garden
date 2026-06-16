@@ -4,8 +4,7 @@ import findTile from "../../game/rendering/tiles/findTile";
 import drawAllTiles from "../../game/rendering/tiles/drawAllTiles";
 import drawBackground from "../../game/rendering/background/drawBackground";
 import { initialDecorations, type GameAssets, type Tile } from '../../game/type';
-import { HALF_TILE_HEIGHT, HALF_TILE_WIDTH } from "../../game/rendering/tiles/drawScreenGrid";
-import { loadAssets } from "../../game/rendering/tiles/drawTile";
+import { HALF_TILE_HEIGHT } from "../../game/rendering/tiles/drawScreenGrid";
 
 interface Canvas {
   handleSideMenuOpen: () => void;

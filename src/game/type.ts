@@ -30,7 +30,6 @@ export type Inventory =  {
 export type Decoration = {
   id: string
   tileId : number,
-  // asset: HTMLImageElement
   assetKey : AssetsKey
   gridX: number
   gridY: number
@@ -65,17 +64,6 @@ export const initialDecorations: Decoration[] = [
     offsetY: -10,
     offsetX: 0
   }
-  //     {
-  //   id: "bioPalm-1",
-  //   tileId : 14,
-  //   assetKey : "bioTerminal",
-  //   gridX: 0,
-  //   gridY: 12,
-  //   width: 225,
-  //   height: 200,
-  //   offsetY: 505,
-  //   offsetX: 180
-  // }
 ]
 
 

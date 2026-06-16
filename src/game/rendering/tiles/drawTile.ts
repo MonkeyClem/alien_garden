@@ -32,27 +32,6 @@ export const loadAssets = async () => {
   };
 };
 
-// const defineSeedColors = (seedsType: seedsType): { stroke: string } => {
-//   if (seedsType === "blue")
-//     return {
-//       stroke: "#8cdaf2",
-//     };
-
-//   if (seedsType === "green")
-//     return {
-//       stroke: "#0bdb7a",
-//     };
-
-//   if (seedsType === "red")
-//     return {
-//       stroke: "#b31010",
-//     };
-//   else {
-//     return {
-//       stroke: "#fff",
-//     };
-//   }
-// };
 
 const defineTileColors = (tile: Tile) => {
   if (tile.selected) {
