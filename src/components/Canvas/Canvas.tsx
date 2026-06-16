@@ -3,8 +3,9 @@ import styles from "./canvas.module.css";
 import findTile from "../../game/rendering/tiles/findTile";
 import drawAllTiles from "../../game/rendering/tiles/drawAllTiles";
 import drawBackground from "../../game/rendering/background/drawBackground";
-import { initialDecorations, type GameAssets, type Tile } from "../../game/type";
-import { HALF_TILE_HEIGHT } from "../../game/rendering/tiles/drawScreenGrid";
+import { initialDecorations, type GameAssets, type Tile } from '../../game/type';
+import { HALF_TILE_HEIGHT, HALF_TILE_WIDTH } from "../../game/rendering/tiles/drawScreenGrid";
+import { loadAssets } from "../../game/rendering/tiles/drawTile";
 
 interface Canvas {
   handleSideMenuOpen: () => void;
@@ -14,53 +15,44 @@ interface Canvas {
   assets : GameAssets
 }
 
-const imageCache = new Map<string, HTMLImageElement>();
-
-// const preload_image = (src: string): Promise<HTMLImageElement> => {
-//   const cached = imageCache.get(src);
-//   if (cached?.complete) return Promise.resolve(cached);
-
-//   return new Promise((resolve, reject) => {
-//     const img = new Image();
-//     img.src = src;
-
-//     img.onload = () => {
-//       imageCache.set(src, img);
-//       resolve(img);
-//     };
-
-//     img.onerror = reject;
-//   });
-// };
-
 
 const drawDecoration = (
   ctx: CanvasRenderingContext2D,
   tilePositions: Tile[],
+  assets: GameAssets
 ) => {
   initialDecorations.forEach((decoration) => {
-    const tile = tilePositions.find(
-      (tile) =>
-        tile.gridX === decoration.gridX && tile.gridY === decoration.gridY,
-    );
+  
+    const tile = tilePositions.find((tile) => tile.id === decoration.tileId)
 
     if (!tile) return;
 
-    const img = imageCache.get(decoration.asset);
+    const image = assets[decoration.assetKey]
 
-    if (!img || !img.complete) return;
+    const x =
+      tile.x -
+      decoration.width / 2 +
+      decoration.offsetX;
+
+    const y =
+      tile.y -
+      decoration.height / 2 +
+      HALF_TILE_HEIGHT +
+      decoration.offsetY;
 
     ctx.drawImage(
-      img,
-      tile.x - 150 / 2,
-      tile.y - 150 + HALF_TILE_HEIGHT * 2.75,
-      150,
-      150,
+      image,
+      x,
+      y,
+      decoration.width,
+      decoration.height,
     );
+
   });
 };
+
+
 export default function Canvas({
-  // handleSideMenuOpen,
   handleTileSelection,
   setTiles,
   tiles,
@@ -86,28 +78,16 @@ export default function Canvas({
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawBackground(ctx, canvas);
       drawAllTiles(tiles, ctx, assets);
-      drawDecoration(ctx, tiles);
+      drawDecoration(ctx, tiles, assets);
     };
 
     render()
-    // Promise.all(
-    //   initialDecorations.map((decoration) => preload_image(decoration.asset)),
-    // ).then(() => {
-    //   render();
-    // });
 
     const handleMouseClick = (event: MouseEvent) => {
       const clickedPositions = { x: event.clientX, y: event.clientY };
       const selectedTileId = findTile(tiles, clickedPositions, ctx);
 
       if (!selectedTileId) return;
-      const selectedTile = tiles.find((e) => selectedTileId === e.id);
-
-      if (!selectedTile) return;
-
-      tiles.forEach((e) => (e.selected = false));
-      selectedTile.selected = true;
-      handleTileSelection(selectedTile);
 
       setTiles((currentTiles: Tile[]) =>
         currentTiles.map((tile: Tile) => ({
@@ -115,6 +95,10 @@ export default function Canvas({
           selected: tile.id === selectedTileId,
         })),
       );
+
+      const selectedTile = tiles.find((e) => selectedTileId === e.id);
+
+      if(!selectedTile) return
 
       handleTileSelection({
         ...selectedTile,
@@ -149,7 +133,7 @@ export default function Canvas({
       canvas.removeEventListener("click", handleMouseClick);
       canvas.removeEventListener("mousemove", handleMouseMove);
     };
-  }, [tiles,]);
+  }, [tiles]);
 
   return (
     <>

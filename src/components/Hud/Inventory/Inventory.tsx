@@ -1,8 +1,8 @@
 import type { Inventory, seedsType, Tile } from "../../../game/type";
 
 interface InventoryProps {
-  selectedTile: Tile;
-  selectedSeed: seedsType;
+  selectedTile: Tile | null;
+  selectedSeed: seedsType | null;
   inventory: Inventory;
   handleSeedSelection: (selectedSeed: seedsType) => void;
   handlePlantSeed: (selectedSeed: seedsType, selectedTile: Tile) => void;

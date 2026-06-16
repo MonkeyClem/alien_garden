@@ -3,9 +3,9 @@ import InventoryComponents from "./Inventory/Inventory";
 
 interface SideMenuProps {
   isOpen: boolean;
-  selectedTile: Tile;
+  selectedTile: Tile | null;
   inventory: Inventory;
-  selectedSeed: seedsType;
+  selectedSeed: seedsType | null;
   handlePlantSeed: (selectedSeed: seedsType, selectedTile: Tile) => void;
   handleSeedSelection: (selectedSeed: seedsType) => void;
 }
@@ -32,8 +32,8 @@ export default function SideMenu({
     >
       {isOpen ? (
         ///DEBUG DIV 
-
         <>
+        TODO : IMPLEMENTER TOGGLE / SYSTEME DE BOUTON POUR OUVRIR DIFFERENTS MENUS (inventaire, propriétés d'une plante cliquée, etc..)
           <p>Menu Ouvert</p>
 
           <h4>SELECTED TILE </h4>

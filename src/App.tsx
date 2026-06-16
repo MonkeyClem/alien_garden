@@ -16,8 +16,16 @@ function App() {
   const [tiles, setTiles] = useState<Tile[]>(() =>
     generateGrid(window.innerWidth),
   );
-  const [selectedTile, setSelectedTile] = useState<Tile | null>(null);
+  const [inventory, setInventory] = useState<Inventory>({
+    seeds: {
+      green: 1,
+      red: 2,
+      blue: 1,
+    },
+  });
 
+  const [selectedTile, setSelectedTile] = useState<Tile | null>(null);
+  const [selectedSeed, setSelectedSeed] = useState<seedsType | null>(null);
   const [assets, setAssets] = useState<GameAssets | null>(null);
 
   useEffect(() => {
@@ -28,15 +36,6 @@ function App() {
       );
   }, []);
 
-  const [inventory, setInventory] = useState<Inventory>({
-    seeds: {
-      green: 1,
-      red: 2,
-      blue: 1,
-    },
-  });
-
-  const [selectedSeed, setSelectedSeed] = useState<seedsType | null>(null);
 
   const handleSeedsCount = (selectedSeed: seedsType) => {
     setInventory((prev) => ({
@@ -89,7 +88,6 @@ function App() {
     <>
       {assets ? (
         <>
-          {" "}
           <SideMenu
             isOpen={isSideMenuOpen}
             selectedTile={selectedTile}
@@ -104,10 +102,10 @@ function App() {
             setTiles={setTiles}
             assets={assets}
             tiles={tiles}
-          />{" "}
+          />
         </>
       ) : (
-        "Chargement"
+        "Chargement.."
       )}
     </>
   );

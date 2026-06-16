@@ -1,7 +1,3 @@
-import bioBattery from "/assets/PNG/Assets/biobattery.png";
-import bioPalmtree from "/assets/PNG/Assets/bioPalmtree.png"
-
-
 export type seedsType = 'green' | "red" | "blue"
 
 export type Tile = {
@@ -13,6 +9,7 @@ export type Tile = {
   selected: boolean;
   hovered: boolean;
   hasSeed: boolean;
+  decoration? : GameAssets;
   seedsType? : seedsType;
   path: Path2D;
 };
@@ -33,60 +30,54 @@ export type Inventory =  {
 export type Decoration = {
   id: string
   tileId : number,
-  asset: string
+  // asset: HTMLImageElement
+  assetKey : AssetsKey
   gridX: number
   gridY: number
   width: number
   height: number
-  offsetX?: number
+  offsetX: number
   offsetY: number
 }
 
 
+
 export const initialDecorations: Decoration[] = [
   {
-    id: "bio-palm-1",
+    id: "bioBattery-1",
     tileId : 2,
-    asset: bioBattery,
+    assetKey : "bioBattery",
     gridX: 0,
-    gridY: 2,
-    width: 0,
-    height: 0,
+    gridY: 12,
+    width: 350,
+    height: 250,
     offsetY: 0,
+    offsetX: 0
   },
     {
-    id: "bio-palm-1",
-    tileId : 2,
-    asset: bioPalmtree,
+    id: "bioPalm-1",
+    tileId : 9,
+    assetKey : "bioTerminal",
     gridX: 0,
-    gridY: 4,
-    width: 0,
-    height: 0,
-    offsetY: 0,
-  },
-    {
-    id: "bio-palm-1",
-    tileId : 2,
-    asset: bioPalmtree,
-    gridX: 0,
-    gridY: 6,
-    width: 0,
-    height: 0,
-    offsetY: 0,
-  },
-  {
-    id: "crystal-1",
-    tileId: 1,
-    asset: bioPalmtree,
-    gridX: 0,
-    gridY: 0,
-    width: 0,
-    height: 0,
-    offsetY: 0,
-  },
+    gridY: 12,
+    width: 225,
+    height: 200,
+    offsetY: -10,
+    offsetX: 0
+  }
+  //     {
+  //   id: "bioPalm-1",
+  //   tileId : 14,
+  //   assetKey : "bioTerminal",
+  //   gridX: 0,
+  //   gridY: 12,
+  //   width: 225,
+  //   height: 200,
+  //   offsetY: 505,
+  //   offsetX: 180
+  // }
 ]
 
 
-export type AssetsKey =  "bioPalmtree" 
-
+export type AssetsKey =  "bioPalmtree" | "trapStore" | "bioBattery" | "bioTerminal"
 export type GameAssets = Record <AssetsKey, HTMLImageElement>
