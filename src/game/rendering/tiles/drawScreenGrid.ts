@@ -1,4 +1,4 @@
-import type { GameAssets, Tile } from "../../type";
+import type { Tile } from "../../type";
 import { createTilePath } from "./createTilePath";
 import drawAllTiles from "./drawAllTiles";
 
@@ -49,7 +49,6 @@ export const generateGrid = (canvasWidth: number): Tile[] => {
 export default function drawScreenGrid(
   ctx: CanvasRenderingContext2D,
   tilePositions: Tile[],
-  assets: GameAssets
 ) {
-  drawAllTiles(tilePositions, ctx, assets);
+  drawAllTiles(tilePositions, ctx);
 }

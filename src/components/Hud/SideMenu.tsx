@@ -1,24 +1,51 @@
-import type { Inventory, seedsType, Tile } from "../../game/type";
+import type {
+  Inventory,
+  Plant,
+  Resources,
+  Species,
+  Tile,
+} from "../../game/type";
 import InventoryComponents from "./Inventory/Inventory";
+import { getPlantStage } from "../Canvas/utils";
 
 interface SideMenuProps {
   isOpen: boolean;
   selectedTile: Tile | null;
   inventory: Inventory;
-  selectedSeed: seedsType | null;
-  handlePlantSeed: (selectedSeed: seedsType, selectedTile: Tile) => void;
-  handleSeedSelection: (selectedSeed: seedsType) => void;
+  selectedSpecie: Species | null;
+  handlePlantSeed: (selectedSpecie: Species, selectedTile: Tile) => void;
+  handleSpecieSelection: (selectedSpecie: Species) => void;
+  plants: Plant[];
+  setPlants : React.Dispatch<React.SetStateAction<Plant[]>>,
+  ressources: Resources;
+  handleRessourcesUpdate: () => void;
 }
 
 export default function SideMenu({
   isOpen,
   selectedTile,
   inventory,
-  selectedSeed,
-  handleSeedSelection,
+  selectedSpecie,
+  handleSpecieSelection,
   handlePlantSeed,
+  plants,
+  ressources,
+  setPlants,
+  handleRessourcesUpdate,
 }: SideMenuProps) {
+  if (!selectedTile) return;
 
+  const plantOnTile = plants.find((plant) => plant.tileId === selectedTile.id);
+
+  if (plantOnTile && getPlantStage(plantOnTile) === 3) {
+    setPlants((currentPlants) =>
+      currentPlants.filter((plant : Plant) => plant.id !== plantOnTile.id),
+    );
+
+    handleRessourcesUpdate();
+
+    return;
+  }
 
   return (
     <div
@@ -31,13 +58,12 @@ export default function SideMenu({
       }}
     >
       {isOpen ? (
-        ///DEBUG DIV 
+        ///DEBUG DIV
         <>
-        TODO : IMPLEMENTER TOGGLE / SYSTEME DE BOUTON POUR OUVRIR DIFFERENTS MENUS (inventaire, propriétés d'une plante cliquée, etc..)
+          TODO : IMPLEMENTER TOGGLE / SYSTEME DE BOUTON POUR OUVRIR DIFFERENTS
+          MENUS (inventaire, propriétés d'une plante cliquée, etc..)
           <p>Menu Ouvert</p>
-
           <h4>SELECTED TILE </h4>
-          
           {selectedTile ? (
             <>
               {" "}
@@ -47,23 +73,25 @@ export default function SideMenu({
               <p>Central pos x : {selectedTile.y}</p>
               <p>GridX : {selectedTile.gridX}</p>
               <p>Grid Y : {selectedTile.gridY}</p>
-
+              {plantOnTile ?
+            
+               <div>Espèce présente sur la tuile  :{plantOnTile.species }</div> : "Aucune plante présente sur cette tuile"}
             </>
           ) : (
             <p>No tile selected</p>
           )}
         </>
+      ) : ///DEBUG DIV
 
-        ///DEBUG DIV 
-
-      ) : null}
+      null}
       ------------
       <InventoryComponents
-        selectedSeed={selectedSeed}
+        selectedSpecie={selectedSpecie}
         selectedTile={selectedTile}
         handlePlantSeed={handlePlantSeed}
         inventory={inventory}
-        handleSeedSelection={handleSeedSelection}
+        handleSeedSelection={handleSpecieSelection}
+        ressources={ressources}
       />
     </div>
   );

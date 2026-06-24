@@ -1,5 +1,4 @@
 import { type Tile } from "../../type";
-import type { GameAssets } from "../../type";
 
 export const loadImage = (src: string): Promise<HTMLImageElement> => {
   return new Promise((resolve, reject) => {
@@ -24,11 +23,19 @@ export const loadAssets = async () => {
   const trapStore = await loadImage("/assets/PNG/Assets/trapStore.png")
   const bioTerminal = await loadImage("/assets/PNG/Assets/bioTerminal.png")
 
+  const reactorMushroomStageOne = await loadImage("/assets/PNG/Assets/reactor_mushroom_stage_one.png")
+  const reactorMushroomStageTwo = await loadImage ("/assets/PNG/Assets/reactor_mushroom_stage_two.png")
+  const reactorMushroomStageThree = await loadImage ("/assets/PNG/Assets/reactor_mushroom_stage_three.png")
+
   return {
     bioBattery,
     bioPalmtree,
     trapStore,
     bioTerminal,
+
+    reactorMushroomStageOne,
+    reactorMushroomStageTwo,
+    reactorMushroomStageThree
   };
 };
 
@@ -54,38 +61,10 @@ const defineTileColors = (tile: Tile) => {
   };
 };
 
-export const drawSeed = (
-  ctx: CanvasRenderingContext2D,
-  tile: Tile,
-  assets: GameAssets,
-) => {
-  if (!tile.hasSeed) return;
-
-  const spriteSize = 192;
-
-  if (tile.seedsType === "green") {
-    ctx.drawImage(
-      assets.bioPalmtree,
-      tile.x - spriteSize / 2,
-      tile.y - spriteSize / 1.6,
-      spriteSize,
-      spriteSize,
-    );
-  }
-};
-
-const drawPlant = (
-  ctx: CanvasRenderingContext2D,
-  tile: Tile,
-  assets: GameAssets,
-) => {
-  drawSeed(ctx, tile, assets);
-};
 
 export const drawTile = (
   ctx: CanvasRenderingContext2D,
   tile: Tile,
-  assets: GameAssets,
 ) => {
   const tileColors = defineTileColors(tile);
 
@@ -94,6 +73,4 @@ export const drawTile = (
 
   ctx.strokeStyle = tileColors.stroke;
   ctx.stroke(tile.path);
-
-  drawPlant(ctx, tile, assets);
 };

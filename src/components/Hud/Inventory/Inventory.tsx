@@ -1,11 +1,12 @@
-import type { Inventory, seedsType, Tile } from "../../../game/type";
+import type { Inventory, Resources, Species, Tile } from "../../../game/type";
 
 interface InventoryProps {
   selectedTile: Tile | null;
-  selectedSeed: seedsType | null;
+  selectedSpecie: Species | null;
   inventory: Inventory;
-  handleSeedSelection: (selectedSeed: seedsType) => void;
-  handlePlantSeed: (selectedSeed: seedsType, selectedTile: Tile) => void;
+  ressources : Resources
+  handleSeedSelection: (selectedSpecie: Species) => void;
+  handlePlantSeed: (selectedSpecie: Species, selectedTile: Tile) => void;
 }
 
 export default function InventoryComponents({
@@ -13,7 +14,8 @@ export default function InventoryComponents({
   handleSeedSelection,
   handlePlantSeed,
   selectedTile,
-  selectedSeed,
+  selectedSpecie,
+  ressources
 }: InventoryProps) {
   return (
     <div>
@@ -24,21 +26,21 @@ export default function InventoryComponents({
             backgroundColor: "red",
           }}
         >
-          {Object.entries(inventory.seeds).map(([seed, quantity]) => (
+          {Object.entries(inventory.species).map(([specie, quantity]) => (
             <button
-              key={seed}
-              onClick={() => handleSeedSelection(seed as seedsType)}
+              key={specie}
+              onClick={() => handleSeedSelection(specie as Species)}
             >
-              {seed} : {quantity}
+              {specie} : {quantity}
             </button>
           ))}
 
-          {selectedSeed ? (
+          {selectedSpecie ? (
                 <div>
-                <p> Graine Sélectionnée : {selectedSeed} </p>
+                <p> Graine Sélectionnée : {selectedSpecie} </p>
             <button
-              disabled={selectedTile.hasSeed ||  inventory.seeds[selectedSeed] === 0}
-              onClick={() => handlePlantSeed(selectedSeed, selectedTile)}
+              // disabled={selectedTile.hasSeed ||  inventory.seeds[selectedSpecie] === 0}
+              onClick={() => handlePlantSeed(selectedSpecie, selectedTile)}
             >
               Planter une graine
             </button>
@@ -46,6 +48,8 @@ export default function InventoryComponents({
           ) : null}
         </div>
       ) : null}
+
+      <p>Ressources disponibles : {ressources.bioMass}</p>
     </div>
   );
 }

@@ -10,21 +10,41 @@ export type Tile = {
   hovered: boolean;
   hasSeed: boolean;
   decoration? : GameAssets;
-  seedsType? : seedsType;
+  seedsType? : Plant;
   path: Path2D;
 };
 
 
-export type Plant = {
-  id:number,
-  tileId : number,
-  growth : number,
-  stage: "seed" | "sprout" | "mature";
-}
+  export type Resources = {
+    bioMass : number
+  }
 
+
+
+export const Species = {
+  REACTOR_MUSHROOM :  "reactorMushroom",
+  SYNAPTIC_VINE : "synapticVine",
+  CRYSTAL_FLOWER : 'crystalFlower'
+} as const
+
+export type Species = (typeof Species)[keyof typeof Species]
+
+
+export type Plant = {
+  id: ()=>`${string}-${string}-${string}-${string}-${string}`;
+
+  species: Species;
+
+  tileId: number;
+
+  stage: 1 | 2 | 3;
+  plantedAt: number;
+  growth: number;
+  isReadyToHarvest: boolean;
+};
 
 export type Inventory =  { 
-  seeds : Record<seedsType, number>
+  species : Record<Species, number> 
 }
 
 export type Decoration = {
@@ -67,5 +87,5 @@ export const initialDecorations: Decoration[] = [
 ]
 
 
-export type AssetsKey =  "bioPalmtree" | "trapStore" | "bioBattery" | "bioTerminal"
+export type AssetsKey =  "bioPalmtree" | "trapStore" | "bioBattery" | "bioTerminal" | "reactorMushroomStageOne" | "reactorMushroomStageTwo" | "reactorMushroomStageThree"
 export type GameAssets = Record <AssetsKey, HTMLImageElement>

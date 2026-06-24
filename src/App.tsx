@@ -5,11 +5,13 @@ import SideMenu from "./components/Hud/SideMenu";
 import {
   type Tile,
   type Inventory,
-  type seedsType,
   type GameAssets,
+  type Plant,
+  type Resources,
 } from "./game/type";
 import { generateGrid } from "./game/rendering/tiles/drawScreenGrid";
 import { loadAssets } from "./game/rendering/tiles/drawTile";
+import {  Species } from './game/type';
 
 function App() {
   const [isSideMenuOpen, setIsSideMenuOpen] = useState<boolean>(true);
@@ -17,16 +19,29 @@ function App() {
     generateGrid(window.innerWidth),
   );
   const [inventory, setInventory] = useState<Inventory>({
-    seeds: {
-      green: 1,
-      red: 2,
-      blue: 1,
+    species : {
+      reactorMushroom: 1,
+      synapticVine: 2,
+      crystalFlower: 1,
     },
   });
 
-  const [selectedTile, setSelectedTile] = useState<Tile | null>(null);
-  const [selectedSeed, setSelectedSeed] = useState<seedsType | null>(null);
+  
+
+  const [ressources, setRessources] = useState<Resources>({
+    bioMass : 0 
+  })
+
+
+
+  const [plants, setPlants] = useState<Plant[]>([])
   const [assets, setAssets] = useState<GameAssets | null>(null);
+
+    
+  const [selectedTile, setSelectedTile] = useState<Tile | null>(null);
+  const [selectedSpecie, setSelectedSpecie] = useState<Species | null>(null);
+
+
 
   useEffect(() => {
     loadAssets()
@@ -37,43 +52,48 @@ function App() {
   }, []);
 
 
-  const handleSeedsCount = (selectedSeed: seedsType) => {
-    setInventory((prev) => ({
-      ...prev,
-      seeds: {
-        ...prev.seeds,
-        [selectedSeed]: prev.seeds[selectedSeed] - 1,
-      },
-    }));
-  };
 
-  const handlePlantSeed = (selectedSeed: seedsType, selectedTile: Tile) => {
+
+  const handlePlantSpecie = (selectedSpecies: Species, selectedTile: Tile) => {
     if (!selectedTile) return;
-    if (inventory.seeds[selectedSeed] <= 0) {
-      window.alert("Vous n'avez pas suffisament de graines");
-      return;
+
+    const plant : Plant = {
+      id : crypto.randomUUID, 
+      tileId : selectedTile.id,
+      species : selectedSpecies, 
+      stage: 1,
+      growth: 0,
+      plantedAt: Date.now(), 
+      isReadyToHarvest: false
     }
 
-    setTiles((currentTiles) => {
-      const updatedTiles = currentTiles.map((tile) =>
-        tile.id === selectedTile.id
-          ? { ...tile, hasSeed: true, seedsType: selectedSeed }
-          : tile,
-      );
+    setPlants((prev) => [...prev, plant])
 
-      const updatedSelectedTile =
-        updatedTiles.find((tile) => tile.id === selectedTile.id) ?? null;
-      setSelectedTile(updatedSelectedTile);
-
-      return updatedTiles;
-    });
-
-    handleSeedsCount(selectedSeed);
   };
 
-  const handleSeedSelection = (clickedSeed: seedsType) => {
-    setSelectedSeed(clickedSeed);
+  const handleSpecieSelection = (clickedSpecie: Species) => {
+    setSelectedSpecie(clickedSpecie);
   };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   //TO DO : Ajouter un toggle
   const handleSideMenuOpen = () => {
@@ -84,6 +104,18 @@ function App() {
     setSelectedTile(tile);
   };
 
+  console.log("Plants : ", plants)
+
+  const handleRessourcesUpdate = () => {
+    setRessources((currentRessources) => ({
+      ...currentRessources,
+      bioMass : currentRessources.bioMass + 10
+    })
+    )
+  }
+
+  
+
   return (
     <>
       {assets ? (
@@ -91,15 +123,20 @@ function App() {
           <SideMenu
             isOpen={isSideMenuOpen}
             selectedTile={selectedTile}
-            handlePlantSeed={handlePlantSeed}
+            handlePlantSeed={handlePlantSpecie}
             inventory={inventory}
-            selectedSeed={selectedSeed}
-            handleSeedSelection={handleSeedSelection}
+            selectedSpecie={selectedSpecie}
+            handleSpecieSelection={handleSpecieSelection}
+            plants={plants}
+            ressources={ressources}
+            handleRessourcesUpdate={handleRessourcesUpdate}
+            setPlants={setPlants}
           />
           <Canvas
             handleSideMenuOpen={handleSideMenuOpen}
             handleTileSelection={handleTileSelection}
             setTiles={setTiles}
+            plants={plants}
             assets={assets}
             tiles={tiles}
           />
