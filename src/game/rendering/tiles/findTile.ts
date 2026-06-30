@@ -1,5 +1,4 @@
 import type { Tile } from "../../type";
-// import { HALF_TILE_WIDTH, HALF_TILE_HEIGHT } from "./drawScreenGrid";
 
 export default function findTile(
   tilePositions: Tile[],
@@ -8,17 +7,6 @@ export default function findTile(
 ) {
   const xPosToFind = clickedPos.x;
   const yPosToFind = clickedPos.y;
-
-  // for (let i = 0; i < tilePositions.length; i++) {
-  //   if (
-  //     xPosToFind > tilePositions[i].x - HALF_TILE_WIDTH &&
-  //     xPosToFind < tilePositions[i].x + HALF_TILE_WIDTH &&
-  //     yPosToFind > tilePositions[i].y - HALF_TILE_HEIGHT &&
-  //     yPosToFind < tilePositions[i].y + HALF_TILE_HEIGHT
-  //   ) {
-  //     return tilePositions[i].id;
-  //   }
-  // }
 
   let selectedTile: Tile | null = null;
 

@@ -8,10 +8,11 @@ import {
   type GameAssets,
   type Plant,
   type Resources,
+  initialDecorations,
 } from "./game/type";
 import { generateGrid } from "./game/rendering/tiles/drawScreenGrid";
 import { loadAssets } from "./game/rendering/tiles/drawTile";
-import {  Species } from './game/type';
+import { type Species, type selectedTileType } from './game/type';
 
 function App() {
   const [isSideMenuOpen, setIsSideMenuOpen] = useState<boolean>(true);
@@ -32,6 +33,8 @@ function App() {
     bioMass : 0 
   })
 
+  const [isHarvestButtonActive, setIsHarvestButtonActive] = useState<boolean>(false)
+
 
 
   const [plants, setPlants] = useState<Plant[]>([])
@@ -40,6 +43,20 @@ function App() {
     
   const [selectedTile, setSelectedTile] = useState<Tile | null>(null);
   const [selectedSpecie, setSelectedSpecie] = useState<Species | null>(null);
+
+  const [selectedTileType, setSelectedTileType] = useState<selectedTileType>(null)
+
+  const handleSelectedTileType = (tile : Tile ) => {
+    if(selectedTile?.seedsType){
+      setSelectedTileType("plant")
+    }
+    else if(initialDecorations.find((initialDecoration) => initialDecoration.tileId === tile.id)){
+      setSelectedTileType("decoration")
+    }
+    else{
+      setSelectedTileType("empty")
+    }
+  }
 
 
 
@@ -102,11 +119,16 @@ function App() {
 
   const handleTileSelection = (tile: Tile) => {
     setSelectedTile(tile);
+    handleSelectedTileType(tile)
   };
 
-  console.log("Plants : ", plants)
 
-  const handleRessourcesUpdate = () => {
+  const handleRessourcesUpdate = (plantOnTile : Plant) => {
+    
+  setPlants((currentPlants) =>
+      currentPlants.filter((plant : Plant) => plant.id !== plantOnTile?.id),
+    );
+
     setRessources((currentRessources) => ({
       ...currentRessources,
       bioMass : currentRessources.bioMass + 10
@@ -131,6 +153,10 @@ function App() {
             ressources={ressources}
             handleRessourcesUpdate={handleRessourcesUpdate}
             setPlants={setPlants}
+            isHarvestButtonActive={isHarvestButtonActive}
+            setIsHarvestButtonActive={setIsHarvestButtonActive}
+            selectedTileType={selectedTileType}
+            setSelectedTileType={setSelectedTileType}
           />
           <Canvas
             handleSideMenuOpen={handleSideMenuOpen}

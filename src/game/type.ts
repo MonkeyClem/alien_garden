@@ -1,4 +1,6 @@
-export type seedsType = 'green' | "red" | "blue"
+export type selectedTileType = "empty" | "plant" | "decoration" | null
+
+export type FootPrint = {width : number, height : number}
 
 export type Tile = {
   id: number;
@@ -57,6 +59,7 @@ export type Decoration = {
   height: number
   offsetX: number
   offsetY: number
+  footPrint : FootPrint
 }
 
 
@@ -71,7 +74,8 @@ export const initialDecorations: Decoration[] = [
     width: 350,
     height: 250,
     offsetY: 0,
-    offsetX: 0
+    offsetX: 0,
+    footPrint:{width: 5, height : 5}
   },
     {
     id: "bioPalm-1",
@@ -82,7 +86,8 @@ export const initialDecorations: Decoration[] = [
     width: 225,
     height: 200,
     offsetY: -10,
-    offsetX: 0
+    offsetX: 0,
+    footPrint : {width : 2, height : 2}
   }
 ]
 

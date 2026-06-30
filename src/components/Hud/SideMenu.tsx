@@ -7,6 +7,9 @@ import type {
 } from "../../game/type";
 import InventoryComponents from "./Inventory/Inventory";
 import { getPlantStage } from "../Canvas/utils";
+import type React from "react";
+import { useEffect, type SetStateAction } from "react";
+import { type selectedTileType } from '../../game/type';
 
 interface SideMenuProps {
   isOpen: boolean;
@@ -18,7 +21,11 @@ interface SideMenuProps {
   plants: Plant[];
   setPlants : React.Dispatch<React.SetStateAction<Plant[]>>,
   ressources: Resources;
-  handleRessourcesUpdate: () => void;
+  handleRessourcesUpdate: (plantOnTile: Plant) => void;
+  isHarvestButtonActive : boolean;
+  setIsHarvestButtonActive : React.Dispatch<React.SetStateAction<boolean>>
+  selectedTileType : selectedTileType
+  setSelectedTileType : React.Dispatch<SetStateAction<selectedTileType>>
 }
 
 export default function SideMenu({
@@ -30,23 +37,25 @@ export default function SideMenu({
   handlePlantSeed,
   plants,
   ressources,
-  setPlants,
   handleRessourcesUpdate,
+  isHarvestButtonActive,
+  setIsHarvestButtonActive,
+  selectedTileType
 }: SideMenuProps) {
-  if (!selectedTile) return;
 
-  const plantOnTile = plants.find((plant) => plant.tileId === selectedTile.id);
 
-  if (plantOnTile && getPlantStage(plantOnTile) === 3) {
-    setPlants((currentPlants) =>
-      currentPlants.filter((plant : Plant) => plant.id !== plantOnTile.id),
-    );
+  const plantOnTile = selectedTile
+  ? plants.find((plant) => plant.tileId === selectedTile.id)
+  : null;
 
-    handleRessourcesUpdate();
+useEffect(() => {
+  setIsHarvestButtonActive(
+    !!plantOnTile && getPlantStage(plantOnTile) === 3
+  );
+}, [plantOnTile, setIsHarvestButtonActive]);
 
-    return;
-  }
 
+  
   return (
     <div
       style={{
@@ -66,7 +75,8 @@ export default function SideMenu({
           <h4>SELECTED TILE </h4>
           {selectedTile ? (
             <>
-              {" "}
+              
+              {selectedTileType}
               <p>Tile ID : {selectedTile.id}</p>
               <p>Graine Plantée ? {selectedTile.hasSeed ? "oui" : "non"}</p>
               <p>Central pos x : {selectedTile.x}</p>
@@ -75,7 +85,20 @@ export default function SideMenu({
               <p>Grid Y : {selectedTile.gridY}</p>
               {plantOnTile ?
             
-               <div>Espèce présente sur la tuile  :{plantOnTile.species }</div> : "Aucune plante présente sur cette tuile"}
+               <div>Espèce présente sur la tuile  :{plantOnTile.species }
+                    <button 
+                    disabled={!isHarvestButtonActive}
+                    onClick={() => handleRessourcesUpdate(plantOnTile)}>
+                    Récolter le {selectedSpecie}
+                  </button>
+              
+                  </div> : "Aucune plante présente sur cette tuile"
+               
+               }
+                 
+             
+                
+
             </>
           ) : (
             <p>No tile selected</p>
@@ -93,6 +116,8 @@ export default function SideMenu({
         handleSeedSelection={handleSpecieSelection}
         ressources={ressources}
       />
+
+        
     </div>
   );
 }
