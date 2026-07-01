@@ -12,7 +12,6 @@ export type Tile = {
   hovered: boolean;
   hasSeed: boolean;
   decoration? : GameAssets;
-  seedsType? : Plant;
   path: Path2D;
 };
 

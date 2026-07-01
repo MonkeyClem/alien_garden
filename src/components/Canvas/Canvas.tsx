@@ -12,7 +12,7 @@ import {
 } from "../../game/type";
 import { HALF_TILE_HEIGHT } from "../../game/rendering/tiles/drawScreenGrid";
 import { getPlantStage } from "./utils";
-import { getDecorationOnTile } from '../../game/grid/getOccupiedTiles';
+import { findDecorationOnTile } from '../../game/grid/getOccupiedTiles';
 
 interface Canvas {
   handleSideMenuOpen: () => void;
@@ -257,6 +257,22 @@ useEffect(() => {
 
     if (!selectedTileId) return;
     
+    const selectedTile : Tile | undefined = tilesRef.current.find(
+      (tile) => tile.id === selectedTileId
+    );
+
+    if(!selectedTile) return
+
+  const clickedDecoration = findDecorationOnTile(
+    selectedTileId,
+    initialDecorations
+  );
+
+  if (clickedDecoration) {
+    console.log(
+      "Décoration sélectionnée :",
+      clickedDecoration
+    );}
 
     setTiles((currentTiles) =>
       currentTiles.map((tile) => ({
@@ -265,11 +281,8 @@ useEffect(() => {
       }))
     );
 
-    const selectedTile : Tile | undefined = tilesRef.current.find(
-      (tile) => tile.id === selectedTileId
-    );
+ 
 
-    if (!selectedTile) return;
 
 //     const clickedDecoration = findDecorationAtPosition(
 //   clickedPosition,
@@ -281,12 +294,6 @@ useEffect(() => {
 //   console.log("Décoration cliquée :", clickedDecoration);
 //   return;
 // }
-
-    const decoration = initialDecorations.find((deco) => deco.tileId === selectedTileId)
-    let clickedDecorationOccupiedTiles : number[]
-    if(decoration){
-     clickedDecorationOccupiedTiles = getDecorationOnTile(selectedTile, decoration.footPrint)
-    }
 
     handleTileSelection({
       ...selectedTile,
