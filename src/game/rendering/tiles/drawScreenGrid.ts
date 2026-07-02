@@ -37,7 +37,6 @@ export const generateGrid = (canvasWidth: number): Tile[] => {
         id: tileId,
         selected: false,
         hovered: false,
-        hasSeed: false,
         path: path,
       });
     }

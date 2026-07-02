@@ -1,5 +1,5 @@
-export type selectedTileType = "empty" | "plant" | "decoration" | null
-
+//DECORATIONS ASSETS
+export type selectionType = "empty" | "plant" | "decoration" | null
 export type FootPrint = {width : number, height : number}
 
 export type Tile = {
@@ -10,48 +10,14 @@ export type Tile = {
   gridY : number,
   selected: boolean;
   hovered: boolean;
-  hasSeed: boolean;
-  decoration? : GameAssets;
   path: Path2D;
 };
 
 
-  export type Resources = {
-    bioMass : number
-  }
-
-
-
-export const Species = {
-  REACTOR_MUSHROOM :  "reactorMushroom",
-  SYNAPTIC_VINE : "synapticVine",
-  CRYSTAL_FLOWER : 'crystalFlower'
-} as const
-
-export type Species = (typeof Species)[keyof typeof Species]
-
-
-export type Plant = {
-  id: ()=>`${string}-${string}-${string}-${string}-${string}`;
-
-  species: Species;
-
-  tileId: number;
-
-  stage: 1 | 2 | 3;
-  plantedAt: number;
-  growth: number;
-  isReadyToHarvest: boolean;
-};
-
-export type Inventory =  { 
-  species : Record<Species, number> 
-}
-
 export type Decoration = {
   id: string
   tileId : number,
-  assetKey : AssetsKey
+  assetKey : DecorationAssetsKey
   gridX: number
   gridY: number
   width: number
@@ -90,6 +56,41 @@ export const initialDecorations: Decoration[] = [
   }
 ]
 
+export type DecorationAssetsKey = "bioTerminal" | "bioPalmtree" | "trapStore" | "bioBattery" 
+export type PlantAssetsKey =  "reactorMushroomStageOne" | "reactorMushroomStageTwo" | "reactorMushroomStageThree"
 
-export type AssetsKey =  "bioPalmtree" | "trapStore" | "bioBattery" | "bioTerminal" | "reactorMushroomStageOne" | "reactorMushroomStageTwo" | "reactorMushroomStageThree"
+
+export type AssetsKey =  DecorationAssetsKey | PlantAssetsKey
 export type GameAssets = Record <AssetsKey, HTMLImageElement>
+
+
+
+
+//GAMEPLAY ASSETS
+export type Resources = {
+    bioMass : number
+  }
+
+export const Species = {
+  REACTOR_MUSHROOM :  "reactorMushroom",
+  SYNAPTIC_VINE : "synapticVine",
+  CRYSTAL_FLOWER : 'crystalFlower'
+} as const
+
+export type Species = (typeof Species)[keyof typeof Species]
+
+
+export type Plant = {
+  id: ()=>`${string}-${string}-${string}-${string}-${string}`;
+  species: Species;
+  tileId: number;
+  stage: 1 | 2 | 3;
+  plantedAt: number;
+  growth: number;
+  isReadyToHarvest: boolean;
+};
+
+export type Inventory =  { 
+  species : Record<Species, number> 
+}
+

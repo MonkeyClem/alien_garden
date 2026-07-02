@@ -4,18 +4,22 @@ interface InventoryProps {
   selectedTile: Tile | null;
   selectedSpecie: Species | null;
   inventory: Inventory;
-  ressources : Resources
+  ressources : Resources;
+  isSelectedTileOccupied : boolean;
   handleSeedSelection: (selectedSpecie: Species) => void;
-  handlePlantSeed: (selectedSpecie: Species, selectedTile: Tile) => void;
+  handlePlantSeed: (selectedSpecie: Species, selectedTile: Tile) => void; 
+  setIsSelectedTileOccupied : (value: boolean) => void
 }
 
 export default function InventoryComponents({
   inventory,
-  handleSeedSelection,
-  handlePlantSeed,
   selectedTile,
   selectedSpecie,
-  ressources
+  ressources,
+  isSelectedTileOccupied,
+  handleSeedSelection,
+  handlePlantSeed,
+  setIsSelectedTileOccupied
 }: InventoryProps) {
   return (
     <div>
@@ -39,8 +43,14 @@ export default function InventoryComponents({
                 <div>
                 <p> Graine Sélectionnée : {selectedSpecie} </p>
             <button
+              disabled={isSelectedTileOccupied}
               // disabled={selectedTile.hasSeed ||  inventory.seeds[selectedSpecie] === 0}
-              onClick={() => handlePlantSeed(selectedSpecie, selectedTile)}
+              onClick={() => {
+                handlePlantSeed(selectedSpecie, selectedTile)
+                setIsSelectedTileOccupied(true)
+              }
+
+              }
             >
               Planter une graine
             </button>

@@ -8,8 +8,8 @@ import type {
 import InventoryComponents from "./Inventory/Inventory";
 import { getPlantStage } from "../Canvas/utils";
 import type React from "react";
-import { useEffect, type SetStateAction } from "react";
-import { type selectedTileType } from '../../game/type';
+import { useEffect } from "react";
+import { type selectionType } from '../../game/type';
 
 interface SideMenuProps {
   isOpen: boolean;
@@ -24,8 +24,9 @@ interface SideMenuProps {
   handleRessourcesUpdate: (plantOnTile: Plant) => void;
   isHarvestButtonActive : boolean;
   setIsHarvestButtonActive : React.Dispatch<React.SetStateAction<boolean>>
-  selectedTileType : selectedTileType
-  setSelectedTileType : React.Dispatch<SetStateAction<selectedTileType>>
+  selectionType : selectionType;
+  isSelectedTileOccupied: boolean,
+  setIsSelectedTileOccupied : (value : boolean) => void
 }
 
 export default function SideMenu({
@@ -40,7 +41,9 @@ export default function SideMenu({
   handleRessourcesUpdate,
   isHarvestButtonActive,
   setIsHarvestButtonActive,
-  selectedTileType
+  selectionType,
+  isSelectedTileOccupied,
+  setIsSelectedTileOccupied
 }: SideMenuProps) {
 
 
@@ -69,26 +72,30 @@ useEffect(() => {
       {isOpen ? (
         ///DEBUG DIV
         <>
-          TODO : IMPLEMENTER TOGGLE / SYSTEME DE BOUTON POUR OUVRIR DIFFERENTS
+          {/* TODO : IMPLEMENTER TOGGLE / SYSTEME DE BOUTON POUR OUVRIR DIFFERENTS
           MENUS (inventaire, propriétés d'une plante cliquée, etc..)
           <p>Menu Ouvert</p>
-          <h4>SELECTED TILE </h4>
+          <h4>SELECTED TILE </h4> */}
           {selectedTile ? (
             <>
               
-              {selectedTileType}
-              <p>Tile ID : {selectedTile.id}</p>
-              <p>Graine Plantée ? {selectedTile.hasSeed ? "oui" : "non"}</p>
+              {selectionType}
+              <br/>
+              {/* <p>Tile ID : {selectedTile.id}</p>
               <p>Central pos x : {selectedTile.x}</p>
               <p>Central pos x : {selectedTile.y}</p>
               <p>GridX : {selectedTile.gridX}</p>
-              <p>Grid Y : {selectedTile.gridY}</p>
+              <p>Grid Y : {selectedTile.gridY}</p> */}
               {plantOnTile ?
             
                <div>Espèce présente sur la tuile  :{plantOnTile.species }
                     <button 
                     disabled={!isHarvestButtonActive}
-                    onClick={() => handleRessourcesUpdate(plantOnTile)}>
+                    onClick={() =>
+                     {
+                      handleRessourcesUpdate(plantOnTile)
+                    }
+                     }>
                     Récolter le {selectedSpecie}
                   </button>
               
@@ -109,11 +116,13 @@ useEffect(() => {
       null}
       ------------
       <InventoryComponents
+        isSelectedTileOccupied={isSelectedTileOccupied}
         selectedSpecie={selectedSpecie}
         selectedTile={selectedTile}
         handlePlantSeed={handlePlantSeed}
         inventory={inventory}
         handleSeedSelection={handleSpecieSelection}
+        setIsSelectedTileOccupied={setIsSelectedTileOccupied}
         ressources={ressources}
       />
 

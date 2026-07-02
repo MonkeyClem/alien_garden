@@ -8,11 +8,10 @@ import {
   type GameAssets,
   type Plant,
   type Resources,
-  initialDecorations,
 } from "./game/type";
 import { generateGrid } from "./game/rendering/tiles/drawScreenGrid";
 import { loadAssets } from "./game/rendering/tiles/drawTile";
-import { type Species, type selectedTileType } from './game/type';
+import { type Species, type selectionType } from './game/type';
 
 function App() {
   const [isSideMenuOpen, setIsSideMenuOpen] = useState<boolean>(true);
@@ -44,20 +43,8 @@ function App() {
   const [selectedTile, setSelectedTile] = useState<Tile | null>(null);
   const [selectedSpecie, setSelectedSpecie] = useState<Species | null>(null);
 
-  const [selectedTileType, setSelectedTileType] = useState<selectedTileType>(null)
-
-  const handleSelectedTileType = (tile : Tile ) => {
-    if(selectedTile?.seedsType){
-      setSelectedTileType("plant")
-    }
-    else if(initialDecorations.find((initialDecoration) => initialDecoration.tileId === tile.id)){
-      setSelectedTileType("decoration")
-    }
-    else{
-      setSelectedTileType("empty")
-    }
-  }
-
+  const [selectionType, setSelectionType] = useState<selectionType>(null)
+  const [isSelectedTileOccupied, setIsSelectedTileOccupied] = useState(false)
 
 
   useEffect(() => {
@@ -119,7 +106,6 @@ function App() {
 
   const handleTileSelection = (tile: Tile) => {
     setSelectedTile(tile);
-    handleSelectedTileType(tile)
   };
 
 
@@ -155,16 +141,21 @@ function App() {
             setPlants={setPlants}
             isHarvestButtonActive={isHarvestButtonActive}
             setIsHarvestButtonActive={setIsHarvestButtonActive}
-            selectedTileType={selectedTileType}
-            setSelectedTileType={setSelectedTileType}
+            selectionType={selectionType}
+            isSelectedTileOccupied={isSelectedTileOccupied}
+            setIsSelectedTileOccupied={setIsSelectedTileOccupied}
           />
           <Canvas
             handleSideMenuOpen={handleSideMenuOpen}
             handleTileSelection={handleTileSelection}
+            setSelectionType={setSelectionType}
             setTiles={setTiles}
+            setIsSelectedTileOccupied={setIsSelectedTileOccupied}
+            selectionType={selectionType}
             plants={plants}
             assets={assets}
             tiles={tiles}
+            
           />
         </>
       ) : (
