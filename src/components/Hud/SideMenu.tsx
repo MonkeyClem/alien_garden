@@ -1,15 +1,14 @@
 import type {
   Inventory,
-  Plant,
-  Resources,
-  Species,
-  Tile,
+  Ressources,
 } from "../../game/type";
 import InventoryComponents from "./Inventory/Inventory";
-import { getPlantStage } from "../Canvas/utils";
 import type React from "react";
 import { useEffect } from "react";
 import { type selectionType } from '../../game/type';
+import type { Tile } from "../../game/grid/tiles.types";
+import { getPlantStage } from "../../game/plants/getPlantStage";
+import type { Species, Plant } from "../../game/plants/plants.type";
 
 interface SideMenuProps {
   isOpen: boolean;
@@ -20,7 +19,7 @@ interface SideMenuProps {
   handleSpecieSelection: (selectedSpecie: Species) => void;
   plants: Plant[];
   setPlants : React.Dispatch<React.SetStateAction<Plant[]>>,
-  ressources: Resources;
+  ressources: Ressources;
   handleRessourcesUpdate: (plantOnTile: Plant) => void;
   isHarvestButtonActive : boolean;
   setIsHarvestButtonActive : React.Dispatch<React.SetStateAction<boolean>>

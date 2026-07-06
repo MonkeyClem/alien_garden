@@ -1,4 +1,4 @@
-import {  type Tile } from "../../type";
+import type { Tile } from "../game/grid/tiles.types";
 import { drawTile } from "./drawTile";
 
 

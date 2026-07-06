@@ -1,4 +1,4 @@
-import type { Plant } from "../../game/type";
+import type { Plant } from "./plants.type";
 
 export const getPlantStage = (plant: Plant): 1 | 2 | 3 => {
   const elapseTime = (Date.now() - plant.plantedAt) / 1000;

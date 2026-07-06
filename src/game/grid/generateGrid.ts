@@ -1,12 +1,7 @@
-import type { Tile } from "../../type";
 import { createTilePath } from "./createTilePath";
-import drawAllTiles from "./drawAllTiles";
+import { GRID_WIDTH, GRID_HEIGHT, HALF_TILE_WIDTH, HALF_TILE_HEIGHT } from "./grid.constants";
+import type { Tile } from "./tiles.types";
 
-export const HALF_TILE_WIDTH = 30;
-export const HALF_TILE_HEIGHT = 10;
-
-export const GRID_WIDTH = 20;
-export const GRID_HEIGHT = 20;
 
 export const generateGrid = (canvasWidth: number): Tile[] => {
   const originX = canvasWidth / 2;
@@ -44,10 +39,3 @@ export const generateGrid = (canvasWidth: number): Tile[] => {
 
   return tilePositions;
 };
-
-export default function drawScreenGrid(
-  ctx: CanvasRenderingContext2D,
-  tilePositions: Tile[],
-) {
-  drawAllTiles(tilePositions, ctx);
-}

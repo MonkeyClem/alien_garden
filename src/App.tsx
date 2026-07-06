@@ -3,15 +3,15 @@ import "./App.css";
 import Canvas from "./components/Canvas/Canvas";
 import SideMenu from "./components/Hud/SideMenu";
 import {
-  type Tile,
   type Inventory,
-  type GameAssets,
-  type Plant,
-  type Resources,
+  type Ressources,
 } from "./game/type";
-import { generateGrid } from "./game/rendering/tiles/drawScreenGrid";
-import { loadAssets } from "./game/rendering/tiles/drawTile";
-import { type Species, type selectionType } from './game/type';
+import { type selectionType } from './game/type';
+import type { GameAssets } from "./assets/assetTypes";
+import { loadAssets } from "./assets/loadAssets";
+import { generateGrid } from "./game/grid/generateGrid";
+import type { Tile } from "./game/grid/tiles.types";
+import type { Plant, Species } from "./game/plants/plants.type";
 
 function App() {
   const [isSideMenuOpen, setIsSideMenuOpen] = useState<boolean>(true);
@@ -28,7 +28,7 @@ function App() {
 
   
 
-  const [ressources, setRessources] = useState<Resources>({
+  const [ressources, setRessources] = useState<Ressources>({
     bioMass : 0 
   })
 
@@ -78,26 +78,6 @@ function App() {
   const handleSpecieSelection = (clickedSpecie: Species) => {
     setSelectedSpecie(clickedSpecie);
   };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   //TO DO : Ajouter un toggle
   const handleSideMenuOpen = () => {

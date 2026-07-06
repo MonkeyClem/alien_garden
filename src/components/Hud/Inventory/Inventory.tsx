@@ -1,10 +1,12 @@
-import type { Inventory, Resources, Species, Tile } from "../../../game/type";
+import type { Tile } from "../../../game/grid/tiles.types";
+import type { Species } from "../../../game/plants/plants.type";
+import type { Inventory, Ressources } from "../../../game/type";
 
 interface InventoryProps {
   selectedTile: Tile | null;
   selectedSpecie: Species | null;
   inventory: Inventory;
-  ressources : Resources;
+  ressources : Ressources;
   isSelectedTileOccupied : boolean;
   handleSeedSelection: (selectedSpecie: Species) => void;
   handlePlantSeed: (selectedSpecie: Species, selectedTile: Tile) => void; 

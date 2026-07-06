@@ -1,4 +1,4 @@
-import type { Tile } from "../../type";
+import type { Tile } from "./tiles.types";
 
 export default function findTile(
   tilePositions: Tile[],
@@ -10,14 +10,15 @@ export default function findTile(
 
   let selectedTile: Tile | null = null;
 
-  tilePositions.forEach((tile) => {
-    const isSelected: boolean = ctx.isPointInPath(
+  for(const tile of tilePositions){
+   const isSelected: boolean = ctx.isPointInPath(
       tile.path,
       xPosToFind,
       yPosToFind,
     );
-    if (isSelected) selectedTile = tile;
-  });
+   if (isSelected) selectedTile = tile;
+  }
+
 
   return selectedTile?.id;
 }
