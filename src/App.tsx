@@ -90,11 +90,9 @@ function App() {
 
 
   const handleRessourcesUpdate = (plantOnTile : Plant) => {
-    
   setPlants((currentPlants) =>
       currentPlants.filter((plant : Plant) => plant.id !== plantOnTile?.id),
     );
-
     setRessources((currentRessources) => ({
       ...currentRessources,
       bioMass : currentRessources.bioMass + 10
@@ -124,6 +122,7 @@ function App() {
             selectionType={selectionType}
             isSelectedTileOccupied={isSelectedTileOccupied}
             setIsSelectedTileOccupied={setIsSelectedTileOccupied}
+            assets={assets}
           />
           <Canvas
             handleSideMenuOpen={handleSideMenuOpen}
