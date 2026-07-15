@@ -15,7 +15,6 @@ import { findDecorationOnTile } from "../../game/decorations/findDecorationOnTil
 import type { Plant } from "../../game/plants/plants.type";
 
 interface Canvas {
-  handleSideMenuOpen: () => void;
   handleTileSelection: (tile: Tile) => void;
   setTiles: (value: Tile[] | ((prev: Tile[]) => Tile[])) => void;
   setSelectionType: React.Dispatch<SetStateAction<selectionType>>;

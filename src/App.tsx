@@ -14,7 +14,7 @@ import type { Tile } from "./game/grid/tiles.types";
 import type { Plant, Species } from "./game/plants/plants.type";
 
 function App() {
-  const [isSideMenuOpen, setIsSideMenuOpen] = useState<boolean>(true);
+  
   const [tiles, setTiles] = useState<Tile[]>(() =>
     generateGrid(window.innerWidth),
   );
@@ -26,7 +26,6 @@ function App() {
     },
   });
 
-  
 
   const [ressources, setRessources] = useState<Ressources>({
     bioMass : 0 
@@ -79,15 +78,9 @@ function App() {
     setSelectedSpecie(clickedSpecie);
   };
 
-  //TO DO : Ajouter un toggle
-  const handleSideMenuOpen = () => {
-    setIsSideMenuOpen((prev) => !prev);
-  };
-
   const handleTileSelection = (tile: Tile) => {
     setSelectedTile(tile);
   };
-
 
   const handleRessourcesUpdate = (plantOnTile : Plant) => {
   setPlants((currentPlants) =>
@@ -100,14 +93,11 @@ function App() {
     )
   }
 
-  
-
   return (
     <>
       {assets ? (
         <>
           <SideMenu
-            isOpen={isSideMenuOpen}
             selectedTile={selectedTile}
             handlePlantSeed={handlePlantSpecie}
             inventory={inventory}
@@ -116,7 +106,6 @@ function App() {
             plants={plants}
             ressources={ressources}
             handleRessourcesUpdate={handleRessourcesUpdate}
-            setPlants={setPlants}
             isHarvestButtonActive={isHarvestButtonActive}
             setIsHarvestButtonActive={setIsHarvestButtonActive}
             selectionType={selectionType}
@@ -125,7 +114,6 @@ function App() {
             assets={assets}
           />
           <Canvas
-            handleSideMenuOpen={handleSideMenuOpen}
             handleTileSelection={handleTileSelection}
             setSelectionType={setSelectionType}
             setTiles={setTiles}

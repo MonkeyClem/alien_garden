@@ -11,7 +11,6 @@ import { findDecorationOnTile } from "../../game/decorations/findDecorationOnTil
 import type { GameAssets } from "../../assets/assetTypes";
 
 interface SideMenuProps {
-  isOpen: boolean;
   selectedTile: Tile | null;
   inventory: Inventory;
   assets: GameAssets;
@@ -19,7 +18,6 @@ interface SideMenuProps {
   handlePlantSeed: (selectedSpecie: Species, selectedTile: Tile) => void;
   handleSpecieSelection: (selectedSpecie: Species) => void;
   plants: Plant[];
-  setPlants: React.Dispatch<React.SetStateAction<Plant[]>>;
   ressources: Ressources;
   handleRessourcesUpdate: (plantOnTile: Plant) => void;
   isHarvestButtonActive: boolean;
@@ -125,6 +123,7 @@ export default function SideMenu({
               </button>
             </div>
           )}
+          
           {selectionType === "empty" && (
             <div>
               <h3>Tuile Vide</h3>
