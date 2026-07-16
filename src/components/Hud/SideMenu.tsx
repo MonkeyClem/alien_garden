@@ -5,25 +5,27 @@ import { useEffect, useState } from "react";
 import { type selectionType } from "../../game/type";
 import type { Tile } from "../../game/grid/tiles.types";
 import { getPlantStage } from "../../game/plants/getPlantStage";
-import type { Species, Plant } from "../../game/plants/plants.type";
+import { Species, type Plant } from "../../game/plants/plants.type";
 import { initialDecorations } from "../../game/decorations/initialDecorations";
 import { findDecorationOnTile } from "../../game/decorations/findDecorationOnTile";
 import type { GameAssets } from "../../assets/assetTypes";
+import PlantHud from "./ContextualHuds/plantHud";
+import DecorationHud from "./ContextualHuds/DecorationHud";
 
 interface SideMenuProps {
   selectedTile: Tile | null;
   inventory: Inventory;
   assets: GameAssets;
   selectedSpecie: Species | null;
-  handlePlantSeed: (selectedSpecie: Species, selectedTile: Tile) => void;
-  handleSpecieSelection: (selectedSpecie: Species) => void;
-  plants: Plant[];
-  ressources: Ressources;
-  handleRessourcesUpdate: (plantOnTile: Plant) => void;
-  isHarvestButtonActive: boolean;
-  setIsHarvestButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
   selectionType: selectionType;
   isSelectedTileOccupied: boolean;
+  plants: Plant[];
+  ressources: Ressources;
+  isHarvestButtonActive: boolean;
+  handlePlantSeed: (selectedSpecie: Species, selectedTile: Tile) => void;
+  handleSpecieSelection: (selectedSpecie: Species) => void;
+  handleRessourcesUpdate: (plantOnTile: Plant) => void;
+  setIsHarvestButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
   setIsSelectedTileOccupied: (value: boolean) => void;
 }
 
@@ -32,29 +34,29 @@ export default function SideMenu({
   inventory,
   assets,
   selectedSpecie,
-  handleSpecieSelection,
-  handlePlantSeed,
   plants,
   ressources,
-  handleRessourcesUpdate,
   isHarvestButtonActive,
-  setIsHarvestButtonActive,
-  selectionType,
   isSelectedTileOccupied,
+  selectionType,
+  handleSpecieSelection,
+  handlePlantSeed,
+  handleRessourcesUpdate,
+  setIsHarvestButtonActive,
   setIsSelectedTileOccupied,
 }: SideMenuProps) {
-
   const plantOnTile = selectedTile
     ? plants.find((plant) => plant.tileId === selectedTile.id)
     : null;
 
-  const decorationOnTile = selectedTile && findDecorationOnTile(selectedTile.id, initialDecorations)
+  const decorationOnTile =
+    selectedTile && findDecorationOnTile(selectedTile.id, initialDecorations);
 
   useEffect(() => {
     setIsHarvestButtonActive(!!plantOnTile && getPlantStage(plantOnTile) === 3);
   }, [plantOnTile, plants, setIsHarvestButtonActive]);
 
-  const [isInventoryOpen, setIsInventoryOpen] = useState<boolean>(false)
+  const [isInventoryOpen, setIsInventoryOpen] = useState<boolean>(false);
 
   return (
     <>
@@ -99,37 +101,25 @@ export default function SideMenu({
           }}
         >
           {selectionType === "decoration" && decorationOnTile && (
-            <div>
-              <h3>{decorationOnTile.assetKey}</h3>
-              <img src={assets[decorationOnTile.assetKey].src}       
-                    style={{
-                    width: 124,
-                    height: 124,
-                    objectFit: "contain",
-                    // imageRendering: "pixelated",
-                  }}/>
-            </div>
+            <DecorationHud
+            decorationOnTile={decorationOnTile}
+            assets={assets}
+            />
           )}
-          {selectionType === "plant" && plantOnTile && (
-            <div>
-              <h3>Ceci est le HUD des plantes</h3>
-              {plantOnTile?.species}
-              {plantOnTile && <p>Plant Stage : {getPlantStage(plantOnTile)}</p>}
-              <button
-                onClick={() => handleRessourcesUpdate(plantOnTile)}
-                disabled={!isHarvestButtonActive}
-              >
-                Récolter
-              </button>
-            </div>
+
+          {selectionType === "plant" && (
+            <PlantHud
+              plantOnTile={plantOnTile}
+              handleRessourcesUpdate={handleRessourcesUpdate}
+              isHarvestButtonActive={isHarvestButtonActive}
+            />
           )}
-          
+
           {selectionType === "empty" && (
             <div>
               <h3>Tuile Vide</h3>
-              <button
-              onClick={() => setIsInventoryOpen(true)}>Planter</button>
-                <InventoryComponents
+              <button onClick={() => setIsInventoryOpen(true)}>Planter</button>
+              <InventoryComponents
                 isInventoryOpen={isInventoryOpen}
                 isSelectedTileOccupied={isSelectedTileOccupied}
                 selectedSpecie={selectedSpecie}
@@ -141,13 +131,9 @@ export default function SideMenu({
                 ressources={ressources}
               />
             </div>
-            
           )}
-
-
         </div>
       ) : null}
     </>
   );
-
 }
