@@ -1,5 +1,4 @@
 import type { Inventory, Ressources } from "../../game/type";
-import InventoryComponents from "./Inventory/Inventory";
 import type React from "react";
 import { useEffect, useState } from "react";
 import { type selectionType } from "../../game/type";
@@ -11,6 +10,7 @@ import { findDecorationOnTile } from "../../game/decorations/findDecorationOnTil
 import type { GameAssets } from "../../assets/assetTypes";
 import PlantHud from "./ContextualHuds/plantHud";
 import DecorationHud from "./ContextualHuds/DecorationHud";
+import EmptyTileHud from "./ContextualHuds/EmptyTileHud";
 
 interface SideMenuProps {
   selectedTile: Tile | null;
@@ -102,35 +102,32 @@ export default function SideMenu({
         >
           {selectionType === "decoration" && decorationOnTile && (
             <DecorationHud
-            decorationOnTile={decorationOnTile}
-            assets={assets}
+              decorationOnTile={decorationOnTile}
+              assets={assets}
             />
           )}
 
           {selectionType === "plant" && (
             <PlantHud
+              isHarvestButtonActive={isHarvestButtonActive}
               plantOnTile={plantOnTile}
               handleRessourcesUpdate={handleRessourcesUpdate}
-              isHarvestButtonActive={isHarvestButtonActive}
             />
           )}
 
           {selectionType === "empty" && (
-            <div>
-              <h3>Tuile Vide</h3>
-              <button onClick={() => setIsInventoryOpen(true)}>Planter</button>
-              <InventoryComponents
-                isInventoryOpen={isInventoryOpen}
-                isSelectedTileOccupied={isSelectedTileOccupied}
-                selectedSpecie={selectedSpecie}
-                selectedTile={selectedTile}
-                handlePlantSeed={handlePlantSeed}
-                inventory={inventory}
-                handleSeedSelection={handleSpecieSelection}
-                setIsSelectedTileOccupied={setIsSelectedTileOccupied}
-                ressources={ressources}
-              />
-            </div>
+            <EmptyTileHud
+              ressources={ressources}
+              isSelectedTileOccupied={isSelectedTileOccupied}
+              selectedTile={selectedTile}
+              selectedSpecie={selectedSpecie}
+              setIsInventoryOpen={setIsInventoryOpen}
+              setIsSelectedTileOccupied={setIsSelectedTileOccupied}
+              handlePlantSeed={handlePlantSeed}
+              handleSpecieSelection={handleSpecieSelection}
+              inventory={inventory}
+              isInventoryOpen={isInventoryOpen}
+            />
           )}
         </div>
       ) : null}

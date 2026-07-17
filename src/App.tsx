@@ -71,6 +71,7 @@ function App() {
     }
 
     setPlants((prev) => [...prev, plant])
+    setSelectionType("plant")
 
   };
 
