@@ -1,32 +1,26 @@
 import type { Tile } from "../../../game/grid/tiles.types";
 import type { Species } from "../../../game/plants/plants.type";
-import type { Inventory,  Ressources } from "../../../game/type";
-import InventoryComponents from "../Inventory/Inventory";
 
 interface emptyTileHudProps {
   isInventoryOpen: boolean;
-  selectedTile: Tile | null;
-  inventory: Inventory;
-  selectedSpecie: Species | null;
-  isSelectedTileOccupied: boolean;
-  ressources: Ressources;
   setIsInventoryOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  handlePlantSeed: (selectedSpecie: Species, selectedTile: Tile) => void;
-  handleSpecieSelection: (selectedSpecie: Species) => void;
-  setIsSelectedTileOccupied: (value: boolean) => void;
+  selectedSpecie : Species | null,
+  isSelectedTileOccupied: boolean,
+  selectedTile : Tile
+    handlePlantSeed: (selectedSpecie: Species, selectedTile: Tile) => void;
+    setIsSelectedTileOccupied: (value: boolean) => void;
+
+
 }
 
 export default function EmptyTileHud({
   setIsInventoryOpen,
   isInventoryOpen,
-  isSelectedTileOccupied,
   selectedSpecie,
   selectedTile,
-  handlePlantSeed,
-  inventory,
-  handleSpecieSelection,
-  setIsSelectedTileOccupied,
-  ressources,
+isSelectedTileOccupied,
+handlePlantSeed,
+setIsSelectedTileOccupied
 }: emptyTileHudProps) {
   return (
     <div>
@@ -34,19 +28,20 @@ export default function EmptyTileHud({
       <button onClick={() => setIsInventoryOpen(!isInventoryOpen)}>
         {isInventoryOpen ? "Fermer l'inventaire" : "Ouvrir l'inventaire"}
       </button>
-      {isInventoryOpen ? (
-        <InventoryComponents
-          isInventoryOpen={isInventoryOpen}
-          isSelectedTileOccupied={isSelectedTileOccupied}
-          selectedSpecie={selectedSpecie}
-          selectedTile={selectedTile}
-          handlePlantSeed={handlePlantSeed}
-          inventory={inventory}
-          handleSeedSelection={handleSpecieSelection}
-          setIsSelectedTileOccupied={setIsSelectedTileOccupied}
-          ressources={ressources}
-        />
-      ) : null}
+            {selectedSpecie ? (
+            <div>
+              <p> Graine Sélectionnée : {selectedSpecie} </p>
+              <button
+                disabled={isSelectedTileOccupied}
+                onClick={() => {
+                  handlePlantSeed(selectedSpecie, selectedTile);
+                  setIsSelectedTileOccupied(true);
+                }}
+              >
+                Planter une graine
+              </button>
+            </div>
+          ) : null}
     </div>
   );
 }

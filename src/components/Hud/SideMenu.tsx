@@ -11,6 +11,7 @@ import type { GameAssets } from "../../assets/assetTypes";
 import PlantHud from "./ContextualHuds/plantHud";
 import DecorationHud from "./ContextualHuds/DecorationHud";
 import EmptyTileHud from "./ContextualHuds/EmptyTileHud";
+import InventoryComponents from "./Inventory/Inventory";
 
 interface SideMenuProps {
   selectedTile: Tile | null;
@@ -57,6 +58,7 @@ export default function SideMenu({
   }, [plantOnTile, plants, setIsHarvestButtonActive]);
 
   const [isInventoryOpen, setIsInventoryOpen] = useState<boolean>(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <>
@@ -77,8 +79,8 @@ export default function SideMenu({
       >
         <div style={{ display: "flex", gap: "5px" }}>
           <div> Biomass : {ressources.bioMass}</div>
-          <div> BioEnergie : {ressources.bioMass}</div>
-          <div> Données : {ressources.bioMass}</div>
+          <div> BioEnergie : Bio Energie</div>
+          <div> Données : Données</div>
         </div>
 
         <div style={{ display: "flex", gap: "5px" }}>
@@ -87,6 +89,43 @@ export default function SideMenu({
           <button> SAVE</button>
         </div>
       </div>
+
+      <div style={{position:"absolute", bottom: 15, right: 10}}>
+      <button   onMouseEnter={() => setIsHovered(true)}
+  onMouseLeave={() => setIsHovered(false)}
+  onClick={() => setIsInventoryOpen(!isInventoryOpen)}
+  style={{
+    padding: 0,
+    border: isHovered ? "2px solid #9b5cff" : "2px solid transparent",
+    borderRadius: 8,
+    background: "transparent",
+    cursor: "pointer",
+    transform: isHovered ? "scale(1.05)" : "scale(1)",
+    transition: "transform 0.15s ease, border 0.15s ease",
+  }}
+      // style={{padding:0, border: "0px solid purple"}}  
+      >
+        <img src={assets.inventoryIcon.src} 
+        style={{ display: "block", objectFit: "cover", height: 75, width: 75}} />
+              {/* {isInventoryOpen ? "Fermer l'inventaire" : "Ouvrir l'inventaire"}   */}
+      </button> 
+      </div>
+
+
+      {isInventoryOpen ? (
+        <div style={{position:"absolute", background: "black", bottom: 100, top: 100, left: 100, right: 100, border:"2px solid purple", borderRadius: 10}}> 
+        <InventoryComponents
+          isInventoryOpen={isInventoryOpen}
+          isSelectedTileOccupied={isSelectedTileOccupied}
+          selectedSpecie={selectedSpecie}
+          selectedTile={selectedTile}
+          handlePlantSeed={handlePlantSeed}
+          inventory={inventory}
+          handleSeedSelection={handleSpecieSelection}
+          setIsSelectedTileOccupied={setIsSelectedTileOccupied}
+        />
+        </div>
+      ) : null}
 
       {selectedTile ? (
         <div
@@ -117,16 +156,13 @@ export default function SideMenu({
 
           {selectionType === "empty" && (
             <EmptyTileHud
-              ressources={ressources}
-              isSelectedTileOccupied={isSelectedTileOccupied}
-              selectedTile={selectedTile}
-              selectedSpecie={selectedSpecie}
-              setIsInventoryOpen={setIsInventoryOpen}
-              setIsSelectedTileOccupied={setIsSelectedTileOccupied}
-              handlePlantSeed={handlePlantSeed}
-              handleSpecieSelection={handleSpecieSelection}
-              inventory={inventory}
+            handlePlantSeed={handlePlantSeed}
+            isSelectedTileOccupied={isSelectedTileOccupied}
+            selectedSpecie={selectedSpecie}
+            setIsSelectedTileOccupied={setIsSelectedTileOccupied}
               isInventoryOpen={isInventoryOpen}
+              selectedTile={selectedTile}
+              setIsInventoryOpen={setIsInventoryOpen}
             />
           )}
         </div>

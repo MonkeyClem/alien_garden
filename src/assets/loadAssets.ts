@@ -25,6 +25,8 @@ export const loadAssets = async () => {
   const reactorMushroomStageTwo = await loadImage ("/assets/PNG/Assets/reactor_mushroom_stage_two.png")
   const reactorMushroomStageThree = await loadImage ("/assets/PNG/Assets/reactor_mushroom_stage_three.png")
 
+  const inventoryIcon = await loadImage ("/assets/PNG/Assets/inventory_icon.png")
+
   return {
     bioBattery,
     bioPalmtree,
@@ -33,6 +35,8 @@ export const loadAssets = async () => {
 
     reactorMushroomStageOne,
     reactorMushroomStageTwo,
-    reactorMushroomStageThree
+    reactorMushroomStageThree, 
+
+    inventoryIcon
   };
 };

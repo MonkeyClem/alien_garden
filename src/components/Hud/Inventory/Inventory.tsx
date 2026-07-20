@@ -1,12 +1,12 @@
+import { useState } from "react";
 import type { Tile } from "../../../game/grid/tiles.types";
 import type { Species } from "../../../game/plants/plants.type";
-import type { Inventory, Ressources } from "../../../game/type";
+import type { Inventory } from "../../../game/type";
 
 interface InventoryProps {
   selectedTile: Tile | null;
   selectedSpecie: Species | null;
   inventory: Inventory;
-  ressources: Ressources;
   isSelectedTileOccupied: boolean;
   isInventoryOpen: boolean;
   handleSeedSelection: (selectedSpecie: Species) => void;
@@ -14,54 +14,64 @@ interface InventoryProps {
   setIsSelectedTileOccupied: (value: boolean) => void;
 }
 
+export type MenuItemStatus = "locked" | "unlocked";
+export type MenuItemName = "Seeds" | "Weapons" | "Ressources";
+
+export type MenuItems = { name: MenuItemName; status: MenuItemStatus };
+
 export default function InventoryComponents({
   inventory,
-  selectedTile,
-  selectedSpecie,
-  ressources,
-  isSelectedTileOccupied,
   isInventoryOpen,
   handleSeedSelection,
-  handlePlantSeed,
-  setIsSelectedTileOccupied,
 }: InventoryProps) {
-  return (
+  const menuItems: MenuItems[] = [
+    { name: "Seeds", status: "unlocked" },
+    { name: "Ressources", status: "locked" },
+    { name: "Weapons", status: "locked" },
+  ];
+
+
+  const [selectedMenuItem, setSelectedMenuItem] = useState<MenuItems | null>(null)
+
+  return isInventoryOpen ? (
     <div>
       <h3>Inventaire</h3>
-      {selectedTile ? (
+      <div style={{ display: "flex", flex: 1, background: "purple" }}>
         <div
           style={{
-            backgroundColor: "red",
+            display: "flex",
+            flexDirection: "column",
+            flex: 2,
+            background: "red",
           }}
         >
-          {isInventoryOpen
-            ? Object.entries(inventory.species).map(([specie, quantity]) => (
-                <button
-                  key={specie}
-                  onClick={() => handleSeedSelection(specie as Species)}
-                >
-                  {specie} : {quantity}
-                </button>
-              ))
-            : null}
-          {selectedSpecie ? (
-            <div>
-              <p> Graine Sélectionnée : {selectedSpecie} </p>
-              <button
-                disabled={isSelectedTileOccupied}
-                onClick={() => {
-                  handlePlantSeed(selectedSpecie, selectedTile);
-                  setIsSelectedTileOccupied(true);
-                }}
-              >
-                Planter une graine
-              </button>
-            </div>
-          ) : null}
-        </div>
-      ) : null}
+          {menuItems.map((item) =>
+            item.status === "locked" ? (
+              <button disabled>{item.name}</button>
+            ) : (
+              <button onClick={() => setSelectedMenuItem(item)}>{item.name}</button>
+            ),
+          )}
 
-      <p>Ressources disponibles : {ressources.bioMass}</p>
+
+
+      
+        </div>
+        <div style={{ display: "flex", flex: 5, background: "#262525", gap:12}}>
+             {selectedMenuItem?.name === "Seeds" ? Object.entries(inventory.species).map(([specie, quantity]) => (
+        <div >
+          <button
+            key={specie}
+            onClick={() => handleSeedSelection(specie as Species)}
+          >
+            {specie} : {quantity}
+          </button>
+        </div>
+      )) : null } 
+        </div>
+      </div>
+
+   
     </div>
-  );
+  ) : null;
 }
