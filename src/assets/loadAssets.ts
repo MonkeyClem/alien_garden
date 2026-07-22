@@ -26,6 +26,19 @@ export const loadAssets = async () => {
   const reactorMushroomStageThree = await loadImage ("/assets/PNG/Assets/reactor_mushroom_stage_three.png")
 
   const inventoryIcon = await loadImage ("/assets/PNG/Assets/inventory_icon.png")
+  const alienGround = await loadImage ("/assets/PNG/Assets/alienGround.png")
+  const alienGroundTwo = await loadImage ("/assets/PNG/Assets/alien_ground_two.png")
+    const alienGroundThree = await loadImage ("/assets/PNG/Assets/alien_ground_three.png")
+
+
+    const veins = await loadImage ("/assets/PNG/Assets/veins.png")
+    const spores =  await loadImage ("/assets/PNG/Assets/spores.png")
+    const smallRock = await loadImage ("/assets/PNG/Assets/smallRock.png")
+
+    const spacePod = await loadImage ("/assets/PNG/Assets/spacePod.png")
+
+  
+
 
   return {
     bioBattery,
@@ -37,6 +50,18 @@ export const loadAssets = async () => {
     reactorMushroomStageTwo,
     reactorMushroomStageThree, 
 
-    inventoryIcon
+    inventoryIcon,
+
+    alienGround,
+    alienGroundTwo,
+    alienGroundThree,
+
+    veins,
+    spores,
+    smallRock,
+
+    spacePod
   };
 };
+
+

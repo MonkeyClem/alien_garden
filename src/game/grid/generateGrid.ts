@@ -1,6 +1,32 @@
 import { createTilePath } from "./createTilePath";
 import { GRID_WIDTH, GRID_HEIGHT, HALF_TILE_WIDTH, HALF_TILE_HEIGHT } from "./grid.constants";
-import type { Tile } from "./tiles.types";
+import type { GroundOverlay, GroundVariant, Tile } from "./tiles.types";
+
+
+ export const getGroundVariant = (
+  gridX: number,
+  gridY: number,
+): GroundVariant => {
+  const hash =
+    Math.imul(gridX, 73856093) ^
+    Math.imul(gridY, 19349663);
+
+  return Math.abs(hash) % 3 as GroundVariant;
+
+
+};
+
+export const getGroundOverlay = (gridX : number, gridY : number) : GroundOverlay => {
+  const hash = Math.abs(gridX * 73856093 ^ gridY * 19349663)
+
+    const value = hash % 20;
+
+  if (value === 0) return "smallRock";
+  if (value === 1) return "spores";
+  if (value === 2) return "vein";
+
+  return null;
+}
 
 
 export const generateGrid = (canvasWidth: number): Tile[] => {
@@ -33,6 +59,9 @@ export const generateGrid = (canvasWidth: number): Tile[] => {
         selected: false,
         hovered: false,
         path: path,
+
+        groundVariant: getGroundVariant(gridX, gridY),
+        groundOverlay: getGroundOverlay(gridX, gridY)
       });
     }
   }

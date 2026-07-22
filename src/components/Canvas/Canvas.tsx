@@ -7,7 +7,7 @@ import {
 } from "../../game/type";
 import type { GameAssets } from "../../assets/assetTypes";
 import type { Tile } from "../../game/grid/tiles.types";
-import drawAllTiles from "../../rendering/drawAllTiles";
+import drawAllTiles, { drawTileState } from "../../rendering/drawAllTiles";
 import { drawPlants } from "../../rendering/drawPlants";
 import { initialDecorations } from "../../game/decorations/initialDecorations";
 import { drawDecorations } from "../../rendering/drawDecorations";
@@ -79,7 +79,8 @@ export default function Canvas({
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       drawBackground(ctx, canvas);
-      drawAllTiles(tilesRef.current, ctx);
+      drawAllTiles(ctx, tilesRef.current, assets);
+      drawTileState(ctx, tilesRef.current)
       drawDecorations(ctx, tilesRef.current, assetsRef.current);
       drawPlants(ctx, plantsRef.current, tilesRef.current, assetsRef.current);
 

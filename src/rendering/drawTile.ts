@@ -1,3 +1,4 @@
+import type { GameAssets } from "../assets/assetTypes";
 import type { Tile } from "../game/grid/tiles.types";
 
 const defineTileColors = (tile: Tile) => {
@@ -25,10 +26,17 @@ const defineTileColors = (tile: Tile) => {
 export const drawTile = (
   ctx: CanvasRenderingContext2D,
   tile: Tile,
+  assets : GameAssets
 ) => {
   const tileColors = defineTileColors(tile);
 
-  ctx.fillStyle = tileColors.fill;
+  const pattern = ctx.createPattern(assets.alienGround, "")
+
+  if(!pattern) return 
+    // ctx.fillStyle = tileColors.fill;
+
+  ctx.fillStyle = pattern;
+
   ctx.fill(tile.path);
 
   ctx.strokeStyle = tileColors.stroke;

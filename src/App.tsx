@@ -61,7 +61,7 @@ function App() {
     if (!selectedTile) return;
 
     const plant : Plant = {
-      id : crypto.randomUUID, 
+      id: crypto.randomUUID(),
       tileId : selectedTile.id,
       species : selectedSpecies, 
       stage: 1,

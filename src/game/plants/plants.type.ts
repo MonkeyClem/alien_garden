@@ -7,7 +7,7 @@ export const Species = {
 export type Species = (typeof Species)[keyof typeof Species]
 
 export type Plant = {
-  id: ()=>`${string}-${string}-${string}-${string}-${string}`;
+  id: string;
   species: Species;
   tileId: number;
   stage: 1 | 2 | 3;
