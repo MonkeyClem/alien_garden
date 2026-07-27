@@ -75,6 +75,8 @@ export default function Canvas({
 
     let animationFrameId: number;
 
+ 
+
     const render = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
