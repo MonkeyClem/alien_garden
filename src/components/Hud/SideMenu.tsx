@@ -79,19 +79,22 @@ export default function SideMenu({
         <div
           style={{
             display: "flex",
-            gap: "5px",
+            flexDirection:"column",
+            alignItems:"flex-start",
+            // gap: "2px",
             background: "black",
             border: "2px solid purple",
             paddingLeft:"0.5rem",
             paddingRight:"0.5rem"
           }}
         >
-          <div> Biomass : {ressources.bioMass}</div>
-          <div> BioEnergie : Bio Energie</div>
-          <div> Données : Données</div>
+          <h5 style={{background:"purple", margin:0, textAlign: "center"}}>Resources</h5>
+          <p> Biomass : {ressources.bioMass}</p>
+          <p> BioEnergie : Bio Energie</p>
+          <p> Données : {ressources.biologicalData}</p>
         </div>
 
-        <div style={{ display: "flex", gap: "5px" }}>
+        <div style={{ display: "flex", gap: "5px" , height: "100%"}}>
           <button> PARAMETRES</button>
           <button> SAVE</button>
         </div>

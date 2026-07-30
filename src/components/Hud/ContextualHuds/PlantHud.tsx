@@ -16,7 +16,7 @@ export default function PlantHud({
   if (!plantOnTile) return;
 
   const currentStage = getPlantStage(plantOnTile);
-  const speciesConfig = SPECIES_CONFIG[plantOnTile.species];
+  const speciesConfig = SPECIES_CONFIG[plantOnTile.specie];
   const stageConfig = speciesConfig.stages[currentStage];
 
   return (

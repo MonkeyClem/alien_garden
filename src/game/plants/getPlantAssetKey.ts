@@ -2,7 +2,7 @@ import type { AssetsKey } from "../../assets/assetTypes";
 import type { Plant } from "./plants.type";
 
 export const getPlantAssetKey = (plant: Plant, stage: number): AssetsKey => {
-  if (plant.species === "reactorMushroom") {
+  if (plant.specie === "reactorMushroom") {
     if (stage === 1) {
       return "reactorMushroomStageOne";
     }
@@ -13,6 +13,6 @@ export const getPlantAssetKey = (plant: Plant, stage: number): AssetsKey => {
   }
 
   throw new Error(
-    `No assets key available for species ${plant.species} au stade ${plant.stage}`,
+    `No assets key available for species ${plant.specie}`,
   );
 };

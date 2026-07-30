@@ -101,7 +101,6 @@ export default function drawAllTiles(
 }
 
 
-
 export const drawTileState = (
   ctx: CanvasRenderingContext2D,
   tiles: Tile[],
