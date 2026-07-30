@@ -5,7 +5,7 @@ export type selectionType = "empty" | "plant" | "decoration" | null
 
 //GAMEPLAY ASSETS
 export type Ressources = {
-    bioMass : number
+    biomass : number
     bioEnergy : number, 
     biologicalData : number
   }

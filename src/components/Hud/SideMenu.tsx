@@ -89,7 +89,7 @@ export default function SideMenu({
           }}
         >
           <h5 style={{background:"purple", margin:0, textAlign: "center"}}>Resources</h5>
-          <p> Biomass : {ressources.bioMass}</p>
+          <p> Biomass : {ressources.biomass}</p>
           <p> BioEnergie : Bio Energie</p>
           <p> Données : {ressources.biologicalData}</p>
         </div>
