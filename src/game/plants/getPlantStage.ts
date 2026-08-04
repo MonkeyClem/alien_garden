@@ -15,5 +15,6 @@ export const getPlantStage = (plant: Plant): 1 | 2 | 3 => {
     return 2;
   }
 
+  plant.isReadyToHarvest = true
   return 3;
 };

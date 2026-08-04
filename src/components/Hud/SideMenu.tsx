@@ -12,6 +12,8 @@ import DecorationHud from "./ContextualHuds/DecorationHud";
 import EmptyTileHud from "./ContextualHuds/EmptyTileHud";
 import InventoryComponents from "./Inventory/Inventory";
 import PlantHud from "./ContextualHuds/PlantHud";
+import type { Building } from "../../game/buildings/buildings.type";
+import { BUILDING_CONFIG } from "../../game/buildings/buildingsConfig";
 
 interface SideMenuProps {
   selectedTile: Tile | null;
@@ -22,12 +24,15 @@ interface SideMenuProps {
   isSelectedTileOccupied: boolean;
   plants: Plant[];
   ressources: Ressources;
+  buildings: Building[];
   isHarvestButtonActive: boolean;
   handlePlantSeed: (selectedSpecie: Species, selectedTile: Tile) => void;
   handleSpecieSelection: (selectedSpecie: Species) => void;
   handleRessourcesUpdate: (plantOnTile: Plant) => void;
   setIsHarvestButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
   setIsSelectedTileOccupied: (value: boolean) => void;
+  setBuildings: React.Dispatch<React.SetStateAction<Building[]>>;
+  setRessources: React.Dispatch<React.SetStateAction<Ressources>>;
 }
 
 export default function SideMenu({
@@ -40,11 +45,14 @@ export default function SideMenu({
   isHarvestButtonActive,
   isSelectedTileOccupied,
   selectionType,
+  buildings,
   handleSpecieSelection,
   handlePlantSeed,
   handleRessourcesUpdate,
   setIsHarvestButtonActive,
   setIsSelectedTileOccupied,
+  setBuildings,
+  setRessources,
 }: SideMenuProps) {
   const plantOnTile = selectedTile
     ? plants.find((plant) => plant.tileId === selectedTile.id)
@@ -59,6 +67,61 @@ export default function SideMenu({
 
   const [isInventoryOpen, setIsInventoryOpen] = useState<boolean>(false);
   const [isHovered, setIsHovered] = useState(false);
+
+  const canAffordBuilding = (
+    ressources: Ressources,
+    buildingCost: Partial<Ressources>,
+  ): boolean => {
+    return (
+      ressources.biomass >= (buildingCost.biomass ?? 0) &&
+      ressources.biologicalData >= (buildingCost.biologicalData ?? 0) &&
+      ressources.bioEnergy >= (buildingCost.bioEnergy ?? 0)
+    );
+  };
+
+  const subtractCost = (
+    resources: Ressources,
+    cost: Partial<Ressources>,
+  ): Ressources => ({
+    biomass: resources.biomass - (cost.biomass ?? 0),
+    bioEnergy: resources.bioEnergy - (cost.bioEnergy ?? 0),
+    biologicalData: resources.biologicalData - (cost.biologicalData ?? 0),
+  });
+
+
+
+
+  const handleBioBatteryConstruction = (tileId: number) => {
+    const config = BUILDING_CONFIG.bioBattery;
+
+    const buildingCost : Partial<Ressources> = config.cost
+
+    const bioBatteryAlreadyExists = buildings.some(
+      (building) => building.type === "bioBattery",
+    );
+
+    if (bioBatteryAlreadyExists) return;
+
+    if (!canAffordBuilding(ressources, buildingCost))
+      return;
+
+    setRessources((currentRessources) =>
+      subtractCost(currentRessources, buildingCost),
+    );
+
+    setBuildings((currentBuildings) => [
+      ...currentBuildings,
+      {
+        id: crypto.randomUUID(),
+        type: "bioBattery",
+        tileId,
+      },
+    ]);
+  };
+
+  const isBioBatteryAlreadyBuilt = buildings.some(
+    (building) => building.type === "bioBattery",
+  );
 
   return (
     <>
@@ -79,22 +142,36 @@ export default function SideMenu({
         <div
           style={{
             display: "flex",
-            flexDirection:"column",
-            alignItems:"flex-start",
-            // gap: "2px",
+            flexDirection: "column",
+            alignItems: "flex-start",
             background: "black",
             border: "2px solid purple",
-            paddingLeft:"0.5rem",
-            paddingRight:"0.5rem"
+            paddingLeft: "0.5rem",
+            paddingRight: "0.5rem",
           }}
         >
-          <h5 style={{background:"purple", margin:0, textAlign: "center"}}>Resources</h5>
+          <h5 style={{ background: "purple", margin: 0, textAlign: "center" }}>
+            Resources
+          </h5>
           <p> Biomass : {ressources.biomass}</p>
-          <p> BioEnergie : Bio Energie</p>
+          <p> BioEnergie : {ressources.bioEnergy}</p>
           <p> Données : {ressources.biologicalData}</p>
         </div>
 
-        <div style={{ display: "flex", gap: "5px" , height: "100%"}}>
+        {isBioBatteryAlreadyBuilt ? null :
+        <div> 
+        <p>Objectif Actuel : Construire la bioBattery</p> 
+        {selectedTile &&    <button 
+          onClick={() => handleBioBatteryConstruction(selectedTile.id)}
+          disabled={!canAffordBuilding(ressources, BUILDING_CONFIG.bioBattery.cost as Partial<Ressources>)}
+          >
+            Construire BioBattery
+          </button> }
+      
+        </div>
+        }
+
+        <div style={{ display: "flex", gap: "5px", height: "100%" }}>
           <button> PARAMETRES</button>
           <button> SAVE</button>
         </div>
@@ -135,10 +212,10 @@ export default function SideMenu({
             position: "absolute",
             zIndex: 10001,
             background: "black",
-            bottom: 100,
-            top: 100,
-            left: 100,
-            right: 100,
+            // bottom: 10,
+            top: "8rem",
+            left: "1.5rem",
+            // right: 100,
             border: "2px solid purple",
             borderRadius: 10,
           }}

@@ -13,6 +13,8 @@ import { initialDecorations } from "../../game/decorations/initialDecorations";
 import { drawDecorations } from "../../rendering/drawDecorations";
 import { findDecorationOnTile } from "../../game/decorations/findDecorationOnTile";
 import type { Plant } from "../../game/plants/plants.type";
+import type { Building } from "../../game/buildings/buildings.type";
+import { BUILDING_CONFIG } from "../../game/buildings/buildingsConfig";
 
 interface Canvas {
   handleTileSelection: (tile: Tile) => void;
@@ -23,6 +25,7 @@ interface Canvas {
   selectionType: selectionType;
   assets: GameAssets;
   plants: Plant[];
+  buildings: Building[]
 }
 
 
@@ -36,6 +39,33 @@ const findPlantOnTile = (selectedTileId: number, plants: Plant[]) => {
   }
 };
 
+const drawBuildings = (
+  ctx: CanvasRenderingContext2D,
+  buildings: Building[],
+  tiles: Tile[],
+  assets: GameAssets,
+) => {
+  buildings.forEach((building) => {
+    const tile = tiles.find(
+      (currentTile) => currentTile.id === building.tileId,
+    );
+
+    if (!tile) return;
+
+    const config = BUILDING_CONFIG[building.type];
+    const image = assets[config.assetKey];
+
+    ctx.drawImage(
+      image,
+      tile.x - config.width / 2 + config.offsetX,
+      tile.y - config.height + config.offsetY,
+      config.width,
+      config.height,
+    );
+  });
+};
+
+
 export default function Canvas({
   handleTileSelection,
   setTiles,
@@ -44,12 +74,14 @@ export default function Canvas({
   tiles,
   plants,
   assets,
+  buildings,
 }: Canvas) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const tilesRef = useRef<Tile[]>(tiles);
   const plantsRef = useRef<Plant[]>(plants);
   const assetsRef = useRef<GameAssets>(assets);
+  const buildingsRef = useRef<Building[]>(buildings)
 
   useEffect(() => {
     tilesRef.current = tiles;
@@ -62,6 +94,10 @@ export default function Canvas({
   useEffect(() => {
     assetsRef.current = assets;
   }, [assets]);
+
+  useEffect(() => {
+    buildingsRef.current = buildings
+  }, [buildings])
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -85,6 +121,7 @@ export default function Canvas({
       drawTileState(ctx, tilesRef.current)
       drawDecorations(ctx, tilesRef.current, assetsRef.current);
       drawPlants(ctx, plantsRef.current, tilesRef.current, assetsRef.current);
+      drawBuildings(ctx, buildingsRef.current, tilesRef.current, assetsRef.current);
 
       animationFrameId = requestAnimationFrame(render);
     };

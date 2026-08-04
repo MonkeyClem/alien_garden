@@ -10,6 +10,7 @@ import { generateGrid } from "./game/grid/generateGrid";
 import type { Tile } from "./game/grid/tiles.types";
 import type { Plant, ResourceYield, Species } from "./game/plants/plants.type";
 import { SPECIES_CONFIG } from "./game/plants/speciesConfig";
+import type { Building } from "./game/buildings/buildings.type";
 
 function App() {
   const [tiles, setTiles] = useState<Tile[]>(() =>
@@ -40,6 +41,8 @@ function App() {
 
   const [selectionType, setSelectionType] = useState<selectionType>(null);
   const [isSelectedTileOccupied, setIsSelectedTileOccupied] = useState(false);
+
+  const [buildings, setBuildings] = useState<Building[]>([]);
 
   useEffect(() => {
     loadAssets()
@@ -75,11 +78,15 @@ function App() {
 
   //the plantOnTile parameter is the harvested Plant
   const handleRessourcesUpdate = (plantOnTile: Plant) => {
+    console.log("Nous sommes dans handler")
     if (!plantOnTile.isReadyToHarvest) return;
 
+    console.log("plante prête pour la récolte")
     const plantSpecieData = SPECIES_CONFIG[plantOnTile.specie];
 
+
     if (!plantSpecieData.harvestable) return;
+    console.log("La plante est récoltable")
 
     const harvestYield: ResourceYield = plantSpecieData.harvestYield;
 
@@ -115,6 +122,9 @@ function App() {
             isSelectedTileOccupied={isSelectedTileOccupied}
             setIsSelectedTileOccupied={setIsSelectedTileOccupied}
             assets={assets}
+            buildings={buildings}
+            setBuildings={setBuildings}
+            setRessources={setRessources}
           />
           <Canvas
             handleTileSelection={handleTileSelection}
@@ -125,6 +135,7 @@ function App() {
             plants={plants}
             assets={assets}
             tiles={tiles}
+            buildings={buildings}
           />
         </>
       ) : (

@@ -57,7 +57,7 @@ const drawTexturedTile = (
 
   ctx.beginPath();
 
-  ctx.imageSmoothingEnabled = false;
+  ctx.imageSmoothingEnabled = true;
 
   ctx.fill(tile.path);
 
