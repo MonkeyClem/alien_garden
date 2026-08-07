@@ -2,30 +2,33 @@ import { useEffect, useRef, type SetStateAction } from "react";
 import styles from "./canvas.module.css";
 import findTile from "../../game/grid/findTile";
 import drawBackground from "../../rendering/drawBackground";
-import {
-  type selectionType,
-} from "../../game/type";
+import { type selectionType } from '../../game/type';
 import type { GameAssets } from "../../assets/assetTypes";
 import type { Tile } from "../../game/grid/tiles.types";
 import drawAllTiles, { drawTileState } from "../../rendering/drawAllTiles";
 import { drawPlants } from "../../rendering/drawPlants";
-import { initialDecorations } from "../../game/decorations/initialDecorations";
+import { initialDecorations } from '../../game/decorations/initialDecorations';
 import { drawDecorations } from "../../rendering/drawDecorations";
 import { findDecorationOnTile } from "../../game/decorations/findDecorationOnTile";
-import type { Plant } from "../../game/plants/plants.type";
+import type { Plant, Species } from "../../game/plants/plants.type";
 import type { Building } from "../../game/buildings/buildings.type";
 import { BUILDING_CONFIG } from "../../game/buildings/buildingsConfig";
+import type { Decoration } from "../../game/decorations/decoration.type";
+import { HALF_TILE_HEIGHT } from "../../game/grid/grid.constants";
 
 interface Canvas {
   handleTileSelection: (tile: Tile) => void;
   setTiles: (value: Tile[] | ((prev: Tile[]) => Tile[])) => void;
   setSelectionType: React.Dispatch<SetStateAction<selectionType>>;
   setIsSelectedTileOccupied: (value: boolean) => void;
+  handlePlantSpecie: (selectedSpecies: Species, selectedTile: Tile) => void; 
   tiles: Tile[];
   selectionType: selectionType;
   assets: GameAssets;
   plants: Plant[];
-  buildings: Building[]
+  buildings: Building[];
+  decorations:Decoration[];
+  selectedSpecie : Species | null; 
 }
 
 
@@ -55,10 +58,17 @@ const drawBuildings = (
     const config = BUILDING_CONFIG[building.type];
     const image = assets[config.assetKey];
 
+      const y =
+      tile.y - config.height / 2 + HALF_TILE_HEIGHT + config.offsetY;
+
+
+          const x = tile.x - config.width / 2 + config.offsetX;
+
+
     ctx.drawImage(
       image,
-      tile.x - config.width / 2 + config.offsetX,
-      tile.y - config.height + config.offsetY,
+      x,
+      y,
       config.width,
       config.height,
     );
@@ -71,10 +81,12 @@ export default function Canvas({
   setTiles,
   setSelectionType,
   setIsSelectedTileOccupied,
+  handlePlantSpecie,
   tiles,
   plants,
   assets,
   buildings,
+  selectedSpecie
 }: Canvas) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -190,6 +202,17 @@ export default function Canvas({
         ...selectedTile,
         selected: true,
       });
+
+
+      if (
+        selectedSpecie &&
+        selectedTile &&
+        !clickedDecoration && !clickedPlant
+      ) {
+        handlePlantSpecie(selectedSpecie, selectedTile);
+        return;
+      }
+
     };
 
     const handleMouseMove = (event: MouseEvent) => {

@@ -91,7 +91,7 @@ export default function SideMenu({
 
 
 
-  const handleBioBatteryConstruction = (tileId: number) => {
+  const handleBioBatteryConstruction = () => {
     const config = BUILDING_CONFIG.bioBattery;
 
     const buildingCost : Partial<Ressources> = config.cost
@@ -114,7 +114,7 @@ export default function SideMenu({
       {
         id: crypto.randomUUID(),
         type: "bioBattery",
-        tileId,
+        tileId : config.constructionTileId,
       },
     ]);
   };
@@ -161,12 +161,12 @@ export default function SideMenu({
         {isBioBatteryAlreadyBuilt ? null :
         <div> 
         <p>Objectif Actuel : Construire la bioBattery</p> 
-        {selectedTile &&    <button 
-          onClick={() => handleBioBatteryConstruction(selectedTile.id)}
+           <button 
+          onClick={() => handleBioBatteryConstruction()}
           disabled={!canAffordBuilding(ressources, BUILDING_CONFIG.bioBattery.cost as Partial<Ressources>)}
           >
             Construire BioBattery
-          </button> }
+          </button> 
       
         </div>
         }

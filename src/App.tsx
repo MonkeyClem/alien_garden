@@ -131,11 +131,13 @@ function App() {
             setSelectionType={setSelectionType}
             setTiles={setTiles}
             setIsSelectedTileOccupied={setIsSelectedTileOccupied}
+            handlePlantSpecie={handlePlantSpecie}
             selectionType={selectionType}
             plants={plants}
             assets={assets}
             tiles={tiles}
             buildings={buildings}
+            selectedSpecie={selectedSpecie}
           />
         </>
       ) : (

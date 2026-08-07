@@ -1,17 +1,5 @@
 import type { BuildingConfig } from "./buildings.type";
 
-// export const BUILDING_CONFIG = {
-//   bioBattery: {
-//     displayName: "BioBattery",
-//     description:
-//       "Une structure organique capable de stocker et redistribuer l’énergie biologique.",
-
-//     cost: {
-//       biomass: 30,
-//     },
-//   },
-// } satisfies Record<string, BuildingConfig>;
-
 
 export const BUILDING_CONFIG = {
   bioBattery: {
@@ -25,8 +13,8 @@ export const BUILDING_CONFIG = {
     width: 350,
     height: 250,
 
-    offsetX: -40,
-    offsetY: -5,
+    offsetX: -10,
+    offsetY: -40,
 
     footPrint: {
       width: 7,
