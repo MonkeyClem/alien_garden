@@ -49,7 +49,6 @@ const drawTexturedTile = (
   assets.alienGroundThree,
 ] as const;
 
-  const brightness = Math.random()
   const texture = groundTextures[tile.groundVariant]
 
   

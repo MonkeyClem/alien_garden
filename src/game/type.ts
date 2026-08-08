@@ -1,7 +1,7 @@
 import type { Species } from "./plants/plants.type"
 
 //DECORATIONS ASSETS
-export type selectionType = "empty" | "plant" | "decoration" | null
+export type selectionType = "empty" | "plant" | "decoration" | "building" | null
 
 //GAMEPLAY ASSETS
 export type Ressources = {

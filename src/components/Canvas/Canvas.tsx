@@ -12,9 +12,10 @@ import { drawDecorations } from "../../rendering/drawDecorations";
 import { findDecorationOnTile } from "../../game/decorations/findDecorationOnTile";
 import type { Plant, Species } from "../../game/plants/plants.type";
 import type { Building } from "../../game/buildings/buildings.type";
-import { BUILDING_CONFIG } from "../../game/buildings/buildingsConfig";
 import type { Decoration } from "../../game/decorations/decoration.type";
-import { HALF_TILE_HEIGHT } from "../../game/grid/grid.constants";
+import { drawBuildings } from "../../game/buildings/drawBuilding";
+import { findPlantOnTile } from "../../game/plants/findPlantOnTile";
+import React from 'react';
 
 interface Canvas {
   handleTileSelection: (tile: Tile) => void;
@@ -32,49 +33,115 @@ interface Canvas {
 }
 
 
-const findPlantOnTile = (selectedTileId: number, plants: Plant[]) => {
-  const foundPlant = plants.find((plant) => plant.tileId === selectedTileId);
+type WorldObjectOnTile =
+  | {
+      type: "plant";
+      object: Plant;
+    }
+  | {
+      type: "building";
+      object: Building;
+    }
+  | {
+      type: "decoration";
+      object: Decoration;
+    };
 
-  if (foundPlant) {
-    return true;
-  } else {
-    return false;
+
+
+ const findBuildingOnTile = (selectedTileId: number, buildings: Building[]) => {
+  return  buildings.find((building) => building.tileId === selectedTileId);
+
+  // if (foundPlant) {
+  //   return true;
+  // } else {
+  //   return false;
+  // }
+};
+
+const findWorldObjectOnTile = (
+  tileId : number, 
+  plants : Plant[],
+  buildings : Building[],
+  initialDecorations: Decoration[]
+) : WorldObjectOnTile | null => {
+
+   
+
+    const decoration = findDecorationOnTile(
+    tileId,
+    initialDecorations,
+  );
+
+  if (decoration) {
+    return {
+      type: "decoration",
+      object: decoration,
+    };
   }
-};
 
-const drawBuildings = (
-  ctx: CanvasRenderingContext2D,
-  buildings: Building[],
-  tiles: Tile[],
-  assets: GameAssets,
-) => {
-  buildings.forEach((building) => {
-    const tile = tiles.find(
-      (currentTile) => currentTile.id === building.tileId,
-    );
+  const building = findBuildingOnTile(
+    tileId,
+    buildings,
+  );
 
-    if (!tile) return;
+  if (building) {
+    return {
+      type: "building",
+      object: building,
+    };
+  }
 
-    const config = BUILDING_CONFIG[building.type];
-    const image = assets[config.assetKey];
+  const plant = findPlantOnTile(
+    tileId,
+    plants,
+  );
 
-      const y =
-      tile.y - config.height / 2 + HALF_TILE_HEIGHT + config.offsetY;
+  if (plant) {
+    return {
+      type: "plant",
+      object: plant,
+    };
+  }
+
+  return null;
+
+      // const clickedDecoration = findDecorationOnTile(
+      //   selectedTile.id,
+      //   initialDecorations,
+      // );
+
+      // const clickedPlant = findPlantOnTile(selectedTile.id, plantsRef.current);
+
+      // if (clickedDecoration) {
+      //   setSelectionType("decoration");
+      //   setIsSelectedTileOccupied(true);
+      // }
+
+      // if (clickedPlant) {
+      //   setSelectionType("plant");
+      //   setIsSelectedTileOccupied(true);
+      // }
+
+      // if (!clickedDecoration && !clickedPlant) {
+      //   setSelectionType("empty");
+      //   setIsSelectedTileOccupied(false);
+      // }
+
+      // setTiles((currentTiles) =>
+      //   currentTiles.map((tile) => ({
+      //     ...tile,
+      //     selected: tile.id === selectedTile.id,
+      //   })),
+      // );
+
+      // handleTileSelection({
+      //   ...selectedTile,
+      //   selected: true,
+      // });
 
 
-          const x = tile.x - config.width / 2 + config.offsetX;
-
-
-    ctx.drawImage(
-      image,
-      x,
-      y,
-      config.width,
-      config.height,
-    );
-  });
-};
-
+}
 
 export default function Canvas({
   handleTileSelection,
@@ -168,50 +235,73 @@ export default function Canvas({
 
       if (!selectedTile) return;
 
-      const clickedDecoration = findDecorationOnTile(
-        selectedTileId,
-        initialDecorations,
-      );
+    
+      const clickedObject = findWorldObjectOnTile(
+          selectedTile.id,
+          plants,
+          buildings,
+          initialDecorations
+        );
 
-      const clickedPlant = findPlantOnTile(selectedTileId, plantsRef.current);
+      handleTileSelection(selectedTile)
 
-      if (clickedDecoration) {
-        console.log("Décoration sélectionnée :", clickedDecoration);
-        setSelectionType("decoration");
+
+      if (clickedObject) {
+        setSelectionType(clickedObject.type);
         setIsSelectedTileOccupied(true);
-      }
-
-      if (clickedPlant) {
-        setSelectionType("plant");
-        setIsSelectedTileOccupied(true);
-      }
-
-      if (!clickedDecoration && !clickedPlant) {
+      } else {
         setSelectionType("empty");
         setIsSelectedTileOccupied(false);
       }
 
-      setTiles((currentTiles) =>
-        currentTiles.map((tile) => ({
-          ...tile,
-          selected: tile.id === selectedTileId,
-        })),
-      );
-
-      handleTileSelection({
-        ...selectedTile,
-        selected: true,
-      });
-
-
-      if (
-        selectedSpecie &&
-        selectedTile &&
-        !clickedDecoration && !clickedPlant
-      ) {
+      if (selectedSpecie && !clickedObject) {
         handlePlantSpecie(selectedSpecie, selectedTile);
         return;
-      }
+}
+
+      // const clickedDecoration = findDecorationOnTile(
+      //   selectedTileId,
+      //   initialDecorations,
+      // );
+
+      // const clickedPlant = findPlantOnTile(selectedTileId, plantsRef.current);
+
+      // if (clickedDecoration) {
+      //   setSelectionType("decoration");
+      //   setIsSelectedTileOccupied(true);
+      // }
+
+      // if (clickedPlant) {
+      //   setSelectionType("plant");
+      //   setIsSelectedTileOccupied(true);
+      // }
+
+      // if (!clickedDecoration && !clickedPlant) {
+      //   setSelectionType("empty");
+      //   setIsSelectedTileOccupied(false);
+      // }
+
+      // setTiles((currentTiles) =>
+      //   currentTiles.map((tile) => ({
+      //     ...tile,
+      //     selected: tile.id === selectedTileId,
+      //   })),
+      // );
+
+      // handleTileSelection({
+      //   ...selectedTile,
+      //   selected: true,
+      // });
+
+
+      // if (
+      //   selectedSpecie &&
+      //   selectedTile &&
+      //   !clickedDecoration && !clickedPlant
+      // ) {
+      //   handlePlantSpecie(selectedSpecie, selectedTile);
+      //   return;
+      // }
 
     };
 

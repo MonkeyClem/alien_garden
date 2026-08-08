@@ -11,6 +11,7 @@ import type { Tile } from "./game/grid/tiles.types";
 import type { Plant, ResourceYield, Species } from "./game/plants/plants.type";
 import { SPECIES_CONFIG } from "./game/plants/speciesConfig";
 import type { Building } from "./game/buildings/buildings.type";
+import { initialDecorations } from "./game/decorations/initialDecorations";
 
 function App() {
   const [tiles, setTiles] = useState<Tile[]>(() =>
@@ -78,15 +79,13 @@ function App() {
 
   //the plantOnTile parameter is the harvested Plant
   const handleRessourcesUpdate = (plantOnTile: Plant) => {
-    console.log("Nous sommes dans handler")
+    
     if (!plantOnTile.isReadyToHarvest) return;
 
-    console.log("plante prête pour la récolte")
     const plantSpecieData = SPECIES_CONFIG[plantOnTile.specie];
 
 
     if (!plantSpecieData.harvestable) return;
-    console.log("La plante est récoltable")
 
     const harvestYield: ResourceYield = plantSpecieData.harvestYield;
 
@@ -109,22 +108,23 @@ function App() {
         <>
           <SideMenu
             selectedTile={selectedTile}
-            handlePlantSeed={handlePlantSpecie}
             inventory={inventory}
             selectedSpecie={selectedSpecie}
-            handleSpecieSelection={handleSpecieSelection}
             plants={plants}
             ressources={ressources}
-            handleRessourcesUpdate={handleRessourcesUpdate}
             isHarvestButtonActive={isHarvestButtonActive}
-            setIsHarvestButtonActive={setIsHarvestButtonActive}
             selectionType={selectionType}
-            isSelectedTileOccupied={isSelectedTileOccupied}
-            setIsSelectedTileOccupied={setIsSelectedTileOccupied}
             assets={assets}
             buildings={buildings}
+            isSelectedTileOccupied={isSelectedTileOccupied}
+            setIsSelectedTileOccupied={setIsSelectedTileOccupied}
+            handleSpecieSelection={handleSpecieSelection}
+            setIsHarvestButtonActive={setIsHarvestButtonActive}
+            handleRessourcesUpdate={handleRessourcesUpdate}
             setBuildings={setBuildings}
             setRessources={setRessources}
+            handlePlantSeed={handlePlantSpecie}
+
           />
           <Canvas
             handleTileSelection={handleTileSelection}
@@ -137,6 +137,7 @@ function App() {
             assets={assets}
             tiles={tiles}
             buildings={buildings}
+            decorations={initialDecorations}
             selectedSpecie={selectedSpecie}
           />
         </>
