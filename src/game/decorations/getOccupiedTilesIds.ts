@@ -8,10 +8,10 @@ export const getOccupiedTileIds = (
   const occupiedTileIds: number[] = [];
 
   const originTileId = decoration.tileId;
-  const footprint = decoration.footPrint;
+  const footPrint = decoration.footPrint;
 
-  for (let row = 0; row < footprint.height; row++) {
-    for (let col = 0; col < footprint.width; col++) {
+  for (let row = 0; row < footPrint.height; row++) {
+    for (let col = 0; col < footPrint.width; col++) {
       const occupiedTileId =
         originTileId + col + row * GRID_WIDTH;
 

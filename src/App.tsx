@@ -8,7 +8,7 @@ import type { GameAssets } from "./assets/assetTypes";
 import { loadAssets } from "./assets/loadAssets";
 import { generateGrid } from "./game/grid/generateGrid";
 import type { Tile } from "./game/grid/tiles.types";
-import type { Plant, ResourceYield, Species } from "./game/plants/plants.type";
+import {   Species, type Plant, type ResourceYield } from "./game/plants/plants.type";
 import { SPECIES_CONFIG } from "./game/plants/speciesConfig";
 import type { Building } from "./game/buildings/buildings.type";
 import { initialDecorations } from "./game/decorations/initialDecorations";
@@ -39,6 +39,12 @@ function App() {
 
   const [selectedTile, setSelectedTile] = useState<Tile | null>(null);
   const [selectedSpecie, setSelectedSpecie] = useState<Species | null>(null);
+
+  const [unlockedSpecies, setUnlockedSpecies] = useState<Species[]>((
+   [
+    Species.REACTOR_MUSHROOM
+  ]
+  ))
 
   const [selectionType, setSelectionType] = useState<selectionType>(null);
   const [isSelectedTileOccupied, setIsSelectedTileOccupied] = useState(false);
@@ -79,7 +85,7 @@ function App() {
 
   //the plantOnTile parameter is the harvested Plant
   const handleRessourcesUpdate = (plantOnTile: Plant) => {
-    
+
     if (!plantOnTile.isReadyToHarvest) return;
 
     const plantSpecieData = SPECIES_CONFIG[plantOnTile.specie];
@@ -102,6 +108,7 @@ function App() {
     }));
   };
 
+
   return (
     <>
       {assets ? (
@@ -117,6 +124,7 @@ function App() {
             assets={assets}
             buildings={buildings}
             isSelectedTileOccupied={isSelectedTileOccupied}
+            unlockedSpecies={unlockedSpecies}
             setIsSelectedTileOccupied={setIsSelectedTileOccupied}
             handleSpecieSelection={handleSpecieSelection}
             setIsHarvestButtonActive={setIsHarvestButtonActive}
@@ -124,6 +132,7 @@ function App() {
             setBuildings={setBuildings}
             setRessources={setRessources}
             handlePlantSeed={handlePlantSpecie}
+            setUnlockedSpecies={setUnlockedSpecies}
 
           />
           <Canvas

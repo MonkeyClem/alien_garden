@@ -1,29 +1,25 @@
 import { useState, type Dispatch } from "react";
 import React from "react";
-import type { Tile } from "../../../game/grid/tiles.types";
 import type { Species } from "../../../game/plants/plants.type";
 import type { Inventory } from "../../../game/type";
 
 interface InventoryProps {
-  selectedTile: Tile | null;
-  selectedSpecie: Species | null;
+
   inventory: Inventory;
-  isSelectedTileOccupied: boolean;
   isInventoryOpen: boolean;
+  unlockedSpecies:Species[];
   setIsInventoryOpen : Dispatch<React.SetStateAction<boolean>>;
   handleSeedSelection: (selectedSpecie: Species) => void;
-  handlePlantSeed: (selectedSpecie: Species, selectedTile: Tile) => void;
-  setIsSelectedTileOccupied: (value: boolean) => void;
 }
 
 export type MenuItemStatus = "locked" | "unlocked";
 export type MenuItemName = "Seeds" | "Weapons" | "Ressources";
-
 export type MenuItems = { name: MenuItemName; status: MenuItemStatus };
 
 export default function InventoryComponents({
   inventory,
   isInventoryOpen,
+  unlockedSpecies,
   handleSeedSelection,
   setIsInventoryOpen,
 }: InventoryProps) {
@@ -68,9 +64,10 @@ export default function InventoryComponents({
         </div>
         <div style={{ display: "flex", flex: 5, background: "#262525", gap:12 }}>
 
-             {selectedMenuItem?.name === "Seeds" ? Object.entries(inventory.species).map(([specie, quantity]) => (
+        {selectedMenuItem?.name === "Seeds" ? Object.entries(inventory.species).map(([specie, quantity]) => (
         <div >
           <button
+            disabled={!unlockedSpecies.includes(specie as Species)}
             key={specie}
             onClick={() => handleSeedSelection(specie as Species)}
           >
