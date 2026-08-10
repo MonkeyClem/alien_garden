@@ -12,6 +12,17 @@ export const getPlantAssetKey = (plant: Plant, stage: number): AssetsKey => {
     return "reactorMushroomStageThree";
   }
 
+  if (plant.specie === "synapticVine") {
+    if(stage === 1)
+      return "synapticVineStageOne"
+  
+    if(stage === 2)
+      return "synapticVineStageTwo"
+  
+      if(stage === 3)
+      return "synapticVineStageTwo"
+  }
+  
   throw new Error(
     `No assets key available for species ${plant.specie}`,
   );

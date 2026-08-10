@@ -6,7 +6,7 @@ import type { Tile } from "../../game/grid/tiles.types";
 import { getPlantStage } from "../../game/plants/getPlantStage";
 import { Species, type Plant } from "../../game/plants/plants.type";
 import { initialDecorations } from "../../game/decorations/initialDecorations";
-import { findBuildingOnTile, findDecorationOnTile } from "../../game/decorations/findDecorationOnTile";
+import { findDecorationOnTile } from "../../game/decorations/findDecorationOnTile";
 import type { GameAssets } from "../../assets/assetTypes";
 import DecorationHud from "./ContextualHuds/DecorationHud";
 import EmptyTileHud from "./ContextualHuds/EmptyTileHud";
@@ -16,6 +16,7 @@ import type { Building } from "../../game/buildings/buildings.type";
 import { BUILDING_CONFIG } from "../../game/buildings/buildingsConfig";
 import { canAffordBuilding } from "../../game/buildings/canAffordBuilding";
 import { handleBioBatteryConstruction } from "../../game/buildings/buildingsConstructions/handleBioBatteryConstruction";
+import { findBuildingOnTile } from "../../game/buildings/findBuildingOnTile";
 
 interface SideMenuProps {
   selectedTile: Tile | null;
@@ -36,7 +37,7 @@ interface SideMenuProps {
   setIsSelectedTileOccupied: (value: boolean) => void;
   setBuildings: React.Dispatch<React.SetStateAction<Building[]>>;
   setRessources: React.Dispatch<React.SetStateAction<Ressources>>;
-  setUnlockedSpecies:React.Dispatch<React.SetStateAction<Species[]>>;
+  setUnlockedSpecies: React.Dispatch<React.SetStateAction<Species[]>>;
 }
 
 export default function SideMenu({
@@ -58,12 +59,10 @@ export default function SideMenu({
   setIsSelectedTileOccupied,
   setBuildings,
   setRessources,
-  setUnlockedSpecies
+  setUnlockedSpecies,
 }: SideMenuProps) {
-
   const [isInventoryOpen, setIsInventoryOpen] = useState<boolean>(false);
   const [isHovered, setIsHovered] = useState(false);
-
 
   const plantOnTile = selectedTile
     ? plants.find((plant) => plant.tileId === selectedTile.id)
@@ -72,32 +71,30 @@ export default function SideMenu({
   const decorationOnTile =
     selectedTile && findDecorationOnTile(selectedTile.id, initialDecorations);
 
-  const buildingOnTile = selectedTile && findBuildingOnTile(selectedTile.id, buildings)
+  const buildingOnTile =
+    selectedTile && findBuildingOnTile(selectedTile.id, buildings);
 
   useEffect(() => {
     setIsHarvestButtonActive(!!plantOnTile && getPlantStage(plantOnTile) === 3);
   }, [plantOnTile, plants, setIsHarvestButtonActive]);
 
- 
   const isBioBatteryAlreadyBuilt = buildings.some(
     (building) => building.type === "bioBattery",
   );
 
-
   useEffect(() => {
-  if (!isBioBatteryAlreadyBuilt) return;
+    if (!isBioBatteryAlreadyBuilt) return;
 
-  setUnlockedSpecies((currentSpecies) => {
-    if (currentSpecies.includes(Species.SYNAPTIC_VINE)) {
-      return currentSpecies;
-    }
+    setUnlockedSpecies((currentSpecies) => {
+      if (currentSpecies.includes(Species.SYNAPTIC_VINE)) {
+        return currentSpecies;
+      }
 
-    return [
-      ...currentSpecies,
-      Species.SYNAPTIC_VINE,
-    ];
-  });
-}, [isBioBatteryAlreadyBuilt]);
+      return [...currentSpecies, Species.SYNAPTIC_VINE];
+    });
+  }, );
+
+
 
   return (
     <>
@@ -134,18 +131,29 @@ export default function SideMenu({
           <p> Données : {ressources.biologicalData}</p>
         </div>
 
-        {isBioBatteryAlreadyBuilt ? null :
-        <div> 
-        <p>Objectif Actuel : Construire la bioBattery</p> 
-           <button 
-          onClick={() => handleBioBatteryConstruction(buildings, ressources, setRessources, setBuildings)}
-          disabled={!canAffordBuilding(ressources, BUILDING_CONFIG.bioBattery.cost as Partial<Ressources>)}
-          >
-            Construire BioBattery
-          </button> 
-      
-        </div>
-        }
+        {isBioBatteryAlreadyBuilt ? null : (
+          <div>
+            <p>Objectif Actuel : Construire la bioBattery</p>
+            <button
+              onClick={() =>
+                handleBioBatteryConstruction(
+                  buildings,
+                  ressources,
+                  setRessources,
+                  setBuildings,
+                )
+              }
+              disabled={
+                !canAffordBuilding(
+                  ressources,
+                  BUILDING_CONFIG.bioBattery.cost as Partial<Ressources>,
+                )
+              }
+            >
+              Construire BioBattery
+            </button>
+          </div>
+        )}
 
         <div style={{ display: "flex", gap: "5px", height: "100%" }}>
           <button> PARAMETRES</button>
@@ -214,7 +222,6 @@ export default function SideMenu({
             right: 0,
           }}
         >
-
           {selectionType === "building" && buildingOnTile && (
             <p>Building sur la tuile</p>
           )}

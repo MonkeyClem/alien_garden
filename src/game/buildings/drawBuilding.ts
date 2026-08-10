@@ -20,19 +20,9 @@ export const drawBuildings = (
     const config = BUILDING_CONFIG[building.type];
     const image = assets[config.assetKey];
 
-      const y =
-      tile.y - config.height / 2 + HALF_TILE_HEIGHT + config.offsetY;
+    const y = tile.y - config.height / 2 + HALF_TILE_HEIGHT + config.offsetY;
+    const x = tile.x - config.width / 2 + config.offsetX;
 
-
-          const x = tile.x - config.width / 2 + config.offsetX;
-
-
-    ctx.drawImage(
-      image,
-      x,
-      y,
-      config.width,
-      config.height,
-    );
+    ctx.drawImage(image, x, y, config.width, config.height);
   });
 };

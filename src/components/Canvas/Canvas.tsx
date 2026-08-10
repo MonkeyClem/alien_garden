@@ -9,16 +9,15 @@ import drawAllTiles, { drawTileState } from "../../rendering/drawAllTiles";
 import { drawPlants } from "../../rendering/drawPlants";
 import { initialDecorations } from "../../game/decorations/initialDecorations";
 import { drawDecorations } from "../../rendering/drawDecorations";
-import {
-  findBuildingOnTile,
-  findDecorationOnTile,
-} from "../../game/decorations/findDecorationOnTile";
+import { findDecorationOnTile } from "../../game/decorations/findDecorationOnTile";
 import type { Plant, Species } from "../../game/plants/plants.type";
 import type { Building } from "../../game/buildings/buildings.type";
 import type { Decoration } from "../../game/decorations/decoration.type";
 import { drawBuildings } from "../../game/buildings/drawBuilding";
 import { findPlantOnTile } from "../../game/plants/findPlantOnTile";
 import React from "react";
+import { findBuildingOnTile } from "../../game/buildings/findBuildingOnTile";
+import { getAdjacentPlants } from "../../game/plants/getAdjacentTiles";
 
 interface Canvas {
   handleTileSelection: (tile: Tile) => void;
@@ -138,7 +137,6 @@ export default function Canvas({
   const assetsRef = useRef<GameAssets>(assets);
   const buildingsRef = useRef<Building[]>(buildings);
 
-
   useEffect(() => {
     tilesRef.current = tiles;
   }, [tiles]);
@@ -155,10 +153,7 @@ export default function Canvas({
     buildingsRef.current = buildings;
   }, [buildings]);
 
-
-  useEffect(() => {
-
-  }, [])
+  useEffect(() => {}, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -227,7 +222,10 @@ export default function Canvas({
         initialDecorations,
       );
 
+
       handleTileSelection(selectedTile);
+
+
 
       if (clickedObject) {
         setSelectionType(clickedObject.type);
@@ -242,48 +240,18 @@ export default function Canvas({
         return;
       }
 
-      // const clickedDecoration = findDecorationOnTile(
-      //   selectedTileId,
-      //   initialDecorations,
-      // );
+      const plant = findPlantOnTile(selectedTileId, plants)
 
-      // const clickedPlant = findPlantOnTile(selectedTileId, plantsRef.current);
+      if(!plant) return 
+        console.log(
+            getAdjacentPlants(
+              plant,
+              plants,
+              tiles,
+            ),
+          );
 
-      // if (clickedDecoration) {
-      //   setSelectionType("decoration");
-      //   setIsSelectedTileOccupied(true);
-      // }
 
-      // if (clickedPlant) {
-      //   setSelectionType("plant");
-      //   setIsSelectedTileOccupied(true);
-      // }
-
-      // if (!clickedDecoration && !clickedPlant) {
-      //   setSelectionType("empty");
-      //   setIsSelectedTileOccupied(false);
-      // }
-
-      // setTiles((currentTiles) =>
-      //   currentTiles.map((tile) => ({
-      //     ...tile,
-      //     selected: tile.id === selectedTileId,
-      //   })),
-      // );
-
-      // handleTileSelection({
-      //   ...selectedTile,
-      //   selected: true,
-      // });
-
-      // if (
-      //   selectedSpecie &&
-      //   selectedTile &&
-      //   !clickedDecoration && !clickedPlant
-      // ) {
-      //   handlePlantSpecie(selectedSpecie, selectedTile);
-      //   return;
-      // }
     };
 
     const handleMouseMove = (event: MouseEvent) => {

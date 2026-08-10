@@ -13,6 +13,7 @@ import { SPECIES_CONFIG } from "./game/plants/speciesConfig";
 import type { Building } from "./game/buildings/buildings.type";
 import { initialDecorations } from "./game/decorations/initialDecorations";
 
+
 function App() {
   const [tiles, setTiles] = useState<Tile[]>(() =>
     generateGrid(window.innerWidth),
@@ -82,6 +83,9 @@ function App() {
   const handleTileSelection = (tile: Tile) => {
     setSelectedTile(tile);
   };
+
+
+
 
   //the plantOnTile parameter is the harvested Plant
   const handleRessourcesUpdate = (plantOnTile: Plant) => {
