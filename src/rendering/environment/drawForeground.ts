@@ -1,4 +1,4 @@
-import type { GameAssets } from "../assets/assetTypes";
+import type { GameAssets } from "../../assets/assetTypes";
 
 export  const drawForeground = (
   ctx: CanvasRenderingContext2D,

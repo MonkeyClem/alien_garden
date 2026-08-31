@@ -1,7 +1,7 @@
-import type { GameAssets } from "../assets/assetTypes";
-import { initialDecorations } from "../game/decorations/initialDecorations";
-import { HALF_TILE_HEIGHT } from "../game/grid/grid.constants";
-import type { Tile } from "../game/grid/tiles.types";
+import type { GameAssets } from "../../assets/assetTypes";
+import { initialDecorations } from "../../game/decorations/initialDecorations";
+import { HALF_TILE_HEIGHT } from "../../game/grid/grid.constants";
+import type { Tile } from "../../game/grid/tiles.types";
 
 export const drawDecorations = (
   ctx: CanvasRenderingContext2D,

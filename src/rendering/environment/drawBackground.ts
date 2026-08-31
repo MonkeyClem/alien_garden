@@ -1,4 +1,4 @@
-import type { GameAssets } from "../assets/assetTypes";
+import type { GameAssets } from "../../assets/assetTypes";
 
   export default function drawBackground(
     ctx: CanvasRenderingContext2D,

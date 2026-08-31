@@ -5,9 +5,7 @@ import { type selectionType } from "../../game/type";
 import type { GameAssets } from "../../assets/assetTypes";
 import type { Tile } from "../../game/grid/tiles.types";
 import drawAllTiles, { drawTileState } from "../../rendering/tiles/drawAllTiles";
-import { drawPlants } from "../../rendering/drawPlants";
 import { initialDecorations } from "../../game/decorations/initialDecorations";
-import { drawDecorations } from "../../rendering/drawDecorations";
 import type { Plant, Species } from "../../game/plants/plants.type";
 import type { Building } from "../../game/buildings/buildings.type";
 import type { Decoration } from "../../game/decorations/decoration.type";
@@ -15,10 +13,12 @@ import { drawBuildings } from "../../rendering/buildings/drawBuilding";
 import { findPlantOnTile } from "../../game/plants/findPlantOnTile";
 import React from "react";
 import { getAdjacentPlants } from "../../game/plants/getAdjacentPlants";
-import { drawForeground } from "../../rendering/drawForeground";
-import { drawMidground } from "../../rendering/drawMidground";
 import { findWorldObjectOnTile } from "../../game/grid/findWorldObjectOnTile";
-import drawBackground from "../../rendering/drawBackground";
+import { drawDecorations } from "../../rendering/decorations/drawDecorations";
+import { drawPlants } from "../../rendering/plants/drawPlants";
+import drawBackground from "../../rendering/environment/drawBackground";
+import { drawForeground } from "../../rendering/environment/drawForeground";
+import { drawMidground } from "../../rendering/environment/drawMidground";
 
 interface Canvas {
   handleTileSelection: (tile: Tile) => void;

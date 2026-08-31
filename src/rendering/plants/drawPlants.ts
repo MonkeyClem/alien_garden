@@ -1,9 +1,9 @@
-import type { GameAssets } from "../assets/assetTypes";
-import { HALF_TILE_HEIGHT } from "../game/grid/grid.constants";
-import type { Tile } from "../game/grid/tiles.types";
-import { getPlantAssetKey } from "../game/plants/getPlantAssetKey";
-import { getPlantStage } from "../game/plants/getPlantStage";
-import type { Plant } from "../game/plants/plants.type";
+import type { GameAssets } from "../../assets/assetTypes";
+import { HALF_TILE_HEIGHT } from "../../game/grid/grid.constants";
+import type { Tile } from "../../game/grid/tiles.types";
+import { getPlantAssetKey } from "../../game/plants/getPlantAssetKey";
+import { getPlantStage } from "../../game/plants/getPlantStage";
+import type { Plant } from "../../game/plants/plants.type";
 
 export const drawPlants = (
   ctx: CanvasRenderingContext2D,
