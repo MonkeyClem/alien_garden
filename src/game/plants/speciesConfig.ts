@@ -15,6 +15,11 @@ export const SPECIES_CONFIG = {
       biomass: 5,
     },
 
+    spread: {
+      enable: true,
+      interval: 15_000
+    },
+
     stages: {
       1: {
         label: "Germe mycélien",

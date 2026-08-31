@@ -13,6 +13,7 @@ export type Plant = {
   plantedAt: number;
   growth: number;
   isReadyToHarvest: boolean;
+  lastSpreadAt?: number;
 };
 
 export type ResourceYield = {
@@ -32,6 +33,11 @@ export type SpeciesConfig = {
   role: string;
 
   growthDuration: number;
+
+  spread?: {
+    enable : boolean,
+    interval : number
+  }
 
   harvestable: boolean,
   harvestYield?: ResourceYield;

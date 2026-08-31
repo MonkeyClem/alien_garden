@@ -18,5 +18,7 @@ export type PlantAssetsKey =
 
 export type OverlayAssets = "veins" | "spores" | "smallRock";
 
-export type AssetsKey = DecorationAssetsKey | PlantAssetsKey | OverlayAssets;
-export type GameAssets = Record<AssetsKey, HTMLImageElement>;
+export type BackgroundAssets = "mapBackground" | "midground" | "foreground"
+
+export type AssetsKey = DecorationAssetsKey | PlantAssetsKey | OverlayAssets | BackgroundAssets;
+export type GameAssets = Record<AssetsKey, HTMLImageElement >;

@@ -1,8 +1,8 @@
 import type { GameAssets } from "../../assets/assetTypes";
-import { HALF_TILE_HEIGHT } from "../grid/grid.constants";
-import type { Tile } from "../grid/tiles.types";
-import type { Building } from "./buildings.type";
-import { BUILDING_CONFIG } from "./buildingsConfig";
+import { HALF_TILE_HEIGHT } from "../../game/grid/grid.constants";
+import type { Tile } from "../../game/grid/tiles.types";
+import type { Building } from "../../game/buildings/buildings.type";
+import { BUILDING_CONFIG } from "../../game/buildings/buildingsConfig";
 
 export const drawBuildings = (
   ctx: CanvasRenderingContext2D,

@@ -1,23 +1,24 @@
 import { useEffect, useRef, type SetStateAction } from "react";
 import styles from "./canvas.module.css";
 import findTile from "../../game/grid/findTile";
-import drawBackground from "../../rendering/drawBackground";
 import { type selectionType } from "../../game/type";
 import type { GameAssets } from "../../assets/assetTypes";
 import type { Tile } from "../../game/grid/tiles.types";
-import drawAllTiles, { drawTileState } from "../../rendering/drawAllTiles";
+import drawAllTiles, { drawTileState } from "../../rendering/tiles/drawAllTiles";
 import { drawPlants } from "../../rendering/drawPlants";
 import { initialDecorations } from "../../game/decorations/initialDecorations";
 import { drawDecorations } from "../../rendering/drawDecorations";
-import { findDecorationOnTile } from "../../game/decorations/findDecorationOnTile";
 import type { Plant, Species } from "../../game/plants/plants.type";
 import type { Building } from "../../game/buildings/buildings.type";
 import type { Decoration } from "../../game/decorations/decoration.type";
-import { drawBuildings } from "../../game/buildings/drawBuilding";
+import { drawBuildings } from "../../rendering/buildings/drawBuilding";
 import { findPlantOnTile } from "../../game/plants/findPlantOnTile";
 import React from "react";
-import { findBuildingOnTile } from "../../game/buildings/findBuildingOnTile";
-import { getAdjacentPlants } from "../../game/plants/getAdjacentTiles";
+import { getAdjacentPlants } from "../../game/plants/getAdjacentPlants";
+import { drawForeground } from "../../rendering/drawForeground";
+import { drawMidground } from "../../rendering/drawMidground";
+import { findWorldObjectOnTile } from "../../game/grid/findWorldObjectOnTile";
+import drawBackground from "../../rendering/drawBackground";
 
 interface Canvas {
   handleTileSelection: (tile: Tile) => void;
@@ -34,89 +35,6 @@ interface Canvas {
   selectedSpecie: Species | null;
 }
 
-type WorldObjectOnTile =
-  | {
-      type: "plant";
-      object: Plant;
-    }
-  | {
-      type: "building";
-      object: Building;
-    }
-  | {
-      type: "decoration";
-      object: Decoration;
-    };
-
-const findWorldObjectOnTile = (
-  tileId: number,
-  plants: Plant[],
-  buildings: Building[],
-  initialDecorations: Decoration[],
-): WorldObjectOnTile | null => {
-  const decoration = findDecorationOnTile(tileId, initialDecorations);
-
-  if (decoration) {
-    return {
-      type: "decoration",
-      object: decoration,
-    };
-  }
-
-  const building = findBuildingOnTile(tileId, buildings);
-
-  if (building) {
-    return {
-      type: "building",
-      object: building,
-    };
-  }
-
-  const plant = findPlantOnTile(tileId, plants);
-
-  if (plant) {
-    return {
-      type: "plant",
-      object: plant,
-    };
-  }
-
-  return null;
-
-  // const clickedDecoration = findDecorationOnTile(
-  //   selectedTile.id,
-  //   initialDecorations,
-  // );
-
-  // const clickedPlant = findPlantOnTile(selectedTile.id, plantsRef.current);
-
-  // if (clickedDecoration) {
-  //   setSelectionType("decoration");
-  //   setIsSelectedTileOccupied(true);
-  // }
-
-  // if (clickedPlant) {
-  //   setSelectionType("plant");
-  //   setIsSelectedTileOccupied(true);
-  // }
-
-  // if (!clickedDecoration && !clickedPlant) {
-  //   setSelectionType("empty");
-  //   setIsSelectedTileOccupied(false);
-  // }
-
-  // setTiles((currentTiles) =>
-  //   currentTiles.map((tile) => ({
-  //     ...tile,
-  //     selected: tile.id === selectedTile.id,
-  //   })),
-  // );
-
-  // handleTileSelection({
-  //   ...selectedTile,
-  //   selected: true,
-  // });
-};
 
 export default function Canvas({
   handleTileSelection,
@@ -170,8 +88,10 @@ export default function Canvas({
     const render = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      drawBackground(ctx, canvas);
+      drawBackground(ctx, canvas, assetsRef.current)
       drawAllTiles(ctx, tilesRef.current, assets);
+      drawMidground(ctx, canvas, assetsRef.current)
+
       drawTileState(ctx, tilesRef.current);
       drawDecorations(ctx, tilesRef.current, assetsRef.current);
       drawPlants(ctx, plantsRef.current, tilesRef.current, assetsRef.current);
@@ -181,6 +101,7 @@ export default function Canvas({
         tilesRef.current,
         assetsRef.current,
       );
+      drawForeground(ctx, canvas, assetsRef.current)
 
       animationFrameId = requestAnimationFrame(render);
     };

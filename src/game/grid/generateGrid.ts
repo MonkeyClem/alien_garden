@@ -31,7 +31,7 @@ export const getGroundOverlay = (gridX : number, gridY : number) : GroundOverlay
 
 export const generateGrid = (canvasWidth: number): Tile[] => {
   const originX = canvasWidth / 2;
-  const originY = 150;
+  const originY = 195;
 
   const tilePositions: Tile[] = [];
 

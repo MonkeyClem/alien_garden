@@ -41,6 +41,12 @@ export const loadAssets = async () => {
 
   const spacePod = await loadImage("/assets/PNG/Assets/spacePod.png");
 
+
+  const mapBackground = await loadImage("/assets/PNG/Assets/mapBackground.jpg")
+  const midground = await loadImage("/assets/PNG/Assets/midground.png")
+    const foreground = await loadImage("/assets/PNG/Assets/foreground.png")
+
+
   return {
     bioBattery,
     bioPalmtree,
@@ -65,5 +71,9 @@ export const loadAssets = async () => {
     smallRock,
 
     spacePod,
+
+    mapBackground,
+    midground, 
+    foreground
   };
 };

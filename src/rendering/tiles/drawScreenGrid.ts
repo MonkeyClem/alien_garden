@@ -1,5 +1,5 @@
 import type { Tile } from "../game/grid/tiles.types";
-import drawAllTiles from "./drawAllTiles";
+import drawAllTiles from "./tiles/drawAllTiles";
 
 
 export default function drawScreenGrid(
