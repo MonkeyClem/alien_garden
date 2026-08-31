@@ -1,8 +1,8 @@
 import type { GameAssets } from "../../assets/assetTypes";
+import { WORLD_HEIGHT, WORLD_WIDTH } from "../../game/world/world.constant";
 
 export const drawMidground = (
   ctx: CanvasRenderingContext2D,
-  canvas: HTMLCanvasElement,
   assets: GameAssets,
 ) => {
   const image = assets.midground;
@@ -12,8 +12,8 @@ export const drawMidground = (
   ctx.drawImage(
     image,
     0,
-    -75,
-    canvas.width,
-    canvas.height,
+    -165,
+    WORLD_WIDTH,
+    WORLD_HEIGHT,
   );
 };

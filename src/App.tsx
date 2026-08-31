@@ -16,7 +16,7 @@ import { initialDecorations } from "./game/decorations/initialDecorations";
 
 function App() {
   const [tiles, setTiles] = useState<Tile[]>(() =>
-    generateGrid(window.innerWidth),
+    generateGrid(),
   );
   const [inventory, setInventory] = useState<Inventory>({
     species: {

@@ -88,9 +88,9 @@ export default function Canvas({
     const render = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      drawBackground(ctx, canvas, assetsRef.current)
+      drawBackground(ctx, assetsRef.current)
       drawAllTiles(ctx, tilesRef.current, assets);
-      drawMidground(ctx, canvas, assetsRef.current)
+      drawMidground(ctx, assetsRef.current)
 
       drawTileState(ctx, tilesRef.current);
       drawDecorations(ctx, tilesRef.current, assetsRef.current);
@@ -101,7 +101,7 @@ export default function Canvas({
         tilesRef.current,
         assetsRef.current,
       );
-      drawForeground(ctx, canvas, assetsRef.current)
+      drawForeground(ctx, assetsRef.current)
 
       animationFrameId = requestAnimationFrame(render);
     };
