@@ -12,7 +12,7 @@ export  const drawForeground = (
   ctx.drawImage(
     image,
     0,
-    -125,
+    -75,
    WORLD_WIDTH,
    WORLD_HEIGHT
   );

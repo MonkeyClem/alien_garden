@@ -42,7 +42,7 @@ export const drawPlants = (
     ctx.drawImage(
       image,
       tile.x - 75 / 2,
-      tile.y - HALF_TILE_HEIGHT - 75 / 2,
+      tile.y - HALF_TILE_HEIGHT - 100 / 2,
       75,
       75,
     );

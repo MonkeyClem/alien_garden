@@ -1,5 +1,6 @@
-import type { GameAssets } from "../assets/assetTypes";
-import type { Tile } from "../game/grid/tiles.types";
+import type { GameAssets } from "../../assets/assetTypes";
+import type { Tile } from "../../game/grid/tiles.types";
+
 
 const defineTileColors = (tile: Tile) => {
   if (tile.selected) {

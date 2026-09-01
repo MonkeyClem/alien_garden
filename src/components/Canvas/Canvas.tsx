@@ -4,7 +4,9 @@ import findTile from "../../game/grid/findTile";
 import { type selectionType } from "../../game/type";
 import type { GameAssets } from "../../assets/assetTypes";
 import type { Tile } from "../../game/grid/tiles.types";
-import drawAllTiles, { drawTileState } from "../../rendering/tiles/drawAllTiles";
+import drawAllTiles, {
+  drawTileState,
+} from "../../rendering/tiles/drawAllTiles";
 import { initialDecorations } from "../../game/decorations/initialDecorations";
 import type { Plant, Species } from "../../game/plants/plants.type";
 import type { Building } from "../../game/buildings/buildings.type";
@@ -19,6 +21,26 @@ import { drawPlants } from "../../rendering/plants/drawPlants";
 import drawBackground from "../../rendering/environment/drawBackground";
 import { drawForeground } from "../../rendering/environment/drawForeground";
 import { drawMidground } from "../../rendering/environment/drawMidground";
+import { WORLD_WIDTH, WORLD_HEIGHT } from "../../game/world/world.constant";
+
+export type Viewport = {
+  scale: number;
+  offsetX: number;
+  offsetY: number;
+};
+
+const getViewport = (canvasWidth: number, canvasHeight: number): Viewport => {
+  const scale = Math.min(
+    canvasWidth / WORLD_WIDTH,
+    canvasHeight / WORLD_HEIGHT,
+  );
+
+  return {
+    scale,
+    offsetX: (canvasWidth - WORLD_WIDTH * scale) / 2,
+    offsetY: (canvasHeight - WORLD_HEIGHT * scale) / 2,
+  };
+};
 
 interface Canvas {
   handleTileSelection: (tile: Tile) => void;
@@ -34,7 +56,6 @@ interface Canvas {
   decorations: Decoration[];
   selectedSpecie: Species | null;
 }
-
 
 export default function Canvas({
   handleTileSelection,
@@ -85,12 +106,33 @@ export default function Canvas({
 
     let animationFrameId: number;
 
+    const viewport = getViewport(canvas.width, canvas.height);
+
+    ctx.translate(viewport.offsetX, viewport.offsetY);
+    ctx.scale(viewport.scale, viewport.scale);
+
+    console.log({
+  canvasWidth: canvas.width,
+  canvasHeight: canvas.height,
+  viewport,
+});
+
+
+const rect = canvas.getBoundingClientRect();
+
+console.log( {
+  internalWidth: canvas.width,
+  internalHeight: canvas.height,
+  cssWidth: rect.width,
+  cssHeight: rect.height,
+});
     const render = () => {
+      ctx.save();
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      drawBackground(ctx, assetsRef.current)
+      drawBackground(ctx, assetsRef.current);
       drawAllTiles(ctx, tilesRef.current, assets);
-      drawMidground(ctx, assetsRef.current)
+      drawMidground(ctx, assetsRef.current);
 
       drawTileState(ctx, tilesRef.current);
       drawDecorations(ctx, tilesRef.current, assetsRef.current);
@@ -101,7 +143,9 @@ export default function Canvas({
         tilesRef.current,
         assetsRef.current,
       );
-      drawForeground(ctx, assetsRef.current)
+      drawForeground(ctx, assetsRef.current);
+
+      ctx.restore();
 
       animationFrameId = requestAnimationFrame(render);
     };
@@ -143,10 +187,7 @@ export default function Canvas({
         initialDecorations,
       );
 
-
       handleTileSelection(selectedTile);
-
-
 
       if (clickedObject) {
         setSelectionType(clickedObject.type);
@@ -161,18 +202,10 @@ export default function Canvas({
         return;
       }
 
-      const plant = findPlantOnTile(selectedTileId, plants)
+      const plant = findPlantOnTile(selectedTileId, plants);
 
-      if(!plant) return 
-        console.log(
-            getAdjacentPlants(
-              plant,
-              plants,
-              tiles,
-            ),
-          );
-
-
+      if (!plant) return;
+      console.log(getAdjacentPlants(plant, plants, tiles));
     };
 
     const handleMouseMove = (event: MouseEvent) => {
@@ -191,14 +224,26 @@ export default function Canvas({
       );
     };
 
+    const resizeCanvas = () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+};
+
+resizeCanvas();
+
+window.addEventListener("resize", resizeCanvas);
+
+
     canvas.addEventListener("click", handleMouseClick);
     canvas.addEventListener("mousemove", handleMouseMove);
 
     return () => {
       canvas.removeEventListener("click", handleMouseClick);
       canvas.removeEventListener("mousemove", handleMouseMove);
+        window.removeEventListener("resize", resizeCanvas);
+
     };
-  }, [setTiles, handleTileSelection, setSelectionType]);
+  }, [setTiles, handleTileSelection, setSelectionType, window.innerHeight, window.innerWidth]);
 
   return (
     <>

@@ -33,7 +33,7 @@ export const initialDecorations: Decoration[] = [
     gridY: 12,
     width: 150,
     height: 120,
-    offsetY: -20,
+    offsetY: -35,
     offsetX: 0,
     footPrint : {width : 2, height : 2}
   }

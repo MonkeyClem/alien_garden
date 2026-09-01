@@ -12,7 +12,7 @@ export const drawMidground = (
   ctx.drawImage(
     image,
     0,
-    -165,
+    -205,
     WORLD_WIDTH,
     WORLD_HEIGHT,
   );
