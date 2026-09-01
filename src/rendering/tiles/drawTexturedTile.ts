@@ -16,13 +16,12 @@ export const drawTexturedTile = (
 
   const texture = groundTextures[tile.groundVariant]
 
-  
   ctx.save();
 
   ctx.beginPath();
 
   ctx.imageSmoothingEnabled = true;
-
+ctx.fillStyle = "#58365f";
   ctx.fill(tile.path);
 
   ctx.moveTo(tile.x, tile.y - HALF_TILE_HEIGHT);

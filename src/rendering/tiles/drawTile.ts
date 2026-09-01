@@ -34,7 +34,7 @@ export const drawTile = (
   const pattern = ctx.createPattern(assets.alienGround, "")
 
   if(!pattern) return 
-    // ctx.fillStyle = tileColors.fill;
+    ctx.fillStyle = tileColors.fill;
 
   ctx.fillStyle = pattern;
 

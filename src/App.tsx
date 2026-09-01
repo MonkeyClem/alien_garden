@@ -80,9 +80,10 @@ function App() {
     setSelectedSpecie(clickedSpecie);
   };
 
-  const handleTileSelection = (tile: Tile) => {
-    setSelectedTile(tile);
-  };
+ const handleTileSelection = (tile: Tile) => {
+  setSelectedTile(tile);
+};
+  console.log("selectedTile : ", selectedTile)
 
 
 

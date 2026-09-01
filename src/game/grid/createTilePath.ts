@@ -13,7 +13,7 @@ export function createTilePath(
 
   path.closePath();
 
-  console.log("path : ", path);
+  // console.log("path : ", path);
 
   return path;
 }

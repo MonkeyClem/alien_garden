@@ -111,21 +111,23 @@ export default function Canvas({
     ctx.translate(viewport.offsetX, viewport.offsetY);
     ctx.scale(viewport.scale, viewport.scale);
 
-    console.log({
-  canvasWidth: canvas.width,
-  canvasHeight: canvas.height,
-  viewport,
-});
+//     console.log({
+//   canvasWidth: canvas.width,
+//   canvasHeight: canvas.height,
+//   viewport,
+// });
 
 
-const rect = canvas.getBoundingClientRect();
+// const rect = canvas.getBoundingClientRect();
 
-console.log( {
-  internalWidth: canvas.width,
-  internalHeight: canvas.height,
-  cssWidth: rect.width,
-  cssHeight: rect.height,
-});
+// console.log( {
+//   internalWidth: canvas.width,
+//   internalHeight: canvas.height,
+//   cssWidth: rect.width,
+//   cssHeight: rect.height,
+// });
+
+console.log("ref tiles : ", tilesRef.current)
     const render = () => {
       ctx.save();
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -174,6 +176,13 @@ console.log( {
 
       if (!selectedTileId) return;
 
+            setTiles((currentTiles) =>
+        currentTiles.map((tile) => ({
+          ...tile,
+          selected: tile.id === selectedTileId,
+        })),
+      );
+
       const selectedTile: Tile | undefined = tilesRef.current.find(
         (tile) => tile.id === selectedTileId,
       );
@@ -205,7 +214,7 @@ console.log( {
       const plant = findPlantOnTile(selectedTileId, plants);
 
       if (!plant) return;
-      console.log(getAdjacentPlants(plant, plants, tiles));
+      // console.log(getAdjacentPlants(plant, plants, tiles));
     };
 
     const handleMouseMove = (event: MouseEvent) => {
