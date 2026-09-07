@@ -13,9 +13,9 @@ import EmptyTileHud from "./ContextualHuds/EmptyTileHud";
 import InventoryComponents from "./Inventory/Inventory";
 import PlantHud from "./ContextualHuds/PlantHud";
 import type { Building } from "../../game/buildings/buildings.type";
-import { BUILDING_CONFIG } from "../../game/buildings/buildingsConfig";
-import { canAffordBuilding } from "../../game/buildings/canAffordBuilding";
-import { handleBioBatteryConstruction } from "../../game/buildings/buildingsConstructions/handleBioBatteryConstruction";
+// import { BUILDING_CONFIG } from "../../game/buildings/buildingsConfig";
+// import { canAffordBuilding } from "../../game/buildings/canAffordBuilding";
+// import { handleBioBatteryConstruction } from "../../game/buildings/buildingsConstructions/handleBioBatteryConstruction";
 import { findBuildingOnTile } from "../../game/buildings/findBuildingOnTile";
 
 interface SideMenuProps {
@@ -131,7 +131,7 @@ export default function SideMenu({
           <p> Données : {ressources.biologicalData}</p>
         </div>
 
-        {isBioBatteryAlreadyBuilt ? null : (
+        {/* {isBioBatteryAlreadyBuilt ? null : (
           <div>
             <p>Objectif Actuel : Construire la bioBattery</p>
             <button
@@ -153,12 +153,12 @@ export default function SideMenu({
               Construire BioBattery
             </button>
           </div>
-        )}
+        )} */}
 
-        <div style={{ display: "flex", gap: "5px", height: "100%" }}>
+        {/* <div style={{ display: "flex", gap: "5px", height: "100%" }}>
           <button> PARAMETRES</button>
           <button> SAVE</button>
-        </div>
+        </div> */}
       </div>
 
       <div style={{ position: "absolute", bottom: 15, right: 10 }}>

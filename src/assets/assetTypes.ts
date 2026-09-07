@@ -7,7 +7,8 @@ export type DecorationAssetsKey =
   | "alienGround"
   | "alienGroundTwo"
   | "alienGroundThree"
-  | "spacePod";
+  | "spacePod"
+  | "firstMapLake";
 
 export type PlantAssetsKey =
   | "reactorMushroomStageOne"
@@ -18,7 +19,7 @@ export type PlantAssetsKey =
 
 export type OverlayAssets = "veins" | "spores" | "smallRock";
 
-export type BackgroundAssets = "mapBackground" | "midground" | "foreground"
+export type BackgroundAssets = "mapBackground" | "midground" | "midgroundTwo" | "midgroundThree" |"midgroundFour"| "midgroundFillerOne" |"foreground"
 
 export type AssetsKey = DecorationAssetsKey | PlantAssetsKey | OverlayAssets | BackgroundAssets;
 export type GameAssets = Record<AssetsKey, HTMLImageElement >;

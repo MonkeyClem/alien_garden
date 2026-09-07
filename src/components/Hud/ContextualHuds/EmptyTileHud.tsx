@@ -25,6 +25,7 @@ setIsSelectedTileOccupied
   return (
     <div>
       <h3>Emplacement vide</h3>
+      {selectedTile.id}
       <p>Cette parcelle de terre est fertile ! Vous pouvez y planter n'importe laquelle de vos graines </p>
       <button onClick={() => setIsInventoryOpen(!isInventoryOpen)}>
         {isInventoryOpen ? "Fermer l'inventaire" : "Ouvrir l'inventaire"}

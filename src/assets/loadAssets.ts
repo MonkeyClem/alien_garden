@@ -44,7 +44,20 @@ export const loadAssets = async () => {
 
   const mapBackground = await loadImage("/assets/PNG/Assets/mapBackground.jpg")
   const midground = await loadImage("/assets/PNG/Assets/midground.png")
-    const foreground = await loadImage("/assets/PNG/Assets/foreground.png")
+  const midgroundTwo = await loadImage("/assets/PNG/Assets/midground_two.png")
+  const midgroundThree = await loadImage("/assets/PNG/Assets/midground_three.png")
+  const midgroundFour = await loadImage("/assets/PNG/Assets/midground_four.png")
+
+
+  const firstMapLake = await loadImage("/assets/PNG/Assets/first_map_lake.png")
+
+
+
+  const midgroundFillerOne = await loadImage("/assets/PNG/Assets/midgroundFillerOne.png")
+
+  const foreground = await loadImage("/assets/PNG/Assets/foreground.png")
+
+  
 
 
   return {
@@ -74,6 +87,14 @@ export const loadAssets = async () => {
 
     mapBackground,
     midground, 
+    midgroundTwo,
+    midgroundThree, 
+    midgroundFour,
+
+    midgroundFillerOne,
+
+    firstMapLake,
+
     foreground
   };
 };
