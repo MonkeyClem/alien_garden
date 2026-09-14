@@ -13,9 +13,6 @@ import EmptyTileHud from "./ContextualHuds/EmptyTileHud";
 import InventoryComponents from "./Inventory/Inventory";
 import PlantHud from "./ContextualHuds/PlantHud";
 import type { Building } from "../../game/buildings/buildings.type";
-// import { BUILDING_CONFIG } from "../../game/buildings/buildingsConfig";
-// import { canAffordBuilding } from "../../game/buildings/canAffordBuilding";
-// import { handleBioBatteryConstruction } from "../../game/buildings/buildingsConstructions/handleBioBatteryConstruction";
 import { findBuildingOnTile } from "../../game/buildings/findBuildingOnTile";
 
 interface SideMenuProps {
@@ -62,7 +59,8 @@ export default function SideMenu({
   setUnlockedSpecies,
 }: SideMenuProps) {
   const [isInventoryOpen, setIsInventoryOpen] = useState<boolean>(false);
-  const [isHovered, setIsHovered] = useState(false);
+
+  const [isMissionModalOpen, setIsMissionModalOpen] = useState<boolean>(true);
 
   const plantOnTile = selectedTile
     ? plants.find((plant) => plant.tileId === selectedTile.id)
@@ -92,9 +90,7 @@ export default function SideMenu({
 
       return [...currentSpecies, Species.SYNAPTIC_VINE];
     });
-  }, );
-
-
+  });
 
   return (
     <>
@@ -104,7 +100,7 @@ export default function SideMenu({
           display: "flex",
           justifyContent: "space-between",
           flexWrap: "wrap",
-          height: "5vh",
+          background: "transparent",
           left: 25,
           right: 25,
           top: 10,
@@ -116,110 +112,326 @@ export default function SideMenu({
           style={{
             display: "flex",
             flexDirection: "column",
+            gap: "5vh",
             alignItems: "flex-start",
-            background: "black",
-            border: "2px solid purple",
+            borderRadius: "10px",
             paddingLeft: "0.5rem",
             paddingRight: "0.5rem",
+            justifyContent: "space-between",
+            fontSize: 14,
           }}
         >
-          <h5 style={{ background: "purple", margin: 0, textAlign: "center" }}>
-            Resources
-          </h5>
-          <p> Biomass : {ressources.biomass}</p>
-          <p> BioEnergie : {ressources.bioEnergy}</p>
-          <p> Données : {ressources.biologicalData}</p>
+          <div
+            style={{
+              display: "flex",
+              // gap: 8,
+              // padding: 8,
+              background: "rgba(7, 13, 31, 0.94)",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignContent:"baseline",
+                background: "rgba(7, 13, 31, 0.94)",
+                border: "2px solid #087E9B",
+                padding:"0.25rem",
+                borderRadius: "10px",
+              }}
+            >
+              <img
+                src={assets.bioMass.src}
+                style={{
+                  width: "48px",
+                  height: "48px",
+                  objectFit: "cover",
+                  imageRendering: "pixelated",
+                }}
+              />
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  paddingLeft: 8,
+                  paddingRight: 8,
+                  textAlign: "left"
+                  ,
+                }}
+              >
+                <p> Biomass</p>
+                <p> {ressources.bioMass}</p>
+              </div>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                background: "rgba(7, 13, 31, 0.94)",
+                border: "2px solid #087E9B",
+                borderRadius: "10px",
+                alignContent:"baseline",
+                padding:"0.25rem",
+              }}
+            >
+              <img
+                src={assets.bioEnergy.src}
+                style={{
+                  width: "48",
+                  height: "48px",
+                  objectFit: "cover",
+                  imageRendering: "pixelated",
+                }}
+              />
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  paddingLeft: 8,
+                  paddingRight: 8,
+                  textAlign: "left",
+                }}
+              >
+                <p> BioEnergie</p>
+                <p>{ressources.bioEnergy}</p>
+              </div>
+            </div>
+            <div
+                   style={{
+                display: "flex",
+                background: "rgba(7, 13, 31, 0.94)",
+                border: "2px solid #087E9B",
+                borderRadius: "10px",
+                alignContent:"baseline",
+                padding:"0.25rem",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                }}
+              >
+                <img
+                  src={assets.biologicalData.src}
+                  style={{
+                    width: "48px",
+                    height: "48px",
+                    objectFit: "contain",
+                    imageRendering: "pixelated",
+                  }}
+                />
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    textAlign: "left",
+                    paddingLeft: 8,
+                    paddingRight: 8,
+                  }}
+                >
+                  <p> Données </p>
+                  <p> {ressources.biologicalData}</p>{" "}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* {isBioBatteryAlreadyBuilt ? null : (
-          <div>
-            <p>Objectif Actuel : Construire la bioBattery</p>
-            <button
-              onClick={() =>
-                handleBioBatteryConstruction(
-                  buildings,
-                  ressources,
-                  setRessources,
-                  setBuildings,
-                )
-              }
-              disabled={
-                !canAffordBuilding(
-                  ressources,
-                  BUILDING_CONFIG.bioBattery.cost as Partial<Ressources>,
-                )
-              }
-            >
-              Construire BioBattery
-            </button>
-          </div>
-        )} */}
-
-        {/* <div style={{ display: "flex", gap: "5px", height: "100%" }}>
-          <button> PARAMETRES</button>
-          <button> SAVE</button>
-        </div> */}
-      </div>
-
-      <div style={{ position: "absolute", bottom: 15, right: 10 }}>
-        <button
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          onClick={() => setIsInventoryOpen(!isInventoryOpen)}
-          style={{
-            padding: 0,
-            border: isHovered ? "2px solid #9b5cff" : "2px solid transparent",
-            borderRadius: 8,
-            background: "transparent",
-            cursor: "pointer",
-            transform: isHovered ? "scale(1.05)" : "scale(1)",
-            transition: "transform 0.15s ease, border 0.15s ease",
-          }}
-        >
-          <img
-            src={assets.inventoryIcon.src}
-            style={{
-              display: "block",
-              objectFit: "cover",
-              height: 75,
-              width: 75,
-            }}
-          />
-        </button>
-      </div>
-
-      {isInventoryOpen ? (
-        <div
-          style={{
-            position: "absolute",
-            zIndex: 10001,
-            background: "black",
-            top: "8rem",
-            left: "1.5rem",
-            border: "2px solid purple",
-            borderRadius: 10,
-          }}
-        >
+        <div style={{ position: "absolute", left: 0, top: "5rem" }}>
           <InventoryComponents
+            plants={plants}
+            assets={assets}
             isInventoryOpen={isInventoryOpen}
             inventory={inventory}
+            selectedSpecie={selectedSpecie}
             unlockedSpecies={unlockedSpecies}
             setIsInventoryOpen={setIsInventoryOpen}
             handleSeedSelection={handleSpecieSelection}
           />
         </div>
-      ) : null}
+
+        {isMissionModalOpen ? (
+          <div
+            style={{
+              
+              fontSize: 14,
+              // width: 450,
+              borderRadius: 10,
+              position: "absolute",
+              padding: "0.5rem 1rem",
+              right: 0,
+              display: "flex",
+              flexDirection: "column",
+              background: "rgba(7, 13, 31, 0.94)",
+              border: "2px solid #087E9B",
+              gap: "6px",
+              textAlign: "left",
+            }}
+          >
+            {" "}
+     
+              <div
+                onClick={() => setIsMissionModalOpen(false)}
+                style={{
+                  cursor:"pointer",
+                  height: 40,
+                  width: 40,
+                  backgroundImage: `url(${assets.close_mission_button.src})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  position: "absolute",
+                  right: -10,
+                  top: -10,
+                }}
+              ></div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "baseline",
+                justifyContent: "space-between",
+              }}
+            >
+              <p
+                style={{
+                  textTransform: "uppercase",
+                  fontWeight: 800,
+                  fontSize: 16,
+                  color: "#76cee4",
+                }}
+              >
+                Mission :{" "}
+              </p>
+              <p
+                style={{
+                  position: "relative",
+                  textTransform: "uppercase",
+                  fontWeight: 400,
+                  fontSize: 14,
+                  right: 25,
+                  color: "#4b9fb4",
+                }}
+              >
+                Jour 1
+              </p>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                borderTop: "0.5px solid #087E9B",
+                borderBottom: "0.5px solid #087E9B",
+              }}
+            >
+              <div>
+                <p
+                  style={{
+                    color: "gold",
+                  }}
+                >
+                  Activer la Bio Battery{" "}
+                </p>
+                <ul
+                  style={{
+                    padding: 0,
+                    listStyle: "none",
+                    textAlign: "left",
+                    paddingBottom: "0.5rem",
+                  }}
+                >
+                  <li>
+                    <input type="checkbox" />
+                    Observer la Bio Battery
+                  </li>
+                  <li>
+                    {" "}
+                    <input type="checkbox" />
+                    Planter un Reactor Mushroom
+                  </li>
+                  <li>
+                    <input type="checkbox" />
+                    Etablir un lien synaptique entre le Reactor Muhsroom et la
+                    batterie
+                  </li>
+                </ul>
+              </div>
+              <div style={{ background: "black", width: "50%" }}>
+                <img></img>
+              </div>
+            </div>
+            <p style={{ fontWeight: 200, fontSize: 12 }}>
+              Une première connexion vous permettra de comprendre les
+              intéractions au sein de cet ecosystème
+            </p>
+          </div>
+        ) : (
+          <div
+            style={{
+              fontSize: 14,
+              width: 350,
+                            padding: "0.5rem ",
+cursor:"pointer",
+              borderRadius: 10,
+              position: "absolute",
+              display:"flex",
+              right: 0,
+              flexDirection: "column",
+              background: "rgba(7, 13, 31, 0.94)",
+              border: "2px solid #087E9B",
+              gap: 15,
+              textAlign: "left",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "baseline",
+                justifyContent: "space-between",
+              }}
+            >
+              <p
+                style={{
+                  textTransform: "uppercase",
+                  fontWeight: 800,
+                  color: "#76cee4",
+                }}
+              >
+                Mission :{" "}
+              </p>
+              <p
+                style={{
+                  color: "gold",
+                  position:"absolute",
+                  right: "2rem"
+                }}
+              >
+                Activer la Bio Battery{" "}
+              </p>
+              <div
+                onClick={() => setIsMissionModalOpen(true)}
+                style={{
+                  height: 40,
+                  width: 40,
+                  backgroundImage: `url(${assets.open_mission_button.src})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  position: "absolute",
+                  right: -10,
+                  top: -10,
+                }}
+              ></div>
+            </div>
+          </div>
+        )}
+      </div>
 
       {selectedTile ? (
         <div
           style={{
-            background: "#000",
             position: "absolute",
-            top: 50,
-            height: "5vh",
+            left: 10,
+            bottom: 25,
+            padding: "0.5rem",
+            background: "rgba(7, 13, 31, 0.94)",
+            border: "2px solid #087E9B",
             width: "25vw",
-            border: "2px solid purple",
-            right: 0,
+            borderRadius:10,
           }}
         >
           {selectionType === "building" && buildingOnTile && (

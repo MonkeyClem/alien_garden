@@ -27,7 +27,7 @@ function App() {
   });
 
   const [ressources, setRessources] = useState<Ressources>({
-    biomass: 0,
+    bioMass: 0,
     bioEnergy: 0,
     biologicalData: 0,
   });
@@ -106,7 +106,7 @@ function App() {
       currentPlants.filter((plant: Plant) => plant.id !== plantOnTile?.id),
     );
     setRessources((currentRessources) => ({
-      biomass: currentRessources.biomass + (harvestYield.biomass ?? 0),
+      bioMass: currentRessources.bioMass + (harvestYield.bioMass ?? 0),
       bioEnergy: currentRessources.bioEnergy + (harvestYield.bioEnergy ?? 0),
       biologicalData:
         currentRessources.biologicalData + (harvestYield.biologicalData ?? 0),

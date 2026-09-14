@@ -24,7 +24,7 @@ export type BuildingConfig = {
     footPrint : FootPrint;
 
   cost: {
-    biomass?: number;
+    bioMass?: number;
     bioEnergy?: number;
     biologicalData?: number;
   };

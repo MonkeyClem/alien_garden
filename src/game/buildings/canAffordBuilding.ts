@@ -5,7 +5,7 @@ import type { Ressources } from "../type";
     buildingCost: Partial<Ressources>,
   ): boolean => {
     return (
-      ressources.biomass >= (buildingCost.biomass ?? 0) &&
+      ressources.bioMass >= (buildingCost.bioMass ?? 0) &&
       ressources.biologicalData >= (buildingCost.biologicalData ?? 0) &&
       ressources.bioEnergy >= (buildingCost.bioEnergy ?? 0)
     );

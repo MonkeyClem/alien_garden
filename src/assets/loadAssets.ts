@@ -57,8 +57,12 @@ export const loadAssets = async () => {
 
   const foreground = await loadImage("/assets/PNG/Assets/foreground.png")
 
+  const bioMass = await loadImage("/assets/PNG/Assets/bioMass.png")
+  const bioEnergy = await loadImage("/assets/PNG/Assets/bioEnergy.png")
+  const biologicalData = await loadImage("/assets/PNG/Assets/biologicalData.png")
   
-
+  const open_mission_button = await loadImage("/assets/PNG/Assets/open_mission_button.png")
+  const close_mission_button = await loadImage("/assets/PNG/Assets/close_mission_button.png")
 
   return {
     bioBattery,
@@ -74,6 +78,8 @@ export const loadAssets = async () => {
     synapticVineStageTwo,
 
     inventoryIcon,
+    open_mission_button, 
+    close_mission_button,
 
     alienGround,
     alienGroundTwo,
@@ -95,6 +101,10 @@ export const loadAssets = async () => {
 
     firstMapLake,
 
-    foreground
+    foreground,
+
+    bioMass,
+    bioEnergy,
+    biologicalData
   };
 };

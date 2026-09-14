@@ -22,7 +22,7 @@ export const BUILDING_CONFIG = {
     },
 
     cost: {
-      biomass: 30,
+      bioMass: 30,
     },
   },
 } satisfies Record<string, BuildingConfig>;;

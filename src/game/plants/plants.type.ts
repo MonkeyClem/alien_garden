@@ -17,7 +17,7 @@ export type Plant = {
 };
 
 export type ResourceYield = {
-  biomass?: number
+  bioMass?: number
   biologicalData? : number
   bioEnergy?: number
 }

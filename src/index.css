@@ -30,6 +30,29 @@
   }
 }
 
+@font-face {
+  /* font-family: "Silkscreen";
+  src: url("./assets/fonts/Silkscreen-Regular.ttf") format("truetype"); */
+    font-family: "PixelOperator";
+  src: url("./assets/fonts/PixelOperator.ttf") format("truetype");
+}
+
+body {
+  font-family: "PixelOperator", monospace;
+  font-size: 14px;
+  line-height: 1.35;
+  /* color: #E8EDF5; */
+    color: #97b1da;
+
+}
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
+}
+
+
 @media (prefers-color-scheme: dark) {
   :root {
     --text: #9ca3af;

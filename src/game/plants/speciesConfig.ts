@@ -12,7 +12,7 @@ export const SPECIES_CONFIG = {
 
     harvestable: true, 
     harvestYield: {
-      biomass: 5,
+      bioMass: 5,
     },
 
     spread: {
