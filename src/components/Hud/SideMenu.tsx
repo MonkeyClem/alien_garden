@@ -50,9 +50,7 @@ export default function SideMenu({
   handleRessourcesUpdate,
   setIsHarvestButtonActive,
   setIsSelectedTileOccupied,
-  setRessources,
-  setUnlockedSpecies,
-}: SideMenuProps) {
+  }: SideMenuProps) {
   const [isInventoryOpen, setIsInventoryOpen] = useState<boolean>(false);
 
   const [isMissionModalOpen, setIsMissionModalOpen] = useState<boolean>(true);

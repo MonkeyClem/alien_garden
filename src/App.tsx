@@ -17,7 +17,9 @@ function App() {
   const [tiles, setTiles] = useState<Tile[]>(() =>
     generateGrid(),
   );
-  const [inventory, setInventory] = useState<Inventory>({
+  const [inventory 
+    // setInventory
+  ] = useState<Inventory>({
     species: {
       reactorMushroom: 1,
       synapticVine: 2,
