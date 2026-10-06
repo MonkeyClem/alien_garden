@@ -10,7 +10,6 @@ import { generateGrid } from "./game/grid/generateGrid";
 import type { Tile } from "./game/grid/tiles.types";
 import {   Species, type Plant, type ResourceYield } from "./game/plants/plants.type";
 import { SPECIES_CONFIG } from "./game/plants/speciesConfig";
-import type { Building } from "./game/buildings/buildings.type";
 import { initialDecorations } from "./game/decorations/initialDecorations";
 
 
@@ -50,7 +49,6 @@ function App() {
   const [selectionType, setSelectionType] = useState<selectionType>(null);
   const [isSelectedTileOccupied, setIsSelectedTileOccupied] = useState(false);
 
-  const [buildings, setBuildings] = useState<Building[]>([]);
 
   useEffect(() => {
     loadAssets()
@@ -127,14 +125,12 @@ function App() {
             isHarvestButtonActive={isHarvestButtonActive}
             selectionType={selectionType}
             assets={assets}
-            buildings={buildings}
             isSelectedTileOccupied={isSelectedTileOccupied}
             unlockedSpecies={unlockedSpecies}
             setIsSelectedTileOccupied={setIsSelectedTileOccupied}
             handleSpecieSelection={handleSpecieSelection}
             setIsHarvestButtonActive={setIsHarvestButtonActive}
             handleRessourcesUpdate={handleRessourcesUpdate}
-            setBuildings={setBuildings}
             setRessources={setRessources}
             handlePlantSeed={handlePlantSpecie}
             setUnlockedSpecies={setUnlockedSpecies}
@@ -150,7 +146,6 @@ function App() {
             plants={plants}
             assets={assets}
             tiles={tiles}
-            buildings={buildings}
             decorations={initialDecorations}
             selectedSpecie={selectedSpecie}
           />

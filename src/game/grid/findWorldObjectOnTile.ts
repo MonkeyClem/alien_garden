@@ -1,5 +1,3 @@
-import type { Building } from "../buildings/buildings.type";
-import { findBuildingOnTile } from "../buildings/findBuildingOnTile";
 import type { Decoration } from "../decorations/decoration.type";
 import { findDecorationOnTile } from "../decorations/findDecorationOnTile";
 import { findPlantOnTile } from "../plants/findPlantOnTile";
@@ -11,10 +9,6 @@ type WorldObjectOnTile =
       object: Plant;
     }
   | {
-      type: "building";
-      object: Building;
-    }
-  | {
       type: "decoration";
       object: Decoration;
     };
@@ -22,7 +16,6 @@ type WorldObjectOnTile =
 export const findWorldObjectOnTile = (
   tileId: number,
   plants: Plant[],
-  buildings: Building[],
   initialDecorations: Decoration[],
 ): WorldObjectOnTile | null => {
   const decoration = findDecorationOnTile(tileId, initialDecorations);
@@ -34,14 +27,7 @@ export const findWorldObjectOnTile = (
     };
   }
 
-  const building = findBuildingOnTile(tileId, buildings);
 
-  if (building) {
-    return {
-      type: "building",
-      object: building,
-    };
-  }
 
   const plant = findPlantOnTile(tileId, plants);
 

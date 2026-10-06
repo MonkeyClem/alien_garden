@@ -1,6 +1,5 @@
 import type { GameAssets } from "../../assets/assetTypes";
 import type {  Tile } from "../../game/grid/tiles.types";
-import { drawGroundOverlay } from "./drawGroundOverlay";
 import { drawTexturedTile } from "./drawTexturedTile";
 
 export default function drawAllTiles(
@@ -10,7 +9,6 @@ export default function drawAllTiles(
 ) {
   return tilePositions.forEach((tile) => {
     drawTexturedTile(ctx, tile, assets)
-    // drawGroundOverlay(ctx, tile, assets)
   }
 );
 }

@@ -4,42 +4,43 @@ import type { Species } from "../../../game/plants/plants.type";
 interface emptyTileHudProps {
   isInventoryOpen: boolean;
   setIsInventoryOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedSpecie : Species | null,
-  isSelectedTileOccupied: boolean,
-  selectedTile : Tile
-    handlePlantSeed: (selectedSpecie: Species, selectedTile: Tile) => void;
-    setIsSelectedTileOccupied: (value: boolean) => void;
-
-
+  selectedSpecie: Species | null;
+  isSelectedTileOccupied: boolean;
+  selectedTile: Tile;
+  handlePlantSeed: (selectedSpecie: Species, selectedTile: Tile) => void;
+  setIsSelectedTileOccupied: (value: boolean) => void;
 }
 
 export default function EmptyTileHud({
   selectedSpecie,
   selectedTile,
-isSelectedTileOccupied,
-handlePlantSeed,
-setIsSelectedTileOccupied
+  isSelectedTileOccupied,
+  handlePlantSeed,
+  setIsSelectedTileOccupied,
 }: emptyTileHudProps) {
   return (
     <div>
       <h3>Emplacement vide</h3>
       {selectedTile.id}
-      <p>Cette parcelle de terre est fertile ! Vous pouvez y planter n'importe laquelle de vos graines </p>
-  
-            {selectedSpecie ? (
-            <div>
-              <p> Graine Sélectionnée : {selectedSpecie} </p>
-              <button
-                disabled={isSelectedTileOccupied}
-                onClick={() => {
-                  handlePlantSeed(selectedSpecie, selectedTile);
-                  setIsSelectedTileOccupied(true);
-                }}
-              >
-                Planter une graine
-              </button>
-            </div>
-          ) : null}
+      <p>
+        Cette parcelle de terre est fertile ! Vous pouvez y planter n'importe
+        laquelle de vos graines{" "}
+      </p>
+
+      {selectedSpecie ? (
+        <div>
+          <p> Graine Sélectionnée : {selectedSpecie} </p>
+          <button
+            disabled={isSelectedTileOccupied}
+            onClick={() => {
+              handlePlantSeed(selectedSpecie, selectedTile);
+              setIsSelectedTileOccupied(true);
+            }}
+          >
+            Planter une graine
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 }

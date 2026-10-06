@@ -9,7 +9,6 @@ import drawAllTiles, {
 } from "../../rendering/tiles/drawAllTiles";
 import { initialDecorations } from "../../game/decorations/initialDecorations";
 import type { Plant, Species } from "../../game/plants/plants.type";
-import type { Building } from "../../game/buildings/buildings.type";
 import type { Decoration } from "../../game/decorations/decoration.type";
 import { findPlantOnTile } from "../../game/plants/findPlantOnTile";
 import React from "react";
@@ -63,7 +62,6 @@ interface Canvas {
   selectionType: selectionType;
   assets: GameAssets;
   plants: Plant[];
-  buildings: Building[];
   decorations: Decoration[];
   selectedSpecie: Species | null;
 }
@@ -77,7 +75,6 @@ export default function Canvas({
   tiles,
   plants,
   assets,
-  buildings,
   selectedSpecie,
 }: Canvas) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -85,7 +82,6 @@ export default function Canvas({
   const tilesRef = useRef<Tile[]>(tiles);
   const plantsRef = useRef<Plant[]>(plants);
   const assetsRef = useRef<GameAssets>(assets);
-  const buildingsRef = useRef<Building[]>(buildings);
 
   useEffect(() => {
     tilesRef.current = tiles;
@@ -98,10 +94,6 @@ export default function Canvas({
   useEffect(() => {
     assetsRef.current = assets;
   }, [assets]);
-
-  useEffect(() => {
-    buildingsRef.current = buildings;
-  }, [buildings]);
 
 
 
@@ -133,17 +125,11 @@ export default function Canvas({
       drawBackground(ctx, assetsRef.current);
       drawAllTiles(ctx, tilesRef.current, assets);
       drawMidground(ctx, assetsRef.current);
-
+      
       drawTileState(ctx, tilesRef.current);
-      // drawDecorations(ctx, tilesRef.current, assetsRef.current);
-      // drawPlants(ctx, plantsRef.current, tilesRef.current, assetsRef.current);
+
       drawDepthSortedWorld(ctx, plantsRef.current, initialDecorations, tilesRef.current, assetsRef.current)
-      // drawBuildings(
-      //   ctx,
-      //   buildingsRef.current,
-      //   tilesRef.current,
-      //   assetsRef.current,
-      // );
+
       drawForeground(ctx, assetsRef.current);
 
       ctx.restore();
@@ -191,7 +177,6 @@ export default function Canvas({
       const clickedObject = findWorldObjectOnTile(
         selectedTile.id,
         plants,
-        buildings,
         initialDecorations,
       );
 

@@ -57,7 +57,6 @@ export default function InventoryComponents({
                   fontSize: 16,
                   fontWeight: 800,
                   color: "#89dcf1",
-                  // textShadow:" #89dcf1 1px 1px",
                 }}>Seeds</p>
 
       {Object.entries(inventory.species).map(([key, amount]) => {
