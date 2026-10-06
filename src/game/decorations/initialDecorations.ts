@@ -11,31 +11,15 @@ export const initialDecorations: Decoration[] = [
 
     gridX: 0,
     gridY: 12,
-    width: 350,
-    height: 250,
-    offsetY: -5,
-    offsetX: -40,
-    footPrint:{width: 7, height : 5}
-  },
-  {
-    id: "bioPalm-1",
-    tileId : 589,
-    assetKey : "bioPalmtree",
-
-  displayName: "Purple Palm",
-      description:"A native photosynthetic organism commonly found throughout the surrounding ecosystem.",
-
-    gridX: 0,
-    gridY: 12,
-    width: 200,
-    height: 220,
-    offsetY: -80,
-    offsetX: 0,
-    footPrint : {width : 2, height : 2}
+    width: 360,
+    height: 260,
+    offsetY: -20,
+    offsetX: -35,
+    footPrint:{width: 7, height : 6}
   },
     {
     id: "bioPalm-1",
-    tileId : 344,
+    tileId : 140,
     assetKey : "bioPalmtree",
 
     displayName: "Purple Palm",
@@ -43,11 +27,11 @@ export const initialDecorations: Decoration[] = [
 
     gridX: 0,
     gridY: 12,
-    width: 100,
-    height: 110,
-    offsetY: -40,
+    width: 160,
+    height: 180,
+    offsetY: -80,
     offsetX: 0,
-    footPrint : {width : 1, height : 1}
+    footPrint : {width : 3, height : 2}
   },
   {
     id: "spacePod-1",
@@ -69,7 +53,7 @@ export const initialDecorations: Decoration[] = [
   ,
     {
     id: "lake_1",
-    tileId : 605,
+    tileId : 391,
     assetKey : "firstMapLake",
 
     displayName: "Bioluminescent Pool",
@@ -78,10 +62,10 @@ export const initialDecorations: Decoration[] = [
     gridX: 1,
     gridY: 1,
     width: 400,
-    height: 340,
-    offsetY: 0,
-    offsetX: 0,
-    footPrint : {width : 15, height : 15}
+    height: 250,
+    offsetY: 60,
+    offsetX: 15,
+    footPrint : {width : 9, height : 5}
   }
 
 

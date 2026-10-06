@@ -11,17 +11,28 @@ import { initialDecorations } from "../../game/decorations/initialDecorations";
 import type { Plant, Species } from "../../game/plants/plants.type";
 import type { Building } from "../../game/buildings/buildings.type";
 import type { Decoration } from "../../game/decorations/decoration.type";
-import { drawBuildings } from "../../rendering/buildings/drawBuilding";
 import { findPlantOnTile } from "../../game/plants/findPlantOnTile";
 import React from "react";
-import { getAdjacentPlants } from "../../game/plants/getAdjacentPlants";
 import { findWorldObjectOnTile } from "../../game/grid/findWorldObjectOnTile";
-import { drawDecorations } from "../../rendering/decorations/drawDecorations";
-import { drawPlants } from "../../rendering/plants/drawPlants";
 import drawBackground from "../../rendering/environment/drawBackground";
 import { drawForeground } from "../../rendering/environment/drawForeground";
 import { drawMidground } from "../../rendering/environment/drawMidground";
 import { WORLD_WIDTH, WORLD_HEIGHT } from "../../game/world/world.constant";
+import { drawDepthSortedWorld } from "../../rendering/drawDepthSortedWorld";
+
+export type PlantDepthItem = {
+  type: "plant";
+  depth: number;
+  plant: Plant;
+  tile: Tile;
+};
+export type DecorationDepthItem = {
+  type: "decoration";
+  depth: number;
+  decoration: Decoration;
+  tile: Tile;
+};
+export type DepthItem = PlantDepthItem | DecorationDepthItem;
 
 export type Viewport = {
   scale: number;
@@ -92,7 +103,11 @@ export default function Canvas({
     buildingsRef.current = buildings;
   }, [buildings]);
 
-  useEffect(() => {}, []);
+
+
+
+  
+
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -111,23 +126,6 @@ export default function Canvas({
     ctx.translate(viewport.offsetX, viewport.offsetY);
     ctx.scale(viewport.scale, viewport.scale);
 
-//     console.log({
-//   canvasWidth: canvas.width,
-//   canvasHeight: canvas.height,
-//   viewport,
-// });
-
-
-// const rect = canvas.getBoundingClientRect();
-
-// console.log( {
-//   internalWidth: canvas.width,
-//   internalHeight: canvas.height,
-//   cssWidth: rect.width,
-//   cssHeight: rect.height,
-// });
-
-console.log("ref tiles : ", tilesRef.current)
     const render = () => {
       ctx.save();
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -137,14 +135,15 @@ console.log("ref tiles : ", tilesRef.current)
       drawMidground(ctx, assetsRef.current);
 
       drawTileState(ctx, tilesRef.current);
-      drawDecorations(ctx, tilesRef.current, assetsRef.current);
-      drawPlants(ctx, plantsRef.current, tilesRef.current, assetsRef.current);
-      drawBuildings(
-        ctx,
-        buildingsRef.current,
-        tilesRef.current,
-        assetsRef.current,
-      );
+      // drawDecorations(ctx, tilesRef.current, assetsRef.current);
+      // drawPlants(ctx, plantsRef.current, tilesRef.current, assetsRef.current);
+      drawDepthSortedWorld(ctx, plantsRef.current, initialDecorations, tilesRef.current, assetsRef.current)
+      // drawBuildings(
+      //   ctx,
+      //   buildingsRef.current,
+      //   tilesRef.current,
+      //   assetsRef.current,
+      // );
       drawForeground(ctx, assetsRef.current);
 
       ctx.restore();
@@ -176,7 +175,7 @@ console.log("ref tiles : ", tilesRef.current)
 
       if (!selectedTileId) return;
 
-            setTiles((currentTiles) =>
+      setTiles((currentTiles) =>
         currentTiles.map((tile) => ({
           ...tile,
           selected: tile.id === selectedTileId,
@@ -214,7 +213,6 @@ console.log("ref tiles : ", tilesRef.current)
       const plant = findPlantOnTile(selectedTileId, plants);
 
       if (!plant) return;
-      // console.log(getAdjacentPlants(plant, plants, tiles));
     };
 
     const handleMouseMove = (event: MouseEvent) => {
@@ -234,14 +232,13 @@ console.log("ref tiles : ", tilesRef.current)
     };
 
     const resizeCanvas = () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-};
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
 
-resizeCanvas();
+    resizeCanvas();
 
-window.addEventListener("resize", resizeCanvas);
-
+    window.addEventListener("resize", resizeCanvas);
 
     canvas.addEventListener("click", handleMouseClick);
     canvas.addEventListener("mousemove", handleMouseMove);
@@ -249,10 +246,15 @@ window.addEventListener("resize", resizeCanvas);
     return () => {
       canvas.removeEventListener("click", handleMouseClick);
       canvas.removeEventListener("mousemove", handleMouseMove);
-        window.removeEventListener("resize", resizeCanvas);
-
+      window.removeEventListener("resize", resizeCanvas);
     };
-  }, [setTiles, handleTileSelection, setSelectionType, window.innerHeight, window.innerWidth]);
+  }, [
+    setTiles,
+    handleTileSelection,
+    setSelectionType,
+    window.innerHeight,
+    window.innerWidth,
+  ]);
 
   return (
     <>

@@ -48,3 +48,24 @@ export const drawPlants = (
     );
   });
 };
+
+
+export const drawPlant = (
+  ctx: CanvasRenderingContext2D,
+  plant: Plant,
+  tile: Tile,
+  assets: GameAssets,
+) => {
+
+    const stage = getPlantStage(plant);
+    const assetKey = getPlantAssetKey(plant, stage);
+    const image = assets[assetKey];
+
+    ctx.drawImage(
+      image,
+      tile.x - 75 / 2,
+      tile.y - HALF_TILE_HEIGHT - 100 / 2,
+      75,
+      75,
+    );
+};
