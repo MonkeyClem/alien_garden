@@ -95,12 +95,6 @@ export default function Canvas({
     assetsRef.current = assets;
   }, [assets]);
 
-
-
-
-  
-
-
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -113,22 +107,43 @@ export default function Canvas({
 
     let animationFrameId: number;
 
-    const viewport = getViewport(canvas.width, canvas.height);
-
-    ctx.translate(viewport.offsetX, viewport.offsetY);
-    ctx.scale(viewport.scale, viewport.scale);
+    // const viewport = getViewport(canvas.width, canvas.height);
 
     const render = () => {
-      ctx.save();
+      console.log({
+        innerWidth: window.innerWidth,
+        innerHeight: window.innerHeight,
+
+        canvasWidth: canvas.width,
+        canvasHeight: canvas.height,
+
+        clientWidth: canvas.clientWidth,
+        clientHeight: canvas.clientHeight,
+
+        viewport: getViewport(canvas.width, canvas.height),
+      });
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const viewport = getViewport(canvas.width, canvas.height);
+
+      ctx.save();
+
+      ctx.translate(viewport.offsetX, viewport.offsetY);
+      ctx.scale(viewport.scale, viewport.scale);
 
       drawBackground(ctx, assetsRef.current);
       drawAllTiles(ctx, tilesRef.current, assets);
       drawMidground(ctx, assetsRef.current);
-      
+
       drawTileState(ctx, tilesRef.current);
 
-      drawDepthSortedWorld(ctx, plantsRef.current, initialDecorations, tilesRef.current, assetsRef.current)
+      drawDepthSortedWorld(
+        ctx,
+        plantsRef.current,
+        initialDecorations,
+        tilesRef.current,
+        assetsRef.current,
+      );
 
       drawForeground(ctx, assetsRef.current);
 
@@ -152,9 +167,20 @@ export default function Canvas({
     if (!ctx) return;
 
     const handleMouseClick = (event: MouseEvent) => {
+           const viewPort = getViewport(canvas.width, canvas.height);
+
+      const rect = canvas.getBoundingClientRect();
+
+      const canvasX = event.clientX - rect.left;
+      const canvasY = event.clientY - rect.top;
+
+      const worldX = (canvasX - viewPort.offsetX) / viewPort.scale;
+      const worldY = (canvasY - viewPort.offsetY) / viewPort.scale;
+
+
       const clickedPosition = {
-        x: event.clientX,
-        y: event.clientY,
+        x: worldX,
+        y: worldY,
       };
 
       const selectedTileId = findTile(tilesRef.current, clickedPosition, ctx);
@@ -201,9 +227,21 @@ export default function Canvas({
     };
 
     const handleMouseMove = (event: MouseEvent) => {
+      const viewPort = getViewport(canvas.width, canvas.height);
+
+      const rect = canvas.getBoundingClientRect();
+
+      const canvasX = event.clientX - rect.left;
+      const canvasY = event.clientY - rect.top;
+
+      const worldX = (canvasX - viewPort.offsetX) / viewPort.scale;
+      const worldY = (canvasY - viewPort.offsetY) / viewPort.scale;
+
       const hoveredPosition = {
-        x: event.clientX,
-        y: event.clientY,
+        // x: event.clientX,
+        // y: event.clientY,
+        x: worldX,
+        y: worldY,
       };
 
       const hoveredTileId = findTile(tilesRef.current, hoveredPosition, ctx);
