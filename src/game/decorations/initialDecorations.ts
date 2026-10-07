@@ -27,8 +27,8 @@ export const initialDecorations: Decoration[] = [
 
     gridX: 0,
     gridY: 12,
-    width: 160,
-    height: 180,
+    width: 120,
+    height: 140,
     offsetY: -80,
     offsetX: 0,
     footPrint : {width : 3, height : 2}
@@ -43,8 +43,8 @@ export const initialDecorations: Decoration[] = [
 
     gridX: 0,
     gridY: 12,
-    width: 150,
-    height: 120,
+    width: 225,
+    height: 180,
     offsetY: -35,
     offsetX: 0,
     footPrint : {width : 2, height : 2}

@@ -52,6 +52,61 @@ const getViewport = (canvasWidth: number, canvasHeight: number): Viewport => {
   };
 };
 
+const drawWolrdOverscan = (ctx : CanvasRenderingContext2D, canvasWidth : number, canvasHeight : number) => {
+ctx.fillStyle = "#000000"; 
+ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+}
+
+const drawWorldBorders = (
+  ctx: CanvasRenderingContext2D,
+  canvasWidth: number,
+  canvasHeight: number,
+  viewport: Viewport,
+) => {
+  const worldWidth = WORLD_WIDTH * viewport.scale;
+  const worldHeight = WORLD_HEIGHT * viewport.scale;
+
+  const worldLeft = viewport.offsetX;
+  const worldTop = viewport.offsetY;
+
+  const worldRight = worldLeft + worldWidth;
+  const worldBottom = worldTop + worldHeight;
+
+  ctx.fillStyle = "#05060A";
+
+  // Left
+  ctx.fillRect(
+    0,
+    0,
+    worldLeft,
+    canvasHeight,
+  );
+
+  // Right
+  ctx.fillRect(
+    worldRight,
+    0,
+    canvasWidth - worldRight,
+    canvasHeight,
+  );
+
+  // Top
+  ctx.fillRect(
+    worldLeft,
+    0,
+    worldWidth,
+    worldTop,
+  );
+
+  // Bottom
+  ctx.fillRect(
+    worldLeft,
+    worldBottom,
+    worldWidth,
+    canvasHeight - worldBottom,
+  );
+};
+
 interface Canvas {
   handleTileSelection: (tile: Tile) => void;
   setTiles: (value: Tile[] | ((prev: Tile[]) => Tile[])) => void;
@@ -125,7 +180,9 @@ export default function Canvas({
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const viewport = getViewport(canvas.width, canvas.height);
+      drawWolrdOverscan(ctx, canvas.width, canvas.height)
 
+      
       ctx.save();
 
       ctx.translate(viewport.offsetX, viewport.offsetY);
@@ -148,6 +205,9 @@ export default function Canvas({
       drawForeground(ctx, assetsRef.current);
 
       ctx.restore();
+
+            drawWorldBorders(ctx, canvas.width, canvas.height, viewport)
+
 
       animationFrameId = requestAnimationFrame(render);
     };

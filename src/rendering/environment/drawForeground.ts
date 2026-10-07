@@ -7,7 +7,6 @@ export  const drawForeground = (
 ) => {
   const image = assets.foreground;
 
-  const secondImage = assets.midgroundThree
 
 
   if (!image) return;
@@ -15,16 +14,11 @@ export  const drawForeground = (
   ctx.drawImage(
     image,
     0,
-    -10,
+    0,
    WORLD_WIDTH,
-   WORLD_HEIGHT
+   WORLD_HEIGHT 
   );
 
-    ctx.drawImage(
-    secondImage,
-    1350,
-    -25,
-   WORLD_WIDTH / 2,
-   WORLD_HEIGHT / 1.5
-  );
+
+
 };
