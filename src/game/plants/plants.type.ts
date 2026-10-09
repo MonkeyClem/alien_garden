@@ -1,10 +1,10 @@
 export const Species = {
-  REACTOR_MUSHROOM :  "reactorMushroom",
-  SYNAPTIC_VINE : "synapticVine",
-  CRYSTAL_FLOWER : 'crystalFlower'
-} as const
+  REACTOR_MUSHROOM: "reactorMushroom",
+  SYNAPTIC_VINE: "synapticVine",
+  CRYSTAL_FLOWER: "crystalFlower",
+} as const;
 
-export type Species = (typeof Species)[keyof typeof Species]
+export type Species = (typeof Species)[keyof typeof Species];
 
 export type Plant = {
   id: string;
@@ -17,10 +17,10 @@ export type Plant = {
 };
 
 export type ResourceYield = {
-  bioMass?: number
-  biologicalData? : number
-  bioEnergy?: number
-}
+  bioMass?: number;
+  biologicalData?: number;
+  bioEnergy?: number;
+};
 
 export type SpeciesStage = {
   label: string;
@@ -35,11 +35,11 @@ export type SpeciesConfig = {
   growthDuration: number;
 
   spread?: {
-    enable : boolean,
-    interval : number
-  }
+    enable: boolean;
+    interval: number;
+  };
 
-  harvestable: boolean,
+  harvestable: boolean;
   harvestYield?: ResourceYield;
 
   stages: {
@@ -48,4 +48,3 @@ export type SpeciesConfig = {
     3: SpeciesStage;
   };
 };
-

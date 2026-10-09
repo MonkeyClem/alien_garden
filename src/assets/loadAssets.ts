@@ -24,16 +24,10 @@ export const loadAssets = async () => {
     "/assets/PNG/Assets/synapticVine_stage_two.png",
   );
 
-  const inventoryIcon = await loadImage(
-    "/assets/PNG/Assets/inventory_icon.png",
-  );
+  const inventoryIcon = await loadImage("/assets/PNG/Assets/inventory_icon.png");
   const alienGround = await loadImage("/assets/PNG/Assets/alienGround.png");
-  const alienGroundTwo = await loadImage(
-    "/assets/PNG/Assets/alien_ground_two.png",
-  );
-  const alienGroundThree = await loadImage(
-    "/assets/PNG/Assets/alien_ground_three.png",
-  );
+  const alienGroundTwo = await loadImage("/assets/PNG/Assets/alien_ground_two.png");
+  const alienGroundThree = await loadImage("/assets/PNG/Assets/alien_ground_three.png");
 
   const veins = await loadImage("/assets/PNG/Assets/veins.png");
   const spores = await loadImage("/assets/PNG/Assets/spores.png");
@@ -41,28 +35,28 @@ export const loadAssets = async () => {
 
   const spacePod = await loadImage("/assets/PNG/Assets/spacePod.png");
 
+  const mapBackground = await loadImage("/assets/PNG/Assets/mapBackground.jpg");
+  const midground = await loadImage("/assets/PNG/Assets/midground.png");
+  const midgroundTwo = await loadImage("/assets/PNG/Assets/midground_two.png");
+  const midgroundThree = await loadImage("/assets/PNG/Assets/midground_three.png");
+  const midgroundFour = await loadImage("/assets/PNG/Assets/midground_four.png");
 
-  const mapBackground = await loadImage("/assets/PNG/Assets/mapBackground.jpg")
-  const midground = await loadImage("/assets/PNG/Assets/midground.png")
-  const midgroundTwo = await loadImage("/assets/PNG/Assets/midground_two.png")
-  const midgroundThree = await loadImage("/assets/PNG/Assets/midground_three.png")
-  const midgroundFour = await loadImage("/assets/PNG/Assets/midground_four.png")
+  const firstMapLake = await loadImage("/assets/PNG/Assets/first_map_lake.png");
 
+  const midgroundFillerOne = await loadImage("/assets/PNG/Assets/midgroundFillerOne.png");
 
-  const firstMapLake = await loadImage("/assets/PNG/Assets/first_map_lake.png")
+  const foreground = await loadImage("/assets/PNG/Assets/foreground.png");
 
+  const bioMass = await loadImage("/assets/PNG/Assets/bioMass.png");
+  const bioEnergy = await loadImage("/assets/PNG/Assets/bioEnergy.png");
+  const biologicalData = await loadImage("/assets/PNG/Assets/biologicalData.png");
 
-
-  const midgroundFillerOne = await loadImage("/assets/PNG/Assets/midgroundFillerOne.png")
-
-  const foreground = await loadImage("/assets/PNG/Assets/foreground.png")
-
-  const bioMass = await loadImage("/assets/PNG/Assets/bioMass.png")
-  const bioEnergy = await loadImage("/assets/PNG/Assets/bioEnergy.png")
-  const biologicalData = await loadImage("/assets/PNG/Assets/biologicalData.png")
-  
-  const open_mission_button = await loadImage("/assets/PNG/Assets/open_mission_button.png")
-  const close_mission_button = await loadImage("/assets/PNG/Assets/close_mission_button.png")
+  const open_mission_button = await loadImage(
+    "/assets/PNG/Assets/open_mission_button.png",
+  );
+  const close_mission_button = await loadImage(
+    "/assets/PNG/Assets/close_mission_button.png",
+  );
 
   return {
     bioBattery,
@@ -78,7 +72,7 @@ export const loadAssets = async () => {
     synapticVineStageTwo,
 
     inventoryIcon,
-    open_mission_button, 
+    open_mission_button,
     close_mission_button,
 
     alienGround,
@@ -92,9 +86,9 @@ export const loadAssets = async () => {
     spacePod,
 
     mapBackground,
-    midground, 
+    midground,
     midgroundTwo,
-    midgroundThree, 
+    midgroundThree,
     midgroundFour,
 
     midgroundFillerOne,
@@ -105,6 +99,7 @@ export const loadAssets = async () => {
 
     bioMass,
     bioEnergy,
-    biologicalData
+    biologicalData,
   };
 };
+

@@ -4,108 +4,20 @@ import findTile from "../../game/grid/findTile";
 import { type selectionType } from "../../game/type";
 import type { GameAssets } from "../../assets/assetTypes";
 import type { Tile } from "../../game/grid/tiles.types";
-import drawAllTiles, {
-  drawTileState,
-} from "../../rendering/tiles/drawAllTiles";
+import drawAllTiles, { drawTileState } from "../../rendering/tiles/drawAllTiles";
 import { initialDecorations } from "../../game/decorations/initialDecorations";
 import type { Plant, Species } from "../../game/plants/plants.type";
-import type { Decoration } from "../../game/decorations/decoration.type";
 import { findPlantOnTile } from "../../game/plants/findPlantOnTile";
 import React from "react";
 import { findWorldObjectOnTile } from "../../game/grid/findWorldObjectOnTile";
 import drawBackground from "../../rendering/environment/drawBackground";
 import { drawForeground } from "../../rendering/environment/drawForeground";
 import { drawMidground } from "../../rendering/environment/drawMidground";
-import { WORLD_WIDTH, WORLD_HEIGHT } from "../../game/world/world.constant";
-import { drawDepthSortedWorld } from "../../rendering/drawDepthSortedWorld";
-
-export type PlantDepthItem = {
-  type: "plant";
-  depth: number;
-  plant: Plant;
-  tile: Tile;
-};
-export type DecorationDepthItem = {
-  type: "decoration";
-  depth: number;
-  decoration: Decoration;
-  tile: Tile;
-};
-export type DepthItem = PlantDepthItem | DecorationDepthItem;
-
-export type Viewport = {
-  scale: number;
-  offsetX: number;
-  offsetY: number;
-};
-
-const getViewport = (canvasWidth: number, canvasHeight: number): Viewport => {
-  const scale = Math.min(
-    canvasWidth / WORLD_WIDTH,
-    canvasHeight / WORLD_HEIGHT,
-  );
-
-  return {
-    scale,
-    offsetX: (canvasWidth - WORLD_WIDTH * scale) / 2,
-    offsetY: (canvasHeight - WORLD_HEIGHT * scale) / 2,
-  };
-};
-
-const drawWolrdOverscan = (ctx : CanvasRenderingContext2D, canvasWidth : number, canvasHeight : number) => {
-ctx.fillStyle = "#000000"; 
-ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-}
-
-const drawWorldBorders = (
-  ctx: CanvasRenderingContext2D,
-  canvasWidth: number,
-  canvasHeight: number,
-  viewport: Viewport,
-) => {
-  const worldWidth = WORLD_WIDTH * viewport.scale;
-  const worldHeight = WORLD_HEIGHT * viewport.scale;
-
-  const worldLeft = viewport.offsetX;
-  const worldTop = viewport.offsetY;
-
-  const worldRight = worldLeft + worldWidth;
-  const worldBottom = worldTop + worldHeight;
-
-  ctx.fillStyle = "#05060A";
-
-  // Left
-  ctx.fillRect(
-    0,
-    0,
-    worldLeft,
-    canvasHeight,
-  );
-
-  // Right
-  ctx.fillRect(
-    worldRight,
-    0,
-    canvasWidth - worldRight,
-    canvasHeight,
-  );
-
-  // Top
-  ctx.fillRect(
-    worldLeft,
-    0,
-    worldWidth,
-    worldTop,
-  );
-
-  // Bottom
-  ctx.fillRect(
-    worldLeft,
-    worldBottom,
-    worldWidth,
-    canvasHeight - worldBottom,
-  );
-};
+import { drawDepthSortedWorld } from "../../rendering/entities/drawDepthSortedWorld";
+import { drawWorldBorders } from "../../rendering/environment/drawWorldBorders";
+import { getViewport } from "../../rendering/viewport/getViewport";
+import { screenToWorld } from "../../rendering/viewport/screenToWorld";
+import type { Viewport } from "../../rendering/viewport/viewport.type";
 
 interface Canvas {
   handleTileSelection: (tile: Tile) => void;
@@ -113,11 +25,10 @@ interface Canvas {
   setSelectionType: React.Dispatch<SetStateAction<selectionType>>;
   setIsSelectedTileOccupied: (value: boolean) => void;
   handlePlantSpecie: (selectedSpecies: Species, selectedTile: Tile) => void;
+  handleHUDContainerSize: (viewport: Viewport) => void;
   tiles: Tile[];
-  selectionType: selectionType;
   assets: GameAssets;
   plants: Plant[];
-  decorations: Decoration[];
   selectedSpecie: Species | null;
 }
 
@@ -127,6 +38,7 @@ export default function Canvas({
   setSelectionType,
   setIsSelectedTileOccupied,
   handlePlantSpecie,
+  handleHUDContainerSize,
   tiles,
   plants,
   assets,
@@ -161,28 +73,16 @@ export default function Canvas({
     if (!ctx) return;
 
     let animationFrameId: number;
-
     // const viewport = getViewport(canvas.width, canvas.height);
 
+    // handleHUDContainerSize(viewport);
+
     const render = () => {
-      console.log({
-        innerWidth: window.innerWidth,
-        innerHeight: window.innerHeight,
-
-        canvasWidth: canvas.width,
-        canvasHeight: canvas.height,
-
-        clientWidth: canvas.clientWidth,
-        clientHeight: canvas.clientHeight,
-
-        viewport: getViewport(canvas.width, canvas.height),
-      });
-
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const viewport = getViewport(canvas.width, canvas.height);
-      drawWolrdOverscan(ctx, canvas.width, canvas.height)
 
-      
+      handleHUDContainerSize(viewport);
+
       ctx.save();
 
       ctx.translate(viewport.offsetX, viewport.offsetY);
@@ -206,8 +106,7 @@ export default function Canvas({
 
       ctx.restore();
 
-            drawWorldBorders(ctx, canvas.width, canvas.height, viewport)
-
+      drawWorldBorders(ctx, canvas.width, canvas.height, viewport);
 
       animationFrameId = requestAnimationFrame(render);
     };
@@ -227,42 +126,33 @@ export default function Canvas({
     if (!ctx) return;
 
     const handleMouseClick = (event: MouseEvent) => {
-           const viewPort = getViewport(canvas.width, canvas.height);
-
-      const rect = canvas.getBoundingClientRect();
-
-      const canvasX = event.clientX - rect.left;
-      const canvasY = event.clientY - rect.top;
-
-      const worldX = (canvasX - viewPort.offsetX) / viewPort.scale;
-      const worldY = (canvasY - viewPort.offsetY) / viewPort.scale;
-
+      const worldRelativePositions = screenToWorld(canvas, event);
 
       const clickedPosition = {
-        x: worldX,
-        y: worldY,
+        x: worldRelativePositions.worldX,
+        y: worldRelativePositions.worldY,
       };
 
       const selectedTileId = findTile(tilesRef.current, clickedPosition, ctx);
 
       if (!selectedTileId) return;
 
-      setTiles((currentTiles) =>
-        currentTiles.map((tile) => ({
+      setTiles(currentTiles =>
+        currentTiles.map(tile => ({
           ...tile,
           selected: tile.id === selectedTileId,
         })),
       );
 
       const selectedTile: Tile | undefined = tilesRef.current.find(
-        (tile) => tile.id === selectedTileId,
+        tile => tile.id === selectedTileId,
       );
 
       if (!selectedTile) return;
 
       const clickedObject = findWorldObjectOnTile(
         selectedTile.id,
-        plants,
+        plantsRef.current,
         initialDecorations,
       );
 
@@ -287,27 +177,17 @@ export default function Canvas({
     };
 
     const handleMouseMove = (event: MouseEvent) => {
-      const viewPort = getViewport(canvas.width, canvas.height);
-
-      const rect = canvas.getBoundingClientRect();
-
-      const canvasX = event.clientX - rect.left;
-      const canvasY = event.clientY - rect.top;
-
-      const worldX = (canvasX - viewPort.offsetX) / viewPort.scale;
-      const worldY = (canvasY - viewPort.offsetY) / viewPort.scale;
+      const worldRelativePositions = screenToWorld(canvas, event);
 
       const hoveredPosition = {
-        // x: event.clientX,
-        // y: event.clientY,
-        x: worldX,
-        y: worldY,
+        x: worldRelativePositions.worldX,
+        y: worldRelativePositions.worldY,
       };
 
       const hoveredTileId = findTile(tilesRef.current, hoveredPosition, ctx);
 
-      setTiles((currentTiles) =>
-        currentTiles.map((tile) => ({
+      setTiles(currentTiles =>
+        currentTiles.map(tile => ({
           ...tile,
           hovered: tile.id === hoveredTileId,
         })),
@@ -321,10 +201,10 @@ export default function Canvas({
 
     resizeCanvas();
 
-    window.addEventListener("resize", resizeCanvas);
-
     canvas.addEventListener("click", handleMouseClick);
     canvas.addEventListener("mousemove", handleMouseMove);
+
+    window.addEventListener("resize", resizeCanvas);
 
     return () => {
       canvas.removeEventListener("click", handleMouseClick);
@@ -335,8 +215,10 @@ export default function Canvas({
     setTiles,
     handleTileSelection,
     setSelectionType,
-    window.innerHeight,
-    window.innerWidth,
+    plants,
+    selectedSpecie,
+    setIsSelectedTileOccupied,
+    handlePlantSpecie,
   ]);
 
   return (

@@ -12,7 +12,7 @@ import DecorationHud from "./ContextualHuds/DecorationHud";
 import EmptyTileHud from "./ContextualHuds/EmptyTileHud";
 import InventoryComponents from "./Inventory/Inventory";
 import PlantHud from "./ContextualHuds/PlantHud";
-
+import type { Viewport } from "../../rendering/viewport/viewport.type";
 
 interface SideMenuProps {
   selectedTile: Tile | null;
@@ -25,6 +25,7 @@ interface SideMenuProps {
   ressources: Ressources;
   isHarvestButtonActive: boolean;
   unlockedSpecies: Species[];
+  HUDContainerSize: Viewport | null;
   handlePlantSeed: (selectedSpecie: Species, selectedTile: Tile) => void;
   handleSpecieSelection: (selectedSpecie: Species) => void;
   handleRessourcesUpdate: (plantOnTile: Plant) => void;
@@ -40,53 +41,56 @@ export default function SideMenu({
   assets,
   selectedSpecie,
   plants,
-  ressources,
+  // ressources,
   isHarvestButtonActive,
   isSelectedTileOccupied,
   selectionType,
   unlockedSpecies,
+  HUDContainerSize,
   handleSpecieSelection,
   handlePlantSeed,
   handleRessourcesUpdate,
   setIsHarvestButtonActive,
   setIsSelectedTileOccupied,
-  }: SideMenuProps) {
+}: SideMenuProps) {
   const [isInventoryOpen, setIsInventoryOpen] = useState<boolean>(false);
 
   const [isMissionModalOpen, setIsMissionModalOpen] = useState<boolean>(true);
 
   const plantOnTile = selectedTile
-    ? plants.find((plant) => plant.tileId === selectedTile.id)
+    ? plants.find(plant => plant.tileId === selectedTile.id)
     : null;
 
   const decorationOnTile =
     selectedTile && findDecorationOnTile(selectedTile.id, initialDecorations);
 
-
   useEffect(() => {
     setIsHarvestButtonActive(!!plantOnTile && getPlantStage(plantOnTile) === 3);
   }, [plantOnTile, plants, setIsHarvestButtonActive]);
-
-
-
-
 
   return (
     <>
       <div
         style={{
           position: "absolute",
-          display: "flex",
+          display: !HUDContainerSize ? "none" : "flex",
           justifyContent: "space-between",
           flexWrap: "wrap",
           background: "transparent",
-          left: 25,
-          right: 25,
-          top: 10,
+
+          pointerEvents: "none",
+          left: HUDContainerSize?.offsetX ? HUDContainerSize.offsetX + 5 : 25,
+          right: HUDContainerSize?.offsetX ? HUDContainerSize.offsetX + 5 : 25,
+
+          top: HUDContainerSize?.offsetY ? HUDContainerSize.offsetY : 10,
+          bottom: HUDContainerSize?.offsetY ? HUDContainerSize.offsetY : 0,
+
           borderRadius: "10px",
           marginTop: "2px",
         }}
       >
+
+        {/* CREER LE COMPOSANT DEDIE 
         <div
           style={{
             display: "flex",
@@ -94,8 +98,7 @@ export default function SideMenu({
             gap: "5vh",
             alignItems: "flex-start",
             borderRadius: "10px",
-            paddingLeft: "0.5rem",
-            paddingRight: "0.5rem",
+
             justifyContent: "space-between",
             fontSize: 14,
           }}
@@ -109,10 +112,10 @@ export default function SideMenu({
             <div
               style={{
                 display: "flex",
-                alignContent:"baseline",
+                alignContent: "baseline",
                 background: "rgba(7, 13, 31, 0.94)",
                 border: "2px solid #087E9B",
-                padding:"0.25rem",
+                padding: "0.25rem",
                 borderRadius: "10px",
               }}
             >
@@ -131,8 +134,7 @@ export default function SideMenu({
                   flexDirection: "column",
                   paddingLeft: 8,
                   paddingRight: 8,
-                  textAlign: "left"
-                  ,
+                  textAlign: "left",
                 }}
               >
                 <p> Biomass</p>
@@ -145,8 +147,8 @@ export default function SideMenu({
                 background: "rgba(7, 13, 31, 0.94)",
                 border: "2px solid #087E9B",
                 borderRadius: "10px",
-                alignContent:"baseline",
-                padding:"0.25rem",
+                alignContent: "baseline",
+                padding: "0.25rem",
               }}
             >
               <img
@@ -172,13 +174,13 @@ export default function SideMenu({
               </div>
             </div>
             <div
-                   style={{
+              style={{
                 display: "flex",
                 background: "rgba(7, 13, 31, 0.94)",
                 border: "2px solid #087E9B",
                 borderRadius: "10px",
-                alignContent:"baseline",
-                padding:"0.25rem",
+                alignContent: "baseline",
+                padding: "0.25rem",
               }}
             >
               <div
@@ -211,6 +213,7 @@ export default function SideMenu({
             </div>
           </div>
         </div>
+        */}
 
         <div style={{ position: "absolute", left: 0, top: "5rem" }}>
           <InventoryComponents
@@ -225,6 +228,8 @@ export default function SideMenu({
           />
         </div>
 
+
+        {/* CREER LE COMPOSANT DEDIE : MissionModal  */}
         {isMissionModalOpen ? (
           <div
             style={{
@@ -234,6 +239,7 @@ export default function SideMenu({
               padding: "0.5rem 1rem",
               right: 0,
               display: "flex",
+              pointerEvents: "auto",
               flexDirection: "column",
               background: "rgba(7, 13, 31, 0.94)",
               border: "2px solid #087E9B",
@@ -242,21 +248,20 @@ export default function SideMenu({
             }}
           >
             {" "}
-     
-              <div
-                onClick={() => setIsMissionModalOpen(false)}
-                style={{
-                  cursor:"pointer",
-                  height: 40,
-                  width: 40,
-                  backgroundImage: `url(${assets.close_mission_button.src})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  position: "absolute",
-                  right: -10,
-                  top: -10,
-                }}
-              ></div>
+            <div
+              onClick={() => setIsMissionModalOpen(false)}
+              style={{
+                cursor: "pointer",
+                height: 40,
+                width: 40,
+                backgroundImage: `url(${assets.close_mission_button.src})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                position: "absolute",
+                right: -10,
+                top: -10,
+              }}
+            ></div>
             <div
               style={{
                 display: "flex",
@@ -321,8 +326,7 @@ export default function SideMenu({
                   </li>
                   <li>
                     <input type="checkbox" />
-                    Etablir un lien synaptique entre le Reactor Muhsroom et la
-                    batterie
+                    Etablir un lien synaptique entre le Reactor Muhsroom et la batterie
                   </li>
                 </ul>
               </div>
@@ -331,8 +335,8 @@ export default function SideMenu({
               </div>
             </div>
             <p style={{ fontWeight: 200, fontSize: 12 }}>
-              Une première connexion vous permettra de comprendre les
-              intéractions au sein de cet ecosystème
+              Une première connexion vous permettra de comprendre les intéractions au sein
+              de cet ecosystème
             </p>
           </div>
         ) : (
@@ -340,12 +344,13 @@ export default function SideMenu({
             style={{
               fontSize: 14,
               width: 350,
-                            padding: "0.5rem ",
-cursor:"pointer",
+              padding: "0.5rem ",
+              cursor: "pointer",
               borderRadius: 10,
               position: "absolute",
-              display:"flex",
+              display: "flex",
               right: 0,
+              pointerEvents: "auto",
               flexDirection: "column",
               background: "rgba(7, 13, 31, 0.94)",
               border: "2px solid #087E9B",
@@ -372,8 +377,8 @@ cursor:"pointer",
               <p
                 style={{
                   color: "gold",
-                  position:"absolute",
-                  right: "2rem"
+                  position: "absolute",
+                  right: "2rem",
                 }}
               >
                 Activer la Bio Battery{" "}
@@ -396,6 +401,8 @@ cursor:"pointer",
         )}
       </div>
 
+
+
       {selectedTile ? (
         <div
           style={{
@@ -406,15 +413,11 @@ cursor:"pointer",
             background: "rgba(7, 13, 31, 0.94)",
             border: "2px solid #087E9B",
             width: "25vw",
-            borderRadius:10,
+            borderRadius: 10,
           }}
         >
-  
           {selectionType === "decoration" && decorationOnTile && (
-            <DecorationHud
-              decorationOnTile={decorationOnTile}
-              assets={assets}
-            />
+            <DecorationHud decorationOnTile={decorationOnTile} assets={assets} />
           )}
 
           {selectionType === "plant" && (

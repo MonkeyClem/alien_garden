@@ -3,12 +3,12 @@ import type { Plant } from "../../../game/plants/plants.type";
 import { SPECIES_CONFIG } from "../../../game/plants/speciesConfig";
 
 interface PlantHudProps {
-    plantOnTile: Plant | null | undefined,
-    isHarvestButtonActive: boolean,
-    handleRessourcesUpdate: (plantOnTile: Plant) => void;
+  plantOnTile: Plant | null | undefined;
+  isHarvestButtonActive: boolean;
+  handleRessourcesUpdate: (plantOnTile: Plant) => void;
 }
 
-export default function PlantHud({ 
+export default function PlantHud({
   plantOnTile,
   isHarvestButtonActive,
   handleRessourcesUpdate,

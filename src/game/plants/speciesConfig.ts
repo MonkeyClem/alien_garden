@@ -1,23 +1,21 @@
 import { Species, type SpeciesConfig } from "./plants.type";
 
-
 export const SPECIES_CONFIG = {
   [Species.REACTOR_MUSHROOM]: {
     displayName: "Champignon Réacteur",
-    description:
-      "Transforme la biomasse et soutient les systèmes énergétiques.",
+    description: "Transforme la biomasse et soutient les systèmes énergétiques.",
     role: "Production de biomasse",
 
     growthDuration: 20_000,
 
-    harvestable: true, 
+    harvestable: true,
     harvestYield: {
       bioMass: 5,
     },
 
     spread: {
       enable: true,
-      interval: 15_000
+      interval: 15_000,
     },
 
     stages: {
@@ -38,13 +36,12 @@ export const SPECIES_CONFIG = {
 
   [Species.CRYSTAL_FLOWER]: {
     displayName: "Cristal-Fleur",
-    description:
-      "Analyse le vivant et produit des données biologiques.",
+    description: "Analyse le vivant et produit des données biologiques.",
     role: "Recherche",
 
     growthDuration: 30_000,
 
-    harvestable: true, 
+    harvestable: true,
     harvestYield: {
       biologicalData: 5,
     },
@@ -67,13 +64,12 @@ export const SPECIES_CONFIG = {
 
   [Species.SYNAPTIC_VINE]: {
     displayName: "Vigne Synaptique",
-    description:
-      "Relie les organismes et les systèmes de la station.",
+    description: "Relie les organismes et les systèmes de la station.",
     role: "Connexion",
 
     growthDuration: 25_000,
 
-    harvestable: false, 
+    harvestable: false,
 
     stages: {
       1: {
@@ -86,9 +82,8 @@ export const SPECIES_CONFIG = {
       },
       3: {
         label: "Liaison synaptique",
-        description:
-          "La connexion peut transmettre énergie et données.",
+        description: "La connexion peut transmettre énergie et données.",
       },
     },
   },
-}  satisfies Record<Species, SpeciesConfig>;
+} satisfies Record<Species, SpeciesConfig>;

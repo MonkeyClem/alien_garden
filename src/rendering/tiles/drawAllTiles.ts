@@ -1,23 +1,19 @@
 import type { GameAssets } from "../../assets/assetTypes";
-import type {  Tile } from "../../game/grid/tiles.types";
+import type { Tile } from "../../game/grid/tiles.types";
 import { drawTexturedTile } from "./drawTexturedTile";
 
 export default function drawAllTiles(
   ctx: CanvasRenderingContext2D,
   tilePositions: Tile[],
-  assets : GameAssets
+  assets: GameAssets,
 ) {
-  return tilePositions.forEach((tile) => {
-    drawTexturedTile(ctx, tile, assets)
-  }
-);
+  return tilePositions.forEach(tile => {
+    drawTexturedTile(ctx, tile, assets);
+  });
 }
 
-export const drawTileState = (
-  ctx: CanvasRenderingContext2D,
-  tiles: Tile[],
-): void => {
-  tiles.forEach((tile) => {
+export const drawTileState = (ctx: CanvasRenderingContext2D, tiles: Tile[]): void => {
+  tiles.forEach(tile => {
     if (!tile.hovered && !tile.selected) return;
 
     ctx.save();

@@ -3,11 +3,12 @@ import type { Decoration } from "./decoration.type";
 export const initialDecorations: Decoration[] = [
   {
     id: "bioBattery-1",
-    tileId : 1,
-    assetKey : "bioBattery",
+    tileId: 1,
+    assetKey: "bioBattery",
 
     displayName: "Bio Battery",
-    description:"A biological energy storage unit designed to collect and redistribute BioEnergy.",
+    description:
+      "A biological energy storage unit designed to collect and redistribute BioEnergy.",
 
     gridX: 0,
     gridY: 12,
@@ -15,15 +16,16 @@ export const initialDecorations: Decoration[] = [
     height: 260,
     offsetY: -20,
     offsetX: -35,
-    footPrint:{width: 7, height : 6}
+    footPrint: { width: 7, height: 6 },
   },
-    {
+  {
     id: "bioPalm-1",
-    tileId : 140,
-    assetKey : "bioPalmtree",
+    tileId: 140,
+    assetKey: "bioPalmtree",
 
     displayName: "Purple Palm",
-    description:"A native photosynthetic organism commonly found throughout the surrounding ecosystem.",
+    description:
+      "A native photosynthetic organism commonly found throughout the surrounding ecosystem.",
 
     gridX: 0,
     gridY: 12,
@@ -31,15 +33,68 @@ export const initialDecorations: Decoration[] = [
     height: 140,
     offsetY: -80,
     offsetX: 0,
-    footPrint : {width : 3, height : 2}
+    footPrint: { width: 3, height: 2 },
   },
   {
+    id: "bioPalm-1",
+    tileId: 866,
+    assetKey: "bioPalmtree",
+
+    displayName: "Purple Palm",
+    description:
+      "A native photosynthetic organism commonly found throughout the surrounding ecosystem.",
+
+    gridX: 0,
+    gridY: 12,
+    width: 75,
+    height: 90,
+    offsetY: -80,
+    offsetX: 0,
+    footPrint: { width: 3, height: 2 },
+  },
+  {
+    id: "bioPalm-1",
+    tileId: 867,
+    assetKey: "bioPalmtree",
+
+    displayName: "Purple Palm",
+    description:
+      "A native photosynthetic organism commonly found throughout the surrounding ecosystem.",
+
+    gridX: 0,
+    gridY: 12,
+    width: 75,
+    height: 90,
+    offsetY: -80,
+    offsetX: 0,
+    footPrint: { width: 3, height: 2 },
+  },
+
+  {
+    id: "bioPalm-1",
+    tileId: 868,
+    assetKey: "bioPalmtree",
+
+    displayName: "Purple Palm",
+    description:
+      "A native photosynthetic organism commonly found throughout the surrounding ecosystem.",
+
+    gridX: 0,
+    gridY: 12,
+    width: 75,
+    height: 90,
+    offsetY: -80,
+    offsetX: 0,
+    footPrint: { width: 3, height: 2 },
+  },
+
+  {
     id: "spacePod-1",
-    tileId : 12,
-    assetKey : "spacePod",
+    tileId: 12,
+    assetKey: "spacePod",
 
     displayName: "Expedition Pod",
-    description:"A compact expedition module deployed to support planetary exploration.",
+    description: "A compact expedition module deployed to support planetary exploration.",
 
     gridX: 0,
     gridY: 12,
@@ -47,17 +102,16 @@ export const initialDecorations: Decoration[] = [
     height: 180,
     offsetY: -35,
     offsetX: 0,
-    footPrint : {width : 2, height : 2}
-  }
-
-  ,
-    {
+    footPrint: { width: 2, height: 2 },
+  },
+  {
     id: "lake_1",
-    tileId : 391,
-    assetKey : "firstMapLake",
+    tileId: 391,
+    assetKey: "firstMapLake",
 
     displayName: "Bioluminescent Pool",
-    description: "A natural pool rich in bioluminescent microorganisms. Its water emits a faint, persistent glow.",
+    description:
+      "A natural pool rich in bioluminescent microorganisms. Its water emits a faint, persistent glow.",
 
     gridX: 1,
     gridY: 1,
@@ -65,8 +119,6 @@ export const initialDecorations: Decoration[] = [
     height: 250,
     offsetY: 60,
     offsetX: 15,
-    footPrint : {width : 9, height : 5}
-  }
-
-
-]
+    footPrint: { width: 9, height: 5 },
+  },
+];

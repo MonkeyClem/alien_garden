@@ -1,6 +1,6 @@
-import type { DecorationAssetsKey } from "../../assets/assetTypes"
+import type { DecorationAssetsKey } from "../../assets/assetTypes";
 
-export type FootPrint = {width : number, height : number}
+export type FootPrint = { width: number; height: number };
 
 export type Decoration = {
   id: string;
@@ -17,4 +17,4 @@ export type Decoration = {
   offsetX: number;
   offsetY: number;
   footPrint: FootPrint;
-}
+};

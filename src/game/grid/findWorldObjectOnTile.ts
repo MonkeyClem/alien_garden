@@ -2,16 +2,7 @@ import type { Decoration } from "../decorations/decoration.type";
 import { findDecorationOnTile } from "../decorations/findDecorationOnTile";
 import { findPlantOnTile } from "../plants/findPlantOnTile";
 import type { Plant } from "../plants/plants.type";
-
-type WorldObjectOnTile =
-  | {
-      type: "plant";
-      object: Plant;
-    }
-  | {
-      type: "decoration";
-      object: Decoration;
-    };
+import type { WorldObjectOnTile } from "../type";
 
 export const findWorldObjectOnTile = (
   tileId: number,
@@ -26,8 +17,6 @@ export const findWorldObjectOnTile = (
       object: decoration,
     };
   }
-
-
 
   const plant = findPlantOnTile(tileId, plants);
 

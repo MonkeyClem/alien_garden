@@ -10,15 +10,10 @@ export default function findTile(
 
   let selectedTile: Tile | null = null;
 
-  for(const tile of tilePositions){
-   const isSelected: boolean = ctx.isPointInPath(
-      tile.path,
-      xPosToFind,
-      yPosToFind,
-    );
-   if (isSelected) selectedTile = tile;
+  for (const tile of tilePositions) {
+    const isSelected: boolean = ctx.isPointInPath(tile.path, xPosToFind, yPosToFind);
+    if (isSelected) selectedTile = tile;
   }
-
 
   return selectedTile?.id;
 }

@@ -8,16 +8,14 @@ import type { GameAssets } from "./assets/assetTypes";
 import { loadAssets } from "./assets/loadAssets";
 import { generateGrid } from "./game/grid/generateGrid";
 import type { Tile } from "./game/grid/tiles.types";
-import {   Species, type Plant, type ResourceYield } from "./game/plants/plants.type";
+import { Species, type Plant, type ResourceYield } from "./game/plants/plants.type";
 import { SPECIES_CONFIG } from "./game/plants/speciesConfig";
-import { initialDecorations } from "./game/decorations/initialDecorations";
-
+import type { Viewport } from "./rendering/viewport/viewport.type";
 
 function App() {
-  const [tiles, setTiles] = useState<Tile[]>(() =>
-    generateGrid(),
-  );
-  const [inventory 
+  const [tiles, setTiles] = useState<Tile[]>(() => generateGrid());
+  const [
+    inventory,
     // setInventory
   ] = useState<Inventory>({
     species: {
@@ -33,8 +31,7 @@ function App() {
     biologicalData: 0,
   });
 
-  const [isHarvestButtonActive, setIsHarvestButtonActive] =
-    useState<boolean>(false);
+  const [isHarvestButtonActive, setIsHarvestButtonActive] = useState<boolean>(false);
 
   const [plants, setPlants] = useState<Plant[]>([]);
   const [assets, setAssets] = useState<GameAssets | null>(null);
@@ -42,22 +39,19 @@ function App() {
   const [selectedTile, setSelectedTile] = useState<Tile | null>(null);
   const [selectedSpecie, setSelectedSpecie] = useState<Species | null>(null);
 
-  const [unlockedSpecies, setUnlockedSpecies] = useState<Species[]>((
-   [
-    Species.REACTOR_MUSHROOM
-  ]
-  ))
+  const [unlockedSpecies, setUnlockedSpecies] = useState<Species[]>([
+    Species.REACTOR_MUSHROOM,
+  ]);
 
   const [selectionType, setSelectionType] = useState<selectionType>(null);
   const [isSelectedTileOccupied, setIsSelectedTileOccupied] = useState(false);
 
+  const [HUDContainerSize, setHUDContainerSize] = useState<Viewport | null>(null);
 
   useEffect(() => {
     loadAssets()
       .then(setAssets)
-      .catch((error) =>
-        console.error("Error lors du chargement des Assets : " + error),
-      );
+      .catch(error => console.error("Error lors du chargement des Assets : " + error));
   }, []);
 
   const handlePlantSpecie = (selectedSpecies: Species, selectedTile: Tile) => {
@@ -72,7 +66,7 @@ function App() {
       isReadyToHarvest: false,
     };
 
-    setPlants((prev) => [...prev, plant]);
+    setPlants(prev => [...prev, plant]);
     setSelectionType("plant");
   };
 
@@ -80,21 +74,15 @@ function App() {
     setSelectedSpecie(clickedSpecie);
   };
 
- const handleTileSelection = (tile: Tile) => {
-  setSelectedTile(tile);
-};
-  console.log("selectedTile : ", selectedTile)
-
-
-
+  const handleTileSelection = (tile: Tile) => {
+    setSelectedTile(tile);
+  };
 
   //the plantOnTile parameter is the harvested Plant
   const handleRessourcesUpdate = (plantOnTile: Plant) => {
-
     if (!plantOnTile.isReadyToHarvest) return;
 
     const plantSpecieData = SPECIES_CONFIG[plantOnTile.specie];
-
 
     if (!plantSpecieData.harvestable) return;
 
@@ -102,10 +90,10 @@ function App() {
 
     if (!plantSpecieData) return;
 
-    setPlants((currentPlants) =>
+    setPlants(currentPlants =>
       currentPlants.filter((plant: Plant) => plant.id !== plantOnTile?.id),
     );
-    setRessources((currentRessources) => ({
+    setRessources(currentRessources => ({
       bioMass: currentRessources.bioMass + (harvestYield.bioMass ?? 0),
       bioEnergy: currentRessources.bioEnergy + (harvestYield.bioEnergy ?? 0),
       biologicalData:
@@ -113,6 +101,12 @@ function App() {
     }));
   };
 
+  const handleHUDContainerSize = (
+    // canvasSize : number,
+    viewport: Viewport,
+  ) => {
+    setHUDContainerSize(viewport);
+  };
 
   return (
     <>
@@ -129,6 +123,7 @@ function App() {
             assets={assets}
             isSelectedTileOccupied={isSelectedTileOccupied}
             unlockedSpecies={unlockedSpecies}
+            HUDContainerSize={HUDContainerSize}
             setIsSelectedTileOccupied={setIsSelectedTileOccupied}
             handleSpecieSelection={handleSpecieSelection}
             setIsHarvestButtonActive={setIsHarvestButtonActive}
@@ -136,7 +131,6 @@ function App() {
             setRessources={setRessources}
             handlePlantSeed={handlePlantSpecie}
             setUnlockedSpecies={setUnlockedSpecies}
-
           />
           <Canvas
             handleTileSelection={handleTileSelection}
@@ -144,11 +138,10 @@ function App() {
             setTiles={setTiles}
             setIsSelectedTileOccupied={setIsSelectedTileOccupied}
             handlePlantSpecie={handlePlantSpecie}
-            selectionType={selectionType}
+            handleHUDContainerSize={handleHUDContainerSize}
             plants={plants}
             assets={assets}
             tiles={tiles}
-            decorations={initialDecorations}
             selectedSpecie={selectedSpecie}
           />
         </>

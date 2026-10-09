@@ -2,7 +2,8 @@ import { type Dispatch } from "react";
 import React from "react";
 import { Species, type Plant } from "../../../game/plants/plants.type";
 import type { Inventory } from "../../../game/type";
-import type { AssetsKey, GameAssets } from "../../../assets/assetTypes";
+import type { GameAssets } from "../../../assets/assetTypes";
+import { getSpecieAssetKey } from "../../../assets/getSpecieAssetKey";
 
 interface InventoryProps {
   plants: Plant[];
@@ -14,23 +15,6 @@ interface InventoryProps {
   setIsInventoryOpen: Dispatch<React.SetStateAction<boolean>>;
   handleSeedSelection: (selectedSpecie: Species) => void;
 }
-
-const getSpecieAssetKey = (specie: Species): AssetsKey => {
-  if (specie === "reactorMushroom") {
-    return "reactorMushroomStageThree";
-  }
-
-  if (specie === "synapticVine") {
-    return "synapticVineStageTwo";
-  }
-
-  if (specie === "crystalFlower") {
-    return "synapticVineStageTwo";
-  }
-  throw new Error(
-    `No assets key available for the specie ${specie} to be display in inventory`,
-  );
-};
 
 export default function InventoryComponents({
   inventory,
@@ -52,12 +36,16 @@ export default function InventoryComponents({
         padding: "10px",
       }}
     >
-      <p           style={{
-                  textTransform: "uppercase",
-                  fontSize: 16,
-                  fontWeight: 800,
-                  color: "#89dcf1",
-                }}>Seeds</p>
+      <p
+        style={{
+          textTransform: "uppercase",
+          fontSize: 16,
+          fontWeight: 800,
+          color: "#89dcf1",
+        }}
+      >
+        Seeds
+      </p>
 
       {Object.entries(inventory.species).map(([key, amount]) => {
         const species = key as Species;

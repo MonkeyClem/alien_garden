@@ -11,16 +11,9 @@ export const drawPlant = (
   tile: Tile,
   assets: GameAssets,
 ) => {
+  const stage = getPlantStage(plant);
+  const assetKey = getPlantAssetKey(plant, stage);
+  const image = assets[assetKey];
 
-    const stage = getPlantStage(plant);
-    const assetKey = getPlantAssetKey(plant, stage);
-    const image = assets[assetKey];
-
-    ctx.drawImage(
-      image,
-      tile.x - 75 / 2,
-      tile.y - HALF_TILE_HEIGHT - 100 / 2,
-      75,
-      75,
-    );
+  ctx.drawImage(image, tile.x - 75 / 2, tile.y - HALF_TILE_HEIGHT - 100 / 2, 75, 75);
 };

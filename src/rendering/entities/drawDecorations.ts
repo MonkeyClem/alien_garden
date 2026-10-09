@@ -5,18 +5,15 @@ import type { Tile } from "../../game/grid/tiles.types";
 
 export const drawDecoration = (
   ctx: CanvasRenderingContext2D,
-  decoration : Decoration,
+  decoration: Decoration,
   tile: Tile,
   assets: GameAssets,
 ) => {
+  const image = assets[decoration.assetKey];
 
-    const image = assets[decoration.assetKey];
+  const x = tile.x - decoration.width / 2 + decoration.offsetX;
 
-    const x = tile.x - decoration.width / 2 + decoration.offsetX;
+  const y = tile.y - decoration.height / 2 + HALF_TILE_HEIGHT + decoration.offsetY;
 
-    const y =
-      tile.y - decoration.height / 2 + HALF_TILE_HEIGHT + decoration.offsetY;
-
-    ctx.drawImage(image, x, y, decoration.width, decoration.height);
-  
+  ctx.drawImage(image, x, y, decoration.width, decoration.height);
 };

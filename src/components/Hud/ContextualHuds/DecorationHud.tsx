@@ -6,23 +6,24 @@ interface DecorationHudProps {
   assets: GameAssets;
 }
 
-export default function DecorationHud({
-  decorationOnTile,
-  assets,
-}: DecorationHudProps) {
+export default function DecorationHud({ decorationOnTile, assets }: DecorationHudProps) {
   return (
     <div style={{ display: "flex" }}>
-      <div style={{
-        textAlign: "left",
-      }}>
-        <h3 style={{
+      <div
+        style={{
+          textAlign: "left",
+        }}
+      >
+        <h3
+          style={{
             textTransform: "uppercase",
-                  fontWeight: 800,
-                  color: "#76cee4",
-        }}>{decorationOnTile.displayName}</h3>
-        <p style={{
-
-        }}>{decorationOnTile.description}</p>
+            fontWeight: 800,
+            color: "#76cee4",
+          }}
+        >
+          {decorationOnTile.displayName}
+        </h3>
+        <p style={{}}>{decorationOnTile.description}</p>
       </div>
 
       <div>

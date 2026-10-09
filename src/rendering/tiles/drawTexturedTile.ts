@@ -5,23 +5,22 @@ import type { Tile } from "../../game/grid/tiles.types";
 export const drawTexturedTile = (
   ctx: CanvasRenderingContext2D,
   tile: Tile,
-  assets : GameAssets
+  assets: GameAssets,
 ) => {
-
   const groundTextures = [
-  assets.alienGround,
-  assets.alienGroundTwo,
-  assets.alienGroundThree,
-] as const;
+    assets.alienGround,
+    assets.alienGroundTwo,
+    assets.alienGroundThree,
+  ] as const;
 
-  const texture = groundTextures[tile.groundVariant]
+  const texture = groundTextures[tile.groundVariant];
 
   ctx.save();
 
   ctx.beginPath();
 
   ctx.imageSmoothingEnabled = true;
-ctx.fillStyle = "#58365f";
+  ctx.fillStyle = "#58365f";
   ctx.fill(tile.path);
 
   ctx.moveTo(tile.x, tile.y - HALF_TILE_HEIGHT);
@@ -40,7 +39,6 @@ ctx.fillStyle = "#58365f";
     HALF_TILE_WIDTH * 2,
     HALF_TILE_HEIGHT * 2,
   );
-
 
   ctx.restore();
 };

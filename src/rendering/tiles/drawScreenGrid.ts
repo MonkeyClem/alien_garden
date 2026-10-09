@@ -5,7 +5,7 @@ import drawAllTiles from "./drawAllTiles";
 export default function drawScreenGrid(
   ctx: CanvasRenderingContext2D,
   tilePositions: Tile[],
-  assets : GameAssets
+  assets: GameAssets,
 ) {
   drawAllTiles(ctx, tilePositions, assets);
 }

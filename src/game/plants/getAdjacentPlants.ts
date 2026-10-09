@@ -7,22 +7,13 @@ export const getAdjacentPlants = (
   plants: Plant[],
   tiles: Tile[],
 ): Plant[] => {
-  const plantTile = tiles.find(
-    (tile) => tile.id === plant.tileId,
-  );
+  const plantTile = tiles.find(tile => tile.id === plant.tileId);
 
   if (!plantTile) return [];
 
-  const adjacentTiles = getAdjacentTiles(
-    plantTile,
-    tiles,
-  );
+  const adjacentTiles = getAdjacentTiles(plantTile, tiles);
 
-  const adjacentTileIds = new Set(
-    adjacentTiles.map((tile) => tile.id),
-  );
+  const adjacentTileIds = new Set(adjacentTiles.map(tile => tile.id));
 
-  return plants.filter((candidate) =>
-    adjacentTileIds.has(candidate.tileId),
-  );
+  return plants.filter(candidate => adjacentTileIds.has(candidate.tileId));
 };

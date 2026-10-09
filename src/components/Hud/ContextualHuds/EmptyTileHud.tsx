@@ -23,8 +23,8 @@ export default function EmptyTileHud({
       <h3>Emplacement vide</h3>
       {selectedTile.id}
       <p>
-        Cette parcelle de terre est fertile ! Vous pouvez y planter n'importe
-        laquelle de vos graines{" "}
+        Cette parcelle de terre est fertile ! Vous pouvez y planter n'importe laquelle de
+        vos graines{" "}
       </p>
 
       {selectedSpecie ? (
