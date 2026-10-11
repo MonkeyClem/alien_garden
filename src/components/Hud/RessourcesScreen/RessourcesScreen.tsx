@@ -1,6 +1,6 @@
 import type { AssetsKey } from "../../../assets/assetTypes";
 import type { RessourcesScreenProps } from "./RessourcesScreen.interface";
-
+import styles from "./ressourcesScreen.module.css";
 export default function RessourcesScreen({
   HUDContainerSize,
   assets,
@@ -21,19 +21,9 @@ export default function RessourcesScreen({
 
   return (
     <div
+      className={styles.ressourcesScreenContainer}
       style={{
-        gap: "5vh",
-        height: "fit-content",
-        alignItems: "flex-start",
-        borderRadius: "10px",
         display: !HUDContainerSize ? "none" : "flex",
-        justifyContent: "space-between",
-        fontSize: 14,
-        padding: 5,
-        paddingLeft: 15,
-        paddingRight: 15,
-        background: "rgba(7, 13, 31, 0.94)",
-        border: "2px solid #087E9B",
       }}
     >
       {Object.entries(ressources).map(([assetKey, value]) => {
