@@ -1,0 +1,20 @@
+.decorationHudFlexContainer {
+  display: flex;
+}
+
+.decorationHudTextZone {
+  text-align: "left";
+}
+
+.decorationHudDisplayName {
+  text-transform: "uppercase";
+  font-weight: 800;
+  color: #76cee4;
+}
+
+.decorationHudImg {
+  width: 7rem;
+  height: 7rem;
+  object-fit: "contain";
+  image-rendering: "pixelated";
+}

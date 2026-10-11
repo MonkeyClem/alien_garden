@@ -1,43 +1,16 @@
-import type { Inventory, Ressources } from "../../game/type";
-import type React from "react";
 import { useEffect, useState } from "react";
-import { type selectionType } from "../../game/type";
-import type { Tile } from "../../game/grid/tiles.types";
 import { getPlantStage } from "../../game/plants/getPlantStage";
-import { Species, type Plant } from "../../game/plants/plants.type";
 import { initialDecorations } from "../../game/decorations/initialDecorations";
 import { findDecorationOnTile } from "../../game/decorations/findDecorationOnTile";
-import type { GameAssets } from "../../assets/assetTypes";
-import DecorationHud from "./ContextualHuds/DecorationHud";
-import EmptyTileHud from "./ContextualHuds/EmptyTileHud";
+import DecorationHud from "./ContextualHuds/DecorationHud/DecorationHud";
+import EmptyTileHud from "./ContextualHuds/EmptyTileHud/EmptyTileHud";
 import InventoryComponents from "./Inventory/Inventory";
-import PlantHud from "./ContextualHuds/PlantHud";
-import type { Viewport } from "../../rendering/viewport/viewport.type";
 import RessourcesScreen from "./RessourcesScreen/RessourcesScreen";
 import MissionModal from "./MissionModal/MissionModal";
+import type HUDProps from "./HUD.interface";
+import PlantHud from "./ContextualHuds/PlantHud/PlantHud";
 
-interface SideMenuProps {
-  selectedTile: Tile | null;
-  inventory: Inventory;
-  assets: GameAssets;
-  selectedSpecie: Species | null;
-  selectionType: selectionType;
-  isSelectedTileOccupied: boolean;
-  plants: Plant[];
-  ressources: Ressources;
-  isHarvestButtonActive: boolean;
-  unlockedSpecies: Species[];
-  HUDContainerSize: Viewport | null;
-  handlePlantSeed: (selectedSpecie: Species, selectedTile: Tile) => void;
-  handleSpecieSelection: (selectedSpecie: Species) => void;
-  handleRessourcesUpdate: (plantOnTile: Plant) => void;
-  setIsHarvestButtonActive: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsSelectedTileOccupied: (value: boolean) => void;
-  setRessources: React.Dispatch<React.SetStateAction<Ressources>>;
-  setUnlockedSpecies: React.Dispatch<React.SetStateAction<Species[]>>;
-}
-
-export default function SideMenu({
+export default function HUD({
   selectedTile,
   inventory,
   assets,
@@ -54,7 +27,7 @@ export default function SideMenu({
   handleRessourcesUpdate,
   setIsHarvestButtonActive,
   setIsSelectedTileOccupied,
-}: SideMenuProps) {
+}: HUDProps) {
   const [isInventoryOpen, setIsInventoryOpen] = useState<boolean>(false);
 
   const [isMissionModalOpen, setIsMissionModalOpen] = useState<boolean>(true);

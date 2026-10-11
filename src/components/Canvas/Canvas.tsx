@@ -1,14 +1,12 @@
-import { useEffect, useRef, type SetStateAction } from "react";
+import { useEffect, useRef } from "react";
 import styles from "./canvas.module.css";
 import findTile from "../../game/grid/findTile";
-import { type selectionType } from "../../game/type";
 import type { GameAssets } from "../../assets/assetTypes";
 import type { Tile } from "../../game/grid/tiles.types";
 import drawAllTiles, { drawTileState } from "../../rendering/tiles/drawAllTiles";
 import { initialDecorations } from "../../game/decorations/initialDecorations";
-import type { Plant, Species } from "../../game/plants/plants.type";
+import type { Plant } from "../../game/plants/plants.type";
 import { findPlantOnTile } from "../../game/plants/findPlantOnTile";
-import React from "react";
 import { findWorldObjectOnTile } from "../../game/grid/findWorldObjectOnTile";
 import drawBackground from "../../rendering/environment/drawBackground";
 import { drawForeground } from "../../rendering/environment/drawForeground";
@@ -17,20 +15,7 @@ import { drawDepthSortedWorld } from "../../rendering/entities/drawDepthSortedWo
 import { drawWorldBorders } from "../../rendering/environment/drawWorldBorders";
 import { getViewport } from "../../rendering/viewport/getViewport";
 import { screenToWorld } from "../../rendering/viewport/screenToWorld";
-import type { Viewport } from "../../rendering/viewport/viewport.type";
-
-interface Canvas {
-  handleTileSelection: (tile: Tile) => void;
-  setTiles: (value: Tile[] | ((prev: Tile[]) => Tile[])) => void;
-  setSelectionType: React.Dispatch<SetStateAction<selectionType>>;
-  setIsSelectedTileOccupied: (value: boolean) => void;
-  handlePlantSpecie: (selectedSpecies: Species, selectedTile: Tile) => void;
-  handleHUDContainerSize: (viewport: Viewport) => void;
-  tiles: Tile[];
-  assets: GameAssets;
-  plants: Plant[];
-  selectedSpecie: Species | null;
-}
+import type { CanvasProps } from "./Canvas.interface";
 
 export default function Canvas({
   handleTileSelection,
@@ -43,7 +28,7 @@ export default function Canvas({
   plants,
   assets,
   selectedSpecie,
-}: Canvas) {
+}: CanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const tilesRef = useRef<Tile[]>(tiles);
@@ -73,9 +58,6 @@ export default function Canvas({
     if (!ctx) return;
 
     let animationFrameId: number;
-    // const viewport = getViewport(canvas.width, canvas.height);
-
-    // handleHUDContainerSize(viewport);
 
     const render = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);

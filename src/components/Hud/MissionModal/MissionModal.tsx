@@ -80,7 +80,7 @@ export default function MissionModal({
               color: "gold",
             }}
           >
-            Activer la Bio Battery{" "}
+            Réctiver la Bio Battery{" "}
           </p>
           <ul
             style={{

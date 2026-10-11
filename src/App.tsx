@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import Canvas from "./components/Canvas/Canvas";
-import SideMenu from "./components/Hud/SideMenu";
+import HUD from "./components/Hud/HUD";
 import { type Inventory, type Ressources } from "./game/type";
 import { type selectionType } from "./game/type";
 import type { GameAssets } from "./assets/assetTypes";
@@ -112,7 +112,7 @@ function App() {
     <>
       {assets ? (
         <>
-          <SideMenu
+          <HUD
             selectedTile={selectedTile}
             inventory={inventory}
             selectedSpecie={selectedSpecie}

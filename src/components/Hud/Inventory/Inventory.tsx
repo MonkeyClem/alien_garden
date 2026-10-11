@@ -1,20 +1,6 @@
-import { type Dispatch } from "react";
-import React from "react";
-import { Species, type Plant } from "../../../game/plants/plants.type";
-import type { Inventory } from "../../../game/type";
-import type { GameAssets } from "../../../assets/assetTypes";
+import { Species } from "../../../game/plants/plants.type";
 import { getSpecieAssetKey } from "../../../assets/getSpecieAssetKey";
-
-interface InventoryProps {
-  plants: Plant[];
-  assets: GameAssets;
-  inventory: Inventory;
-  isInventoryOpen: boolean;
-  unlockedSpecies: Species[];
-  selectedSpecie: Species | null;
-  setIsInventoryOpen: Dispatch<React.SetStateAction<boolean>>;
-  handleSeedSelection: (selectedSpecie: Species) => void;
-}
+import type InventoryProps from "./Inventory.interface";
 
 export default function InventoryComponents({
   inventory,

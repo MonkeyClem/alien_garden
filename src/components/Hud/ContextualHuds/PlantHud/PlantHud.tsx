@@ -1,12 +1,6 @@
-import { getPlantStage } from "../../../game/plants/getPlantStage";
-import type { Plant } from "../../../game/plants/plants.type";
-import { SPECIES_CONFIG } from "../../../game/plants/speciesConfig";
-
-interface PlantHudProps {
-  plantOnTile: Plant | null | undefined;
-  isHarvestButtonActive: boolean;
-  handleRessourcesUpdate: (plantOnTile: Plant) => void;
-}
+import { getPlantStage } from "../../../../game/plants/getPlantStage";
+import { SPECIES_CONFIG } from "../../../../game/plants/speciesConfig";
+import type PlantHudProps from "./PlantHud.interface";
 
 export default function PlantHud({
   plantOnTile,
