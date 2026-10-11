@@ -1,3 +1,4 @@
+import type { AssetsKey } from "../../../assets/assetTypes";
 import type { RessourcesScreenProps } from "./RessourcesScreen.interface";
 
 export default function RessourcesScreen({
@@ -5,127 +6,65 @@ export default function RessourcesScreen({
   assets,
   ressources,
 }: RessourcesScreenProps) {
+  const standardizeAssetKey = (assetKey: string) => {
+    let newString = "";
+    for (let i = 0; i < assetKey.length; i++) {
+      if (assetKey[i].toUpperCase() === assetKey[i]) {
+        newString += " ";
+        newString += assetKey[i];
+      } else {
+        newString += assetKey[i].toUpperCase();
+      }
+    }
+    return newString;
+  };
+
   return (
     <div
       style={{
-        flexDirection: "column",
         gap: "5vh",
+        height: "fit-content",
         alignItems: "flex-start",
         borderRadius: "10px",
         display: !HUDContainerSize ? "none" : "flex",
         justifyContent: "space-between",
         fontSize: 14,
+        padding: 5,
+        paddingLeft: 15,
+        paddingRight: 15,
+        background: "rgba(7, 13, 31, 0.94)",
+        border: "2px solid #087E9B",
       }}
     >
-      <div
-        style={{
-          display: "flex",
-          background: "rgba(7, 13, 31, 0.94)",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignContent: "baseline",
-            background: "rgba(7, 13, 31, 0.94)",
-            border: "2px solid #087E9B",
-            padding: "0.25rem",
-            borderRadius: "10px",
-          }}
-        >
-          <img
-            src={assets.bioMass.src}
-            style={{
-              width: "48px",
-              height: "48px",
-              objectFit: "cover",
-              imageRendering: "pixelated",
-            }}
-          />
+      {Object.entries(ressources).map(([assetKey, value]) => {
+        return (
           <div
             style={{
               display: "flex",
-              flexDirection: "column",
-              paddingLeft: 8,
-              paddingRight: 8,
-              textAlign: "left",
-            }}
-          >
-            <p> Biomass</p>
-            <p> {ressources.bioMass}</p>
-          </div>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            background: "rgba(7, 13, 31, 0.94)",
-            border: "2px solid #087E9B",
-            borderRadius: "10px",
-            alignContent: "baseline",
-            padding: "0.25rem",
-          }}
-        >
-          <img
-            src={assets.bioEnergy.src}
-            style={{
-              width: "48",
-              height: "48px",
-              objectFit: "cover",
-              imageRendering: "pixelated",
-            }}
-          />
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              paddingLeft: 8,
-              paddingRight: 8,
-              textAlign: "left",
-            }}
-          >
-            <p> BioEnergie</p>
-            <p>{ressources.bioEnergy}</p>
-          </div>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            background: "rgba(7, 13, 31, 0.94)",
-            border: "2px solid #087E9B",
-            borderRadius: "10px",
-            alignContent: "baseline",
-            padding: "0.25rem",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
+              alignItems: "center",
+              gap: 8,
             }}
           >
             <img
-              src={assets.biologicalData.src}
+              src={assets[assetKey as AssetsKey].src}
               style={{
-                width: "48px",
-                height: "48px",
+                width: "1.5rem",
+                height: "1.5rem",
                 objectFit: "contain",
                 imageRendering: "pixelated",
               }}
             />
-            <div
+            <p
               style={{
-                display: "flex",
-                flexDirection: "column",
-                textAlign: "left",
-                paddingLeft: 8,
-                paddingRight: 8,
+                color: "#76cee4",
               }}
             >
-              <p> Données </p>
-              <p> {ressources.biologicalData}</p>{" "}
-            </div>
+              {standardizeAssetKey(assetKey)} :{" "}
+            </p>
+            <p style={{ fontSize: 12 }}>{value}</p>
           </div>
-        </div>
-      </div>
+        );
+      })}
     </div>
   );
 }
