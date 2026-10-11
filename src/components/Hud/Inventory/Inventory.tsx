@@ -23,85 +23,87 @@ export default function InventoryComponents({
   handleSeedSelection,
 }: InventoryProps) {
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "8px",
-
-        background: "rgba(7, 13, 31, 0.94)",
-        border: "2px solid #087E9B",
-        borderRadius: "8px",
-
-        padding: "10px",
-      }}
-    >
-      <p
+    <div style={{ position: "absolute", left: 0, top: "5rem", pointerEvents: "auto" }}>
+      <div
         style={{
-          textTransform: "uppercase",
-          fontSize: 16,
-          fontWeight: 800,
-          color: "#89dcf1",
+          display: "flex",
+          flexDirection: "column",
+          gap: "8px",
+
+          background: "rgba(7, 13, 31, 0.94)",
+          border: "2px solid #087E9B",
+          borderRadius: "8px",
+
+          padding: "10px",
         }}
       >
-        Seeds
-      </p>
+        <p
+          style={{
+            textTransform: "uppercase",
+            fontSize: 16,
+            fontWeight: 800,
+            color: "#89dcf1",
+          }}
+        >
+          Seeds
+        </p>
 
-      {Object.entries(inventory.species).map(([key, amount]) => {
-        const species = key as Species;
-        const isSelected = species === selectedSpecie;
-        const imageSrc = getSpecieAssetKey(species);
+        {Object.entries(inventory.species).map(([key, amount]) => {
+          const species = key as Species;
+          const isSelected = species === selectedSpecie;
+          const imageSrc = getSpecieAssetKey(species);
 
-        return (
-          <button
-            key={species}
-            onClick={() => handleSeedSelection(species)}
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              position: "relative",
+          return (
+            <button
+              key={species}
+              onClick={() => handleSeedSelection(species)}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                position: "relative",
 
-              padding: "8px 12px",
+                padding: "8px 12px",
 
-              background: isSelected
-                ? "rgba(34, 230, 242, 0.16)"
-                : "rgba(21, 34, 59, 0.8)",
+                background: isSelected
+                  ? "rgba(34, 230, 242, 0.16)"
+                  : "rgba(21, 34, 59, 0.8)",
 
-              color: isSelected ? "#7AFAFF" : "#E8EDF5",
+                color: isSelected ? "#7AFAFF" : "#E8EDF5",
 
-              border: isSelected ? "2px solid #22E6F2" : "2px solid #33465F",
+                border: isSelected ? "2px solid #22E6F2" : "2px solid #33465F",
 
-              borderRadius: "5px",
+                borderRadius: "5px",
 
-              boxShadow: isSelected
-                ? `
+                boxShadow: isSelected
+                  ? `
                   0 0 3px #7AFAFF,
                   0 0 8px rgba(34, 230, 242, 0.55),
                   inset 0 0 8px rgba(34, 230, 242, 0.16)
                 `
-                : "none",
+                  : "none",
 
-              cursor: "pointer",
+                cursor: "pointer",
 
-              textAlign: "left",
-            }}
-          >
-            <img
-              src={assets[imageSrc].src}
-              alt={species}
-              style={{
-                width: "48",
-                height: "48px",
-                objectFit: "cover",
-                imageRendering: "pixelated",
+                textAlign: "left",
               }}
-            />
-            <div style={{ position: "absolute", bottom: 0, right: 0 }}>
-              <p>{amount}</p>
-            </div>
-          </button>
-        );
-      })}
+            >
+              <img
+                src={assets[imageSrc].src}
+                alt={species}
+                style={{
+                  width: "48",
+                  height: "48px",
+                  objectFit: "cover",
+                  imageRendering: "pixelated",
+                }}
+              />
+              <div style={{ position: "absolute", bottom: 0, right: 0 }}>
+                <p>{amount}</p>
+              </div>
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }
