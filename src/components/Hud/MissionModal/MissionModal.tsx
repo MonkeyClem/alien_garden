@@ -97,11 +97,11 @@ export default function MissionModal({
             <li>
               {" "}
               <input type="checkbox" />
-              Planter un Reactor Mushroom
+              Planter et récolter un Reactor Mushroom
             </li>
             <li>
               <input type="checkbox" />
-              Etablir un lien synaptique entre le Reactor Muhsroom et la batterie
+              Fournir de l'énérgie à la Bio Battery
             </li>
           </ul>
         </div>
@@ -110,8 +110,8 @@ export default function MissionModal({
         </div>
       </div>
       <p style={{ fontWeight: 200, fontSize: 12 }}>
-        Une première connexion vous permettra de comprendre les intéractions au sein de
-        cet ecosystème
+        Une première mission simple, qui vous permettra de comprendre les principes de
+        base de cet écosystème.
       </p>
     </div>
   ) : (
@@ -120,7 +120,6 @@ export default function MissionModal({
         fontSize: 14,
         width: 350,
         padding: "0.5rem ",
-        cursor: "pointer",
         borderRadius: 10,
         position: "absolute",
         display: "flex",
@@ -169,6 +168,7 @@ export default function MissionModal({
             position: "absolute",
             right: -10,
             top: -10,
+            cursor: "pointer",
           }}
         ></div>
       </div>

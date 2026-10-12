@@ -31,7 +31,7 @@ export default function InventoryComponents({
             color: "#89dcf1",
           }}
         >
-          Seeds
+          seeds bank
         </p>
 
         {Object.entries(inventory.species).map(([key, amount]) => {
