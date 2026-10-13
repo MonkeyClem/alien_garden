@@ -1,6 +1,6 @@
 import type { Decoration } from "./decorations/decoration.type";
 import type { Tile } from "./grid/tiles.types";
-import type { Plant, Species } from "./plants/plants.type";
+import type { Plant } from "./plants/plants.type";
 
 //DECORATIONS ASSETS
 export type selectionType = "empty" | "plant" | "decoration" | null;
@@ -10,10 +10,6 @@ export type Ressources = {
   bioMass: number;
   bioEnergy: number;
   biologicalData: number;
-};
-
-export type Inventory = {
-  species: Record<Species, number>;
 };
 
 //TO MOVE IN RENDERING.TYPE

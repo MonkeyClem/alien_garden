@@ -4,6 +4,7 @@ import type PlantHudProps from "./PlantHud.interface";
 
 export default function PlantHud({
   plantOnTile,
+  setSelectionType,
   isHarvestButtonActive,
   handleRessourcesUpdate,
 }: PlantHudProps) {
@@ -26,7 +27,10 @@ export default function PlantHud({
 
       <p>{stageConfig.description}</p>
       <button
-        onClick={() => handleRessourcesUpdate(plantOnTile)}
+        onClick={() => {
+          handleRessourcesUpdate(plantOnTile);
+          setSelectionType("empty");
+        }}
         disabled={!isHarvestButtonActive}
       >
         Récolter

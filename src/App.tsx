@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import Canvas from "./components/Canvas/Canvas";
 import HUD from "./components/Hud/HUD";
-import { type Inventory, type Ressources } from "./game/type";
+import { type Ressources } from "./game/type";
 import { type selectionType } from "./game/type";
 import type { GameAssets } from "./assets/assetTypes";
 import { loadAssets } from "./assets/loadAssets";
@@ -11,13 +11,13 @@ import type { Tile } from "./game/grid/tiles.types";
 import { Species, type Plant, type ResourceYield } from "./game/plants/plants.type";
 import { SPECIES_CONFIG } from "./game/plants/speciesConfig";
 import type { Viewport } from "./rendering/viewport/viewport.type";
+import type { Inventory } from "./game/inventory/inventory.type";
+import hasPlayerEnoughSeeds from "./game/inventory/hasPlayerEnoughSeed";
+import refillReactorMushroomSeeds from "./game/inventory/refillReactorMushroomSeeds";
 
 function App() {
   const [tiles, setTiles] = useState<Tile[]>(() => generateGrid());
-  const [
-    inventory,
-    // setInventory
-  ] = useState<Inventory>({
+  const [inventory, setInventory] = useState<Inventory>({
     species: {
       reactorMushroom: 1,
       synapticVine: 2,
@@ -56,6 +56,15 @@ function App() {
 
   const handlePlantSpecie = (selectedSpecies: Species, selectedTile: Tile) => {
     if (!selectedTile) return;
+
+    if (!hasPlayerEnoughSeeds(inventory, selectedSpecies)) return;
+
+    setInventory(previousInventory => ({
+      species: {
+        ...previousInventory.species,
+        [selectedSpecies]: previousInventory.species[selectedSpecies] - 1,
+      },
+    }));
 
     const plant: Plant = {
       id: crypto.randomUUID(),
@@ -99,6 +108,10 @@ function App() {
       biologicalData:
         currentRessources.biologicalData + (harvestYield.biologicalData ?? 0),
     }));
+
+    if (plantOnTile.specie === "reactorMushroom") {
+      setInventory(previousInventory => refillReactorMushroomSeeds(previousInventory));
+    }
   };
 
   const handleHUDContainerSize = (
@@ -124,6 +137,8 @@ function App() {
             isSelectedTileOccupied={isSelectedTileOccupied}
             unlockedSpecies={unlockedSpecies}
             HUDContainerSize={HUDContainerSize}
+            setInventory={setInventory}
+            setSelectionType={setSelectionType}
             setIsSelectedTileOccupied={setIsSelectedTileOccupied}
             handleSpecieSelection={handleSpecieSelection}
             setIsHarvestButtonActive={setIsHarvestButtonActive}

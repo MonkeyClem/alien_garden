@@ -22,6 +22,8 @@ export default function HUD({
   selectionType,
   unlockedSpecies,
   HUDContainerSize,
+  setInventory,
+  setSelectionType,
   handleSpecieSelection,
   handlePlantSeed,
   handleRessourcesUpdate,
@@ -105,11 +107,12 @@ export default function HUD({
           }}
         >
           {selectionType === "decoration" && decorationOnTile && (
-            <DecorationHud decorationOnTile={decorationOnTile} assets={assets} />
+            <DecorationHud decorationOnTile={decorationOnTile} assets={assets} inventory={inventory} setInventory={setInventory} />
           )}
 
           {selectionType === "plant" && (
             <PlantHud
+              setSelectionType={setSelectionType}
               isHarvestButtonActive={isHarvestButtonActive}
               plantOnTile={plantOnTile}
               handleRessourcesUpdate={handleRessourcesUpdate}
