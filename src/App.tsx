@@ -13,6 +13,8 @@ import { SPECIES_CONFIG } from "./game/plants/speciesConfig";
 import type { Viewport } from "./rendering/viewport/viewport.type";
 import type { Inventory } from "./game/inventory/inventory.type";
 import hasPlayerEnoughSeeds from "./game/inventory/hasPlayerEnoughSeed";
+import unlockAbilIty from "./game/abilities/unlockAbility";
+import { type Ability, type UnlockedAbilites } from "./game/abilities/abilities.type";
 
 function App() {
   const [tiles, setTiles] = useState<Tile[]>(() => generateGrid());
@@ -46,6 +48,11 @@ function App() {
   const [isSelectedTileOccupied, setIsSelectedTileOccupied] = useState(false);
 
   const [HUDContainerSize, setHUDContainerSize] = useState<Viewport | null>(null);
+
+  const [unlockedAbilities, setUnlockedAbilities] = useState<UnlockedAbilites>({
+    electricDischarge: false,
+  });
+  const [newlyUnlockedAbility, setNewlyUnlockedAbility] = useState<Ability | null>(null);
 
   useEffect(() => {
     loadAssets()
@@ -108,13 +115,31 @@ function App() {
       biologicalData:
         currentRessources.biologicalData + (harvestYield.biologicalData ?? 0),
     }));
+
+    if (
+      plantOnTile.specie === "reactorMushroom" &&
+      !unlockedAbilities.electricDischarge
+    ) {
+      setUnlockedAbilities(previousAbilities =>
+        unlockAbilIty(previousAbilities, "electricDischarge"),
+      );
+      setNewlyUnlockedAbility("electricDischarge");
+    }
   };
 
-  const handleHUDContainerSize = (
-    viewport: Viewport,
-  ) => {
+  const handleHUDContainerSize = (viewport: Viewport) => {
     setHUDContainerSize(viewport);
   };
+
+  useEffect(() => {
+    if (newlyUnlockedAbility === null) return;
+
+    const timeOutId = window.setTimeout(() => {
+      setNewlyUnlockedAbility(null);
+    }, 3500);
+
+    return () => window.clearTimeout(timeOutId);
+  }, [newlyUnlockedAbility]);
 
   return (
     <>
@@ -132,6 +157,7 @@ function App() {
             isSelectedTileOccupied={isSelectedTileOccupied}
             unlockedSpecies={unlockedSpecies}
             HUDContainerSize={HUDContainerSize}
+            newlyUnlockedAbility={newlyUnlockedAbility}
             setInventory={setInventory}
             setSelectionType={setSelectionType}
             setIsSelectedTileOccupied={setIsSelectedTileOccupied}

@@ -22,6 +22,7 @@ export default function HUD({
   selectionType,
   unlockedSpecies,
   HUDContainerSize,
+  newlyUnlockedAbility,
   setInventory,
   setSelectionType,
   handleSpecieSelection,
@@ -32,7 +33,7 @@ export default function HUD({
 }: HUDProps) {
   const [isInventoryOpen, setIsInventoryOpen] = useState<boolean>(false);
 
-  const [isMissionModalOpen, setIsMissionModalOpen] = useState<boolean>(true);
+  const [isMissionModalOpen, setIsMissionModalOpen] = useState<boolean>(false);
 
   const plantOnTile = selectedTile
     ? plants.find(plant => plant.tileId === selectedTile.id)
@@ -138,6 +139,12 @@ export default function HUD({
           )}
         </div>
       ) : null}
+
+      {newlyUnlockedAbility && (
+        <div>
+          "Vous venez de débloquer la capacité suivante : " {newlyUnlockedAbility}
+        </div>
+      )}
     </>
   );
 }
