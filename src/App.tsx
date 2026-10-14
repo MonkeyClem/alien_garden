@@ -14,7 +14,11 @@ import type { Viewport } from "./rendering/viewport/viewport.type";
 import type { Inventory } from "./game/inventory/inventory.type";
 import hasPlayerEnoughSeeds from "./game/inventory/hasPlayerEnoughSeed";
 import unlockAbilIty from "./game/abilities/unlockAbility";
-import { type Ability, type UnlockedAbilites } from "./game/abilities/abilities.type";
+import { type Ability, type UnlockedAbilities } from "./game/abilities/abilities.type";
+import {
+  BIO_BATTERY_ACTIVATION_COST,
+  canActivateBioBattery,
+} from "./game/canActivateBioBattery";
 
 function App() {
   const [tiles, setTiles] = useState<Tile[]>(() => generateGrid());
@@ -49,10 +53,14 @@ function App() {
 
   const [HUDContainerSize, setHUDContainerSize] = useState<Viewport | null>(null);
 
-  const [unlockedAbilities, setUnlockedAbilities] = useState<UnlockedAbilites>({
+  const [unlockedAbilities, setUnlockedAbilities] = useState<UnlockedAbilities>({
     electricDischarge: false,
   });
   const [newlyUnlockedAbility, setNewlyUnlockedAbility] = useState<Ability | null>(null);
+
+  const [bioBatteryStatus, setBioBatteryStatus] = useState<"inactive" | "active">(
+    "inactive",
+  );
 
   useEffect(() => {
     loadAssets()
@@ -127,6 +135,23 @@ function App() {
     }
   };
 
+  const handleBioBatteryActivation = () => {
+    const canBeActivated = canActivateBioBattery(
+      bioBatteryStatus,
+      unlockedAbilities,
+      ressources,
+    );
+    if (canBeActivated === false) return;
+
+    setBioBatteryStatus("active");
+    setRessources(previousRessources => ({
+      ...previousRessources,
+      bioEnergy: previousRessources.bioEnergy - BIO_BATTERY_ACTIVATION_COST,
+    }));
+
+    window.alert("LA BIOBATTERY EST ACTIVEE !");
+  };
+
   const handleHUDContainerSize = (viewport: Viewport) => {
     setHUDContainerSize(viewport);
   };
@@ -158,6 +183,8 @@ function App() {
             unlockedSpecies={unlockedSpecies}
             HUDContainerSize={HUDContainerSize}
             newlyUnlockedAbility={newlyUnlockedAbility}
+            bioBatteryStatus={bioBatteryStatus}
+            unlockedAbilities={unlockedAbilities}
             setInventory={setInventory}
             setSelectionType={setSelectionType}
             setIsSelectedTileOccupied={setIsSelectedTileOccupied}
@@ -167,6 +194,7 @@ function App() {
             setRessources={setRessources}
             handlePlantSeed={handlePlantSpecie}
             setUnlockedSpecies={setUnlockedSpecies}
+            handleBioBatteryActivation={handleBioBatteryActivation}
           />
           <Canvas
             handleTileSelection={handleTileSelection}

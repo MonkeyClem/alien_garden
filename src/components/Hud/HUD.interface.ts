@@ -6,7 +6,7 @@ import type { Species, Plant } from "../../game/plants/plants.type";
 import type { selectionType, Ressources } from "../../game/type";
 import type { Viewport } from "../../rendering/viewport/viewport.type";
 import type { SetStateAction } from "react";
-import type { Ability } from "../../game/abilities/abilities.type";
+import type { Ability, UnlockedAbilities } from "../../game/abilities/abilities.type";
 
 export default interface HUDProps {
   selectedTile: Tile | null;
@@ -21,6 +21,8 @@ export default interface HUDProps {
   unlockedSpecies: Species[];
   HUDContainerSize: Viewport | null;
   newlyUnlockedAbility: Ability | null;
+  bioBatteryStatus: "active" | "inactive";
+  unlockedAbilities: UnlockedAbilities;
   setInventory: React.Dispatch<SetStateAction<Inventory>>;
   setSelectionType: React.Dispatch<SetStateAction<selectionType>>;
   handlePlantSeed: (selectedSpecie: Species, selectedTile: Tile) => void;
@@ -30,4 +32,5 @@ export default interface HUDProps {
   setIsSelectedTileOccupied: (value: boolean) => void;
   setRessources: React.Dispatch<React.SetStateAction<Ressources>>;
   setUnlockedSpecies: React.Dispatch<React.SetStateAction<Species[]>>;
+  handleBioBatteryActivation: () => void;
 }

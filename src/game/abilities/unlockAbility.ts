@@ -1,8 +1,8 @@
-import type { Ability, UnlockedAbilites } from "./abilities.type";
+import type { Ability, UnlockedAbilities } from "./abilities.type";
 export default function unlockAbilIty(
-  currentAbilities: UnlockedAbilites,
+  currentAbilities: UnlockedAbilities,
   abilityToUnlock: Ability,
-): UnlockedAbilites {
+): UnlockedAbilities {
   return {
     ...currentAbilities,
     [abilityToUnlock]: true,

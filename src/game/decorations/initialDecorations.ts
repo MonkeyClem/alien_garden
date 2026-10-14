@@ -99,9 +99,9 @@ export const initialDecorations: Decoration[] = [
     gridX: 0,
     gridY: 12,
     width: 225,
-    height: 190,
-    offsetY: -35,
-    offsetX: 0,
+    height: 200,
+    offsetY: -45,
+    offsetX: -10,
     footPrint: { width: 3, height: 3 },
   },
   {

@@ -23,6 +23,8 @@ export default function HUD({
   unlockedSpecies,
   HUDContainerSize,
   newlyUnlockedAbility,
+  bioBatteryStatus,
+  unlockedAbilities,
   setInventory,
   setSelectionType,
   handleSpecieSelection,
@@ -30,6 +32,7 @@ export default function HUD({
   handleRessourcesUpdate,
   setIsHarvestButtonActive,
   setIsSelectedTileOccupied,
+  handleBioBatteryActivation,
 }: HUDProps) {
   const [isInventoryOpen, setIsInventoryOpen] = useState<boolean>(false);
 
@@ -112,6 +115,10 @@ export default function HUD({
               decorationOnTile={decorationOnTile}
               assets={assets}
               inventory={inventory}
+              ressources={ressources}
+              bioBatteryStatus={bioBatteryStatus}
+              unlockedAbilities={unlockedAbilities}
+              handleBioBatteryActivation={handleBioBatteryActivation}
               setInventory={setInventory}
             />
           )}
@@ -141,8 +148,15 @@ export default function HUD({
       ) : null}
 
       {newlyUnlockedAbility && (
-        <div>
-          "Vous venez de débloquer la capacité suivante : " {newlyUnlockedAbility}
+        <div
+          style={{
+            position: "absolute",
+            width: "30%",
+            background: "color",
+          }}
+        >
+          "Vous venez de débloquer la capacité suivante : "{" "}
+          {newlyUnlockedAbility.toUpperCase()}
         </div>
       )}
     </>

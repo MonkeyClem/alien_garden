@@ -1,3 +1,3 @@
 export type Ability = "electricDischarge";
 
-export type UnlockedAbilites = Record<Ability, boolean>;
+export type UnlockedAbilities = Record<Ability, boolean>;

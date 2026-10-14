@@ -5,6 +5,8 @@ import type { Plant } from "./plants/plants.type";
 //DECORATIONS ASSETS
 export type selectionType = "empty" | "plant" | "decoration" | null;
 
+export type BioBatteryStatus = "active" | "inactive";
+
 //GAMEPLAY ASSETS
 export type Ressources = {
   bioMass: number;
