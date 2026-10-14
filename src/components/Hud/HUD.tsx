@@ -107,7 +107,12 @@ export default function HUD({
           }}
         >
           {selectionType === "decoration" && decorationOnTile && (
-            <DecorationHud decorationOnTile={decorationOnTile} assets={assets} inventory={inventory} setInventory={setInventory} />
+            <DecorationHud
+              decorationOnTile={decorationOnTile}
+              assets={assets}
+              inventory={inventory}
+              setInventory={setInventory}
+            />
           )}
 
           {selectionType === "plant" && (
@@ -115,6 +120,7 @@ export default function HUD({
               setSelectionType={setSelectionType}
               isHarvestButtonActive={isHarvestButtonActive}
               plantOnTile={plantOnTile}
+              ressources={ressources}
               handleRessourcesUpdate={handleRessourcesUpdate}
             />
           )}

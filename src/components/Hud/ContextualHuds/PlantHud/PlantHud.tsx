@@ -4,8 +4,9 @@ import type PlantHudProps from "./PlantHud.interface";
 
 export default function PlantHud({
   plantOnTile,
-  setSelectionType,
+  ressources,
   isHarvestButtonActive,
+  setSelectionType,
   handleRessourcesUpdate,
 }: PlantHudProps) {
   if (!plantOnTile) return;
@@ -31,7 +32,9 @@ export default function PlantHud({
           handleRessourcesUpdate(plantOnTile);
           setSelectionType("empty");
         }}
-        disabled={!isHarvestButtonActive}
+        // disabled={!isHarvestButtonActive}
+        //TO DO : create a function to know the limit of each ressources (which will probably evolve with the player's progression), and use it here
+        disabled={ressources.bioEnergy >= 15 || !isHarvestButtonActive}
       >
         Récolter
       </button>

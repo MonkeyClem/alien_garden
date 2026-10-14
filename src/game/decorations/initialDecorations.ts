@@ -99,10 +99,10 @@ export const initialDecorations: Decoration[] = [
     gridX: 0,
     gridY: 12,
     width: 225,
-    height: 180,
+    height: 190,
     offsetY: -35,
     offsetX: 0,
-    footPrint: { width: 2, height: 2 },
+    footPrint: { width: 3, height: 3 },
   },
   {
     id: "lake_1",

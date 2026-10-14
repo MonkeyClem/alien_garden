@@ -70,6 +70,7 @@ export default function MissionModal({
       <div
         style={{
           display: "flex",
+          justifyContent: "space-between",
           borderTop: "0.5px solid #087E9B",
           borderBottom: "0.5px solid #087E9B",
         }}

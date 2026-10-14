@@ -13,7 +13,6 @@ import { SPECIES_CONFIG } from "./game/plants/speciesConfig";
 import type { Viewport } from "./rendering/viewport/viewport.type";
 import type { Inventory } from "./game/inventory/inventory.type";
 import hasPlayerEnoughSeeds from "./game/inventory/hasPlayerEnoughSeed";
-import refillReactorMushroomSeeds from "./game/inventory/refillReactorMushroomSeeds";
 
 function App() {
   const [tiles, setTiles] = useState<Tile[]>(() => generateGrid());
@@ -97,25 +96,21 @@ function App() {
 
     const harvestYield: ResourceYield = plantSpecieData.harvestYield;
 
-    if (!plantSpecieData) return;
-
     setPlants(currentPlants =>
       currentPlants.filter((plant: Plant) => plant.id !== plantOnTile?.id),
     );
     setRessources(currentRessources => ({
       bioMass: currentRessources.bioMass + (harvestYield.bioMass ?? 0),
-      bioEnergy: currentRessources.bioEnergy + (harvestYield.bioEnergy ?? 0),
+      bioEnergy: Math.min(
+        currentRessources.bioEnergy + (harvestYield.bioEnergy ?? 0),
+        15,
+      ),
       biologicalData:
         currentRessources.biologicalData + (harvestYield.biologicalData ?? 0),
     }));
-
-    if (plantOnTile.specie === "reactorMushroom") {
-      setInventory(previousInventory => refillReactorMushroomSeeds(previousInventory));
-    }
   };
 
   const handleHUDContainerSize = (
-    // canvasSize : number,
     viewport: Viewport,
   ) => {
     setHUDContainerSize(viewport);
