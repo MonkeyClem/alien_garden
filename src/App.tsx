@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import Canvas from "./components/Canvas/Canvas";
 import HUD from "./components/Hud/HUD";
-import { type Ressources } from "./game/type";
+import { type Ressources } from './game/type';
 import { type selectionType } from "./game/type";
 import type { GameAssets } from "./assets/assetTypes";
 import { loadAssets } from "./assets/loadAssets";
@@ -207,6 +207,7 @@ function App() {
             assets={assets}
             tiles={tiles}
             selectedSpecie={selectedSpecie}
+            bioBatteryStatus={bioBatteryStatus}
           />
         </>
       ) : (

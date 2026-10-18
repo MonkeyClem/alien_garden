@@ -28,6 +28,7 @@ export default function Canvas({
   plants,
   assets,
   selectedSpecie,
+  bioBatteryStatus,
 }: CanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -82,6 +83,7 @@ export default function Canvas({
         initialDecorations,
         tilesRef.current,
         assetsRef.current,
+        bioBatteryStatus,
       );
 
       drawForeground(ctx, assetsRef.current);
@@ -98,7 +100,7 @@ export default function Canvas({
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, []);
+  }, [assets, bioBatteryStatus]);
 
   useEffect(() => {
     const canvas = canvasRef.current;

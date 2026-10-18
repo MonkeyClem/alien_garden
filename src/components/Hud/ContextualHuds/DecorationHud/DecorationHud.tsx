@@ -64,7 +64,13 @@ export default function DecorationHud({
                     padding: 4,
                     borderRadius: 5,
                   }}
-                  disabled={!canActivateBioBattery(bioBatteryStatus, unlockedAbilities ,ressources)}
+                  disabled={
+                    !canActivateBioBattery(
+                      bioBatteryStatus,
+                      unlockedAbilities,
+                      ressources,
+                    )
+                  }
                   onClick={() => handleBioBatteryActivation()}
                 >
                   Activer ({BIO_BATTERY_ACTIVATION_COST} Bio Energie)

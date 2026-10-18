@@ -16,4 +16,5 @@ export interface CanvasProps {
   assets: GameAssets;
   plants: Plant[];
   selectedSpecie: Species | null;
+  bioBatteryStatus: "active" | "inactive";
 }

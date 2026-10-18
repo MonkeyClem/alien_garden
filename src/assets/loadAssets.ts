@@ -2,6 +2,7 @@ import { loadImage } from "./loadImage";
 
 export const loadAssets = async () => {
   const bioBattery = await loadImage("/assets/PNG/Assets/biobattery.png");
+  const bioBatteryOn = await loadImage("/assets/PNG/Assets/bioBattery_On.png")
   const bioPalmtree = await loadImage("/assets/PNG/Assets/bioPalmtree.png");
   const trapStore = await loadImage("/assets/PNG/Assets/trapStore.png");
   const bioTerminal = await loadImage("/assets/PNG/Assets/bioTerminal.png");
@@ -60,6 +61,7 @@ export const loadAssets = async () => {
 
   return {
     bioBattery,
+    bioBatteryOn,
     bioPalmtree,
     trapStore,
     bioTerminal,

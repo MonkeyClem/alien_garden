@@ -24,6 +24,7 @@ export default function RessourcesScreen({
       className={styles.ressourcesScreenContainer}
       style={{
         display: !HUDContainerSize ? "none" : "flex",
+        // flexDirection: "column",
       }}
     >
       {Object.entries(ressources).map(([assetKey, value]) => {

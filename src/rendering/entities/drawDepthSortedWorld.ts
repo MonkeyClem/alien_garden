@@ -13,6 +13,7 @@ export const drawDepthSortedWorld = (
   decorations: Decoration[],
   tiles: Tile[],
   assets: GameAssets,
+  bioBatteryStatus: "active" | "inactive",
 ) => {
   const createPlantDepthItem = (plant: Plant, tiles: Tile[]) => {
     const foundTile = tiles.find(tile => tile.id === plant.tileId);
@@ -73,7 +74,11 @@ export const drawDepthSortedWorld = (
 
   sortedDepthItems.forEach(item => {
     if (item.type === "decoration") {
-      drawDecoration(ctx, item.decoration, item.tile, assets);
+      const decorationToDraw =
+        item.decoration.assetKey === "bioBattery" && bioBatteryStatus === "active"
+          ? { ...item.decoration, assetKey: "bioBatteryOn" as const }
+          : item.decoration;
+      drawDecoration(ctx, decorationToDraw, item.tile, assets);
     }
     if (item.type === "plant") {
       drawPlant(ctx, item.plant, item.tile, assets);

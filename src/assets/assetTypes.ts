@@ -3,6 +3,7 @@ export type DecorationAssetsKey =
   | "bioPalmtree"
   | "trapStore"
   | "bioBattery"
+  | "bioBatteryOn"
   | "inventoryIcon"
   | "alienGround"
   | "alienGroundTwo"
