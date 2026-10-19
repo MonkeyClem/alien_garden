@@ -9,6 +9,7 @@ import { drawPlant } from "./drawPlants";
 
 export const drawDepthSortedWorld = (
   ctx: CanvasRenderingContext2D,
+  time: number,
   plants: Plant[],
   decorations: Decoration[],
   tiles: Tile[],
@@ -78,7 +79,7 @@ export const drawDepthSortedWorld = (
         item.decoration.assetKey === "bioBattery" && bioBatteryStatus === "active"
           ? { ...item.decoration, assetKey: "bioBatteryOn" as const }
           : item.decoration;
-      drawDecoration(ctx, decorationToDraw, item.tile, assets);
+      drawDecoration(ctx, time, decorationToDraw, item.tile, assets);
     }
     if (item.type === "plant") {
       drawPlant(ctx, item.plant, item.tile, assets);

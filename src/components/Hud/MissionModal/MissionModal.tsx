@@ -3,11 +3,13 @@ import type { MissionModalProps } from "./MissionModal.interface";
 export default function MissionModal({
   isMissionModalOpen,
   assets,
+  hasBioBatteryBeenAnalyzed,
   setIsMissionModalOpen,
 }: MissionModalProps) {
   return isMissionModalOpen ? (
     <div
       style={{
+        maxWidth: 450,
         fontSize: 14,
         borderRadius: 10,
         position: "absolute",
@@ -92,7 +94,7 @@ export default function MissionModal({
             }}
           >
             <li>
-              <input type="checkbox" />
+              <input type="checkbox" checked={hasBioBatteryBeenAnalyzed} />
               Observer la Bio Battery
             </li>
             <li>
@@ -106,7 +108,7 @@ export default function MissionModal({
             </li>
           </ul>
         </div>
-        <div style={{ background: "black", width: "50%" }}>
+        <div style={{ background: "black", width: "30%" }}>
           <img></img>
         </div>
       </div>

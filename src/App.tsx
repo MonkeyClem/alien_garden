@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import Canvas from "./components/Canvas/Canvas";
 import HUD from "./components/Hud/HUD";
-import { type Ressources } from './game/type';
+import { type Ressources } from "./game/type";
 import { type selectionType } from "./game/type";
 import type { GameAssets } from "./assets/assetTypes";
 import { loadAssets } from "./assets/loadAssets";
@@ -61,6 +61,9 @@ function App() {
   const [bioBatteryStatus, setBioBatteryStatus] = useState<"inactive" | "active">(
     "inactive",
   );
+
+  const [hasBioBatteryBeenAnalyzed, setHasBioBatteryBeenAnalyzed] =
+    useState<boolean>(false);
 
   useEffect(() => {
     loadAssets()
@@ -166,6 +169,10 @@ function App() {
     return () => window.clearTimeout(timeOutId);
   }, [newlyUnlockedAbility]);
 
+  const handleBioBatteryAnalyze = () => {
+    setHasBioBatteryBeenAnalyzed(true);
+  };
+
   return (
     <>
       {assets ? (
@@ -185,6 +192,7 @@ function App() {
             newlyUnlockedAbility={newlyUnlockedAbility}
             bioBatteryStatus={bioBatteryStatus}
             unlockedAbilities={unlockedAbilities}
+            hasBioBatteryBeenAnalyzed={hasBioBatteryBeenAnalyzed}
             setInventory={setInventory}
             setSelectionType={setSelectionType}
             setIsSelectedTileOccupied={setIsSelectedTileOccupied}
@@ -203,6 +211,7 @@ function App() {
             setIsSelectedTileOccupied={setIsSelectedTileOccupied}
             handlePlantSpecie={handlePlantSpecie}
             handleHUDContainerSize={handleHUDContainerSize}
+            handleBioBatteryAnalyze={handleBioBatteryAnalyze}
             plants={plants}
             assets={assets}
             tiles={tiles}

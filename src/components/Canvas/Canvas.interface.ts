@@ -12,6 +12,7 @@ export interface CanvasProps {
   setIsSelectedTileOccupied: (value: boolean) => void;
   handlePlantSpecie: (selectedSpecies: Species, selectedTile: Tile) => void;
   handleHUDContainerSize: (viewport: Viewport) => void;
+  handleBioBatteryAnalyze: (value : boolean) => void;
   tiles: Tile[];
   assets: GameAssets;
   plants: Plant[];

@@ -4,6 +4,7 @@ export type DecorationAssetsKey =
   | "trapStore"
   | "bioBattery"
   | "bioBatteryOn"
+  | "bioBatteryOnGlow"
   | "inventoryIcon"
   | "alienGround"
   | "alienGroundTwo"

@@ -23,6 +23,7 @@ export default interface HUDProps {
   newlyUnlockedAbility: Ability | null;
   bioBatteryStatus: "active" | "inactive";
   unlockedAbilities: UnlockedAbilities;
+  hasBioBatteryBeenAnalyzed: boolean;
   setInventory: React.Dispatch<SetStateAction<Inventory>>;
   setSelectionType: React.Dispatch<SetStateAction<selectionType>>;
   handlePlantSeed: (selectedSpecie: Species, selectedTile: Tile) => void;

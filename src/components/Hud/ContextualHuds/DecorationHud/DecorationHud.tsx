@@ -108,7 +108,7 @@ export default function DecorationHud({
               }}
             >
               <p>{SPECIES_CONFIG.reactorMushroom.displayName}</p>
-              <p>Stock : {inventory.species.reactorMushroom}</p>
+              <p>Stock : {inventory.species.reactorMushroom} / 3</p>
               <button
                 style={{
                   background: "#087E9B",

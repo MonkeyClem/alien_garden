@@ -25,6 +25,7 @@ export default function HUD({
   newlyUnlockedAbility,
   bioBatteryStatus,
   unlockedAbilities,
+  hasBioBatteryBeenAnalyzed,
   setInventory,
   setSelectionType,
   handleSpecieSelection,
@@ -73,6 +74,7 @@ export default function HUD({
         <MissionModal
           assets={assets}
           isMissionModalOpen={isMissionModalOpen}
+          hasBioBatteryBeenAnalyzed={hasBioBatteryBeenAnalyzed}
           setIsMissionModalOpen={setIsMissionModalOpen}
         />
 

@@ -24,6 +24,7 @@ export default function Canvas({
   setIsSelectedTileOccupied,
   handlePlantSpecie,
   handleHUDContainerSize,
+  handleBioBatteryAnalyze,
   tiles,
   plants,
   assets,
@@ -60,7 +61,7 @@ export default function Canvas({
 
     let animationFrameId: number;
 
-    const render = () => {
+    const render = (time: number) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const viewport = getViewport(canvas.width, canvas.height);
 
@@ -79,6 +80,7 @@ export default function Canvas({
 
       drawDepthSortedWorld(
         ctx,
+        time,
         plantsRef.current,
         initialDecorations,
         tilesRef.current,
@@ -95,7 +97,8 @@ export default function Canvas({
       animationFrameId = requestAnimationFrame(render);
     };
 
-    render();
+    // render();
+    animationFrameId = requestAnimationFrame(render);
 
     return () => {
       cancelAnimationFrame(animationFrameId);
@@ -145,6 +148,11 @@ export default function Canvas({
       if (clickedObject) {
         setSelectionType(clickedObject.type);
         setIsSelectedTileOccupied(true);
+        if (clickedObject.type === "decoration") {
+          if (clickedObject.object.assetKey === "bioBattery") {
+            handleBioBatteryAnalyze(true);
+          }
+        }
       } else {
         setSelectionType("empty");
         setIsSelectedTileOccupied(false);
