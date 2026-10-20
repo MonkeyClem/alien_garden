@@ -19,6 +19,9 @@ import {
   BIO_BATTERY_ACTIVATION_COST,
   canActivateBioBattery,
 } from "./game/canActivateBioBattery";
+import type { MissionProgress } from "./game/missions/mission.types";
+import { completeObjective } from "./game/missions/missionProgression/completeObjective";
+import { missionConfig } from "./game/missions/mission.config";
 
 function App() {
   const [tiles, setTiles] = useState<Tile[]>(() => generateGrid());
@@ -62,8 +65,8 @@ function App() {
     "inactive",
   );
 
-  const [hasBioBatteryBeenAnalyzed, setHasBioBatteryBeenAnalyzed] =
-    useState<boolean>(false);
+  // const [hasBioBatteryBeenAnalyzed, setHasBioBatteryBeenAnalyzed] =
+  //   useState<boolean>(false);
 
   useEffect(() => {
     loadAssets()
@@ -106,6 +109,7 @@ function App() {
 
   //the plantOnTile parameter is the harvested Plant
   const handleRessourcesUpdate = (plantOnTile: Plant) => {
+    //TO DO : create an harvest handler
     if (!plantOnTile.isReadyToHarvest) return;
 
     const plantSpecieData = SPECIES_CONFIG[plantOnTile.specie];
@@ -117,6 +121,7 @@ function App() {
     setPlants(currentPlants =>
       currentPlants.filter((plant: Plant) => plant.id !== plantOnTile?.id),
     );
+
     setRessources(currentRessources => ({
       bioMass: currentRessources.bioMass + (harvestYield.bioMass ?? 0),
       bioEnergy: Math.min(
@@ -126,6 +131,10 @@ function App() {
       biologicalData:
         currentRessources.biologicalData + (harvestYield.biologicalData ?? 0),
     }));
+
+    if (plantOnTile.specie === "reactorMushroom") {
+      setMissionProgress(prev => completeObjective(prev, "harvestReactorMushroom"));
+    }
 
     if (
       plantOnTile.specie === "reactorMushroom" &&
@@ -152,6 +161,8 @@ function App() {
       bioEnergy: previousRessources.bioEnergy - BIO_BATTERY_ACTIVATION_COST,
     }));
 
+    setMissionProgress(prev => completeObjective(prev, "activateBioBattery"));
+
     window.alert("LA BIOBATTERY EST ACTIVEE !");
   };
 
@@ -169,8 +180,15 @@ function App() {
     return () => window.clearTimeout(timeOutId);
   }, [newlyUnlockedAbility]);
 
+  const mission = missionConfig.firstMission;
+  const [missionProgress, setMissionProgress] = useState<MissionProgress>({
+    observeBioBattery: false,
+    harvestReactorMushroom: false,
+    activateBioBattery: false,
+  });
+
   const handleBioBatteryAnalyze = () => {
-    setHasBioBatteryBeenAnalyzed(true);
+    setMissionProgress(prev => completeObjective(prev, "observeBioBattery"));
   };
 
   return (
@@ -192,7 +210,9 @@ function App() {
             newlyUnlockedAbility={newlyUnlockedAbility}
             bioBatteryStatus={bioBatteryStatus}
             unlockedAbilities={unlockedAbilities}
-            hasBioBatteryBeenAnalyzed={hasBioBatteryBeenAnalyzed}
+            // hasBioBatteryBeenAnalyzed={hasBioBatteryBeenAnalyzed}
+            mission={mission}
+            progress={missionProgress}
             setInventory={setInventory}
             setSelectionType={setSelectionType}
             setIsSelectedTileOccupied={setIsSelectedTileOccupied}

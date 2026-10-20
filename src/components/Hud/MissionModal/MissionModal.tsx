@@ -3,7 +3,8 @@ import type { MissionModalProps } from "./MissionModal.interface";
 export default function MissionModal({
   isMissionModalOpen,
   assets,
-  hasBioBatteryBeenAnalyzed,
+  mission,
+  progress,
   setIsMissionModalOpen,
 }: MissionModalProps) {
   return isMissionModalOpen ? (
@@ -83,7 +84,7 @@ export default function MissionModal({
               color: "gold",
             }}
           >
-            Réactiver la Bio Battery{" "}
+            {mission.title}
           </p>
           <ul
             style={{
@@ -93,9 +94,12 @@ export default function MissionModal({
               paddingBottom: "0.5rem",
             }}
           >
-            <li>
-              <input type="checkbox" checked={hasBioBatteryBeenAnalyzed} />
-              Observer la Bio Battery
+            {/* <li>
+              <input
+                type="checkbox"
+                // checked={hasBioBatteryBeenAnalyzed}
+              />
+             {progress.observeBioBattery}
             </li>
             <li>
               {" "}
@@ -105,7 +109,13 @@ export default function MissionModal({
             <li>
               <input type="checkbox" />
               Fournir de l'énérgie à la Bio Battery
-            </li>
+            </li> */}
+            {mission.objectives.map(objective => (
+              <li key={objective.id}>
+                <input type="checkbox" checked={progress[objective.id]} readOnly />
+                {objective.description}
+              </li>
+            ))}
           </ul>
         </div>
         <div style={{ background: "black", width: "30%" }}>
