@@ -65,9 +65,6 @@ function App() {
     "inactive",
   );
 
-  // const [hasBioBatteryBeenAnalyzed, setHasBioBatteryBeenAnalyzed] =
-  //   useState<boolean>(false);
-
   useEffect(() => {
     loadAssets()
       .then(setAssets)
@@ -210,7 +207,6 @@ function App() {
             newlyUnlockedAbility={newlyUnlockedAbility}
             bioBatteryStatus={bioBatteryStatus}
             unlockedAbilities={unlockedAbilities}
-            // hasBioBatteryBeenAnalyzed={hasBioBatteryBeenAnalyzed}
             mission={mission}
             progress={missionProgress}
             setInventory={setInventory}
