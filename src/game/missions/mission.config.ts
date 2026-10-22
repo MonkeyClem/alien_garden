@@ -1,6 +1,6 @@
 import type { Mission, MissionId } from "./mission.types";
 
-export const missionConfig: Record<MissionId, Mission> = {
+export const missionConfig: Record<MissionId, Mission<MissionId>> = {
   firstMission: {
     id: "firstMission",
     title: "Réactiver la Bio Battery",
@@ -17,6 +17,17 @@ export const missionConfig: Record<MissionId, Mission> = {
       {
         id: "activateBioBattery",
         description: "Activer la Bio Battery",
+      },
+    ],
+  },
+  secondMission: {
+    id: "secondMission",
+    title: "Investiguer l'anomalie",
+    description: "",
+    objectives: [
+      {
+        id: "goToLocation",
+        description: "Se rendre à la localisation donnée par l'équipe",
       },
     ],
   },

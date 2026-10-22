@@ -1,5 +1,8 @@
-import type { Mission, MissionProgress } from "../mission.types";
+import type { MissionId, Mission, MissionProgress } from "../mission.types";
 
-export default function missionComplete(mission: Mission, progress: MissionProgress) {
+export function isMissionCompleted<M extends MissionId>(
+  mission: Mission<M>,
+  progress: MissionProgress,
+): boolean {
   return mission.objectives.every(objective => progress[objective.id] === true);
 }

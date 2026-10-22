@@ -1,12 +1,36 @@
 import type { MissionModalProps } from "./MissionModal.interface";
+import { missionConfig } from "../../../game/missions/mission.config";
 
 export default function MissionModal({
   isMissionModalOpen,
   assets,
-  mission,
-  progress,
+  missionsProgress,
+  currentMissionId,
+  // currentMissionObjectives,
+  // currentMissionProgress,
   setIsMissionModalOpen,
 }: MissionModalProps) {
+  const currentMissionProgress = missionsProgress[currentMissionId];
+  const currentMission = missionConfig[currentMissionId];
+
+  // const [currentMissionProgress, setCurrentMissionProgress] = useState<MissionProgress>(
+  //   missionsProgress[currentMissionId],
+  // );
+
+  // const [currentMission, setCurrentMission] = useState<Mission<MissionId>>(
+  //   missionConfig[currentMissionId],
+  // );
+
+  // useEffect(() => {
+  //   setCurrentMission(missionConfig["secondMission"]);
+  // }, [currentMissionId]);
+
+  // useEffect(() => {
+  //   setCurrentMissionProgress(missionsProgress[currentMissionId]);
+  // }, [currentMissionId]);
+
+  console.log("currentMission :", currentMission.objectives);
+
   return isMissionModalOpen ? (
     <div
       style={{
@@ -84,7 +108,7 @@ export default function MissionModal({
               color: "gold",
             }}
           >
-            {mission.title}
+            {currentMission.title}
           </p>
           <ul
             style={{
@@ -92,28 +116,18 @@ export default function MissionModal({
               listStyle: "none",
               textAlign: "left",
               paddingBottom: "0.5rem",
+              display: "flex",
+              flexDirection: "column",
+              gap: 10,
             }}
           >
-            {/* <li>
-              <input
-                type="checkbox"
-                // checked={hasBioBatteryBeenAnalyzed}
-              />
-             {progress.observeBioBattery}
-            </li>
-            <li>
-              {" "}
-              <input type="checkbox" />
-              Planter et récolter un Reactor Mushroom
-            </li>
-            <li>
-              <input type="checkbox" />
-              Fournir de l'énérgie à la Bio Battery
-            </li> */}
-            {mission.objectives.map(objective => (
-              <li key={objective.id}>
-                <input type="checkbox" checked={progress[objective.id]} readOnly />
-                {objective.description}
+            {currentMission.objectives.map(obj => (
+              <li style={{ display: "flex", gap: "0.5rem" }}>
+                <input
+                  type="checkbox"
+                  checked={currentMissionProgress[obj.id] === true}
+                />
+                <p> {obj.description} </p>
               </li>
             ))}
           </ul>

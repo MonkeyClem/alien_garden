@@ -1,18 +1,22 @@
-export type MissionId = "firstMission";
+export type MissionId = "firstMission" | "secondMission";
 
-export type MissionObjectiveId =
-  "observeBioBattery" | "harvestReactorMushroom" | "activateBioBattery";
+export type MissionObjectivesById = {
+  firstMission: "observeBioBattery" | "harvestReactorMushroom" | "activateBioBattery";
+  secondMission: "goToLocation";
+};
 
-export type MissionObjective = {
-  id: MissionObjectiveId;
+export type MissionObjective<M extends MissionId> = {
+  id: MissionObjectivesById[M];
   description: string;
 };
 
-export type Mission = {
+export type Mission<M extends MissionId> = {
   id: MissionId;
   title: string;
   description: string;
-  objectives: MissionObjective[];
+  objectives: MissionObjective<M>[];
 };
 
-export type MissionProgress = Record<MissionObjectiveId, boolean>;
+export type MissionProgress = Record<string, boolean>;
+
+export type MissionsProgress = Record<MissionId, MissionProgress>;

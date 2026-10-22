@@ -19,7 +19,7 @@ import {
   BIO_BATTERY_ACTIVATION_COST,
   canActivateBioBattery,
 } from "./game/canActivateBioBattery";
-import type { MissionProgress } from "./game/missions/mission.types";
+import type { Mission, MissionId, MissionsProgress } from "./game/missions/mission.types";
 import { completeObjective } from "./game/missions/missionProgression/completeObjective";
 import { missionConfig } from "./game/missions/mission.config";
 
@@ -64,6 +64,29 @@ function App() {
   const [bioBatteryStatus, setBioBatteryStatus] = useState<"inactive" | "active">(
     "inactive",
   );
+
+  const mission = missionConfig.firstMission;
+
+  const [missionsProgress, setMissionsProgress] = useState<MissionsProgress>({
+    firstMission: {
+      observeBioBattery: false,
+      harvestReactorMushroom: false,
+      activateBioBattery: false,
+    },
+    secondMission: {
+      goToLocation: false,
+    },
+  });
+
+  const [currentMissionId, setCurrentMissionId] = useState<MissionId>("firstMission");
+
+  const currentMission: Mission<MissionId> = missionConfig[currentMissionId];
+
+  const currentMissionProgress = missionsProgress[currentMissionId];
+
+  const advanceToSecondMission = (): void => {
+    setCurrentMissionId("secondMission");
+  };
 
   useEffect(() => {
     loadAssets()
@@ -130,7 +153,13 @@ function App() {
     }));
 
     if (plantOnTile.specie === "reactorMushroom") {
-      setMissionProgress(prev => completeObjective(prev, "harvestReactorMushroom"));
+      setMissionsProgress(prev => ({
+        ...prev,
+        firstMission: completeObjective<"firstMission">(
+          prev.firstMission,
+          "harvestReactorMushroom",
+        ),
+      }));
     }
 
     if (
@@ -143,6 +172,37 @@ function App() {
       setNewlyUnlockedAbility("electricDischarge");
     }
   };
+
+  // const handleBioBatteryActivation = () => {
+  //   const canBeActivated = canActivateBioBattery(
+  //     bioBatteryStatus,
+  //     unlockedAbilities,
+  //     ressources,
+  //   );
+  //   if (canBeActivated === false) return;
+
+  //   setBioBatteryStatus("active");
+  //   setRessources(previousRessources => ({
+  //     ...previousRessources,
+  //     bioEnergy: previousRessources.bioEnergy - BIO_BATTERY_ACTIVATION_COST,
+  //   }));
+
+  //   setMissionsProgress(prev => ({
+  //     ...prev,
+  //     firstMission: completeObjective<"firstMission">(
+  //       prev.firstMission,
+  //       "activateBioBattery",
+  //     ),
+  //   }));
+
+  //   window.alert("LA BIOBATTERY EST ACTIVEE !");
+
+  //   const isCurrentMissionCompleted = currentMission.objectives.every(
+  //     obj => currentMissionProgress[obj.id] === true,
+  //   );
+
+  //   advanceToSecondMission(isCurrentMissionCompleted);
+  // };
 
   const handleBioBatteryActivation = () => {
     const canBeActivated = canActivateBioBattery(
@@ -158,10 +218,34 @@ function App() {
       bioEnergy: previousRessources.bioEnergy - BIO_BATTERY_ACTIVATION_COST,
     }));
 
-    setMissionProgress(prev => completeObjective(prev, "activateBioBattery"));
+    setMissionsProgress(prev => ({
+      ...prev,
+      firstMission: completeObjective<"firstMission">(
+        prev.firstMission,
+        "activateBioBattery",
+      ),
+    }));
 
     window.alert("LA BIOBATTERY EST ACTIVEE !");
+
+    const isCurrentMissionCompleted = currentMission.objectives.every(
+      obj => currentMissionProgress[obj.id] === true,
+    );
+
+    if (isCurrentMissionCompleted === true) {
+      advanceToSecondMission();
+    }
   };
+
+  const isFirstMissionCompleted = missionConfig.firstMission.objectives.every(
+    obj => missionsProgress.firstMission[obj.id] === true,
+  );
+
+  useEffect(() => {
+    if (currentMissionId === "firstMission" && isFirstMissionCompleted) {
+      setCurrentMissionId("secondMission");
+    }
+  }, [currentMissionId, isFirstMissionCompleted]);
 
   const handleHUDContainerSize = (viewport: Viewport) => {
     setHUDContainerSize(viewport);
@@ -177,15 +261,14 @@ function App() {
     return () => window.clearTimeout(timeOutId);
   }, [newlyUnlockedAbility]);
 
-  const mission = missionConfig.firstMission;
-  const [missionProgress, setMissionProgress] = useState<MissionProgress>({
-    observeBioBattery: false,
-    harvestReactorMushroom: false,
-    activateBioBattery: false,
-  });
-
   const handleBioBatteryAnalyze = () => {
-    setMissionProgress(prev => completeObjective(prev, "observeBioBattery"));
+    setMissionsProgress(prev => ({
+      ...prev,
+      firstMission: completeObjective<"firstMission">(
+        prev.firstMission,
+        "observeBioBattery",
+      ),
+    }));
   };
 
   return (
@@ -208,7 +291,8 @@ function App() {
             bioBatteryStatus={bioBatteryStatus}
             unlockedAbilities={unlockedAbilities}
             mission={mission}
-            progress={missionProgress}
+            missionsProgress={missionsProgress}
+            currentMissionId={currentMissionId}
             setInventory={setInventory}
             setSelectionType={setSelectionType}
             setIsSelectedTileOccupied={setIsSelectedTileOccupied}

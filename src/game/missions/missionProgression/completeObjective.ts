@@ -1,8 +1,8 @@
-import type { MissionProgress, MissionObjectiveId } from "../mission.types";
+import type { MissionId, MissionProgress, MissionObjectivesById } from "../mission.types";
 
-export function completeObjective(
+export function completeObjective<M extends MissionId>(
   progress: MissionProgress,
-  objectiveId: MissionObjectiveId,
+  objectiveId: MissionObjectivesById[M],
 ): MissionProgress {
   if (progress[objectiveId]) return progress;
 

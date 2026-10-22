@@ -7,7 +7,11 @@ import type { selectionType, Ressources } from "../../game/type";
 import type { Viewport } from "../../rendering/viewport/viewport.type";
 import type { SetStateAction } from "react";
 import type { Ability, UnlockedAbilities } from "../../game/abilities/abilities.type";
-import type { Mission, MissionProgress } from "../../game/missions/mission.types";
+import type {
+  Mission,
+  MissionId,
+  MissionsProgress,
+} from "../../game/missions/mission.types";
 
 export default interface HUDProps {
   selectedTile: Tile | null;
@@ -24,8 +28,9 @@ export default interface HUDProps {
   newlyUnlockedAbility: Ability | null;
   bioBatteryStatus: "active" | "inactive";
   unlockedAbilities: UnlockedAbilities;
-  mission: Mission;
-  progress: MissionProgress;
+  mission: Mission<MissionId>;
+  missionsProgress: MissionsProgress;
+  currentMissionId: MissionId;
   setInventory: React.Dispatch<SetStateAction<Inventory>>;
   setSelectionType: React.Dispatch<SetStateAction<selectionType>>;
   handlePlantSeed: (selectedSpecie: Species, selectedTile: Tile) => void;

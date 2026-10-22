@@ -26,7 +26,10 @@ export default function HUD({
   bioBatteryStatus,
   unlockedAbilities,
   mission,
-  progress,
+  missionsProgress,
+  currentMissionId,
+  // currentMissionObjectives,
+  // currentMissionProgress,
   setInventory,
   setSelectionType,
   handleSpecieSelection,
@@ -76,17 +79,15 @@ export default function HUD({
           assets={assets}
           isMissionModalOpen={isMissionModalOpen}
           mission={mission}
-          progress={progress}
-          // hasBioBatteryBeenAnalyzed={hasBioBatteryBeenAnalyzed}
+          missionsProgress={missionsProgress}
+          currentMissionId={currentMissionId}
           setIsMissionModalOpen={setIsMissionModalOpen}
         />
-
         <RessourcesScreen
           HUDContainerSize={HUDContainerSize}
           ressources={ressources}
           assets={assets}
         />
-
         <InventoryComponents
           plants={plants}
           assets={assets}
@@ -157,7 +158,7 @@ export default function HUD({
           style={{
             position: "absolute",
             width: "30%",
-            background: "color",
+            background: "#000",
           }}
         >
           "Vous venez de débloquer la capacité suivante : "{" "}
