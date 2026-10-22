@@ -246,7 +246,6 @@ function App() {
       setCurrentMissionId("secondMission");
     }
   }, [currentMissionId, isFirstMissionCompleted]);
-
   const handleHUDContainerSize = (viewport: Viewport) => {
     setHUDContainerSize(viewport);
   };
