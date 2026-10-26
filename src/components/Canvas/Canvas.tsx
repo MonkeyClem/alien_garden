@@ -16,6 +16,7 @@ import { drawWorldBorders } from "../../rendering/environment/drawWorldBorders";
 import { getViewport } from "../../rendering/viewport/getViewport";
 import { screenToWorld } from "../../rendering/viewport/screenToWorld";
 import type { CanvasProps } from "./Canvas.interface";
+import { HALF_TILE_HEIGHT } from "../../game/grid/grid.constants";
 
 export default function Canvas({
   handleTileSelection,
@@ -31,6 +32,24 @@ export default function Canvas({
   selectedSpecie,
   bioBatteryStatus,
 }: CanvasProps) {
+  const drawStaticChar = (
+    ctx: CanvasRenderingContext2D,
+    tile: Tile,
+    assets: GameAssets,
+  ) => {
+    const image = assets.playable_char_static;
+
+    console.log("TILE ====> ", tile);
+
+    const width = 126;
+    const height = 126;
+
+    const x = tile.x - width / 2;
+    const y = tile.y - height + HALF_TILE_HEIGHT;
+
+    ctx.drawImage(image, x, y, width, height);
+  };
+
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const tilesRef = useRef<Tile[]>(tiles);
@@ -93,6 +112,8 @@ export default function Canvas({
       ctx.restore();
 
       drawWorldBorders(ctx, canvas.width, canvas.height, viewport);
+
+      drawStaticChar(ctx, tilesRef.current[70], assets);
 
       animationFrameId = requestAnimationFrame(render);
     };

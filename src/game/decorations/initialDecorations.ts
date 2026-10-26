@@ -29,15 +29,32 @@ export const initialDecorations: Decoration[] = [
 
     gridX: 0,
     gridY: 12,
+    width: 240,
+    height: 240,
+    offsetY: -45,
+    offsetX: 0,
+    footPrint: { width: 1, height: 1 },
+  },
+  {
+    id: "bioPalm-2",
+    tileId: 308,
+    assetKey: "bioPalmtree",
+
+    displayName: "Purple Palm",
+    description:
+      "A native photosynthetic organism commonly found throughout the surrounding ecosystem.",
+
+    gridX: 0,
+    gridY: 12,
     width: 120,
     height: 140,
-    offsetY: -80,
+    offsetY: -45,
     offsetX: 0,
-    footPrint: { width: 3, height: 2 },
+    footPrint: { width: 1, height: 1 },
   },
   {
-    id: "bioPalm-1",
-    tileId: 866,
+    id: "bioPalm-3",
+    tileId: 528,
     assetKey: "bioPalmtree",
 
     displayName: "Purple Palm",
@@ -46,15 +63,15 @@ export const initialDecorations: Decoration[] = [
 
     gridX: 0,
     gridY: 12,
-    width: 75,
-    height: 90,
-    offsetY: -80,
+    width: 120,
+    height: 140,
+    offsetY: -45,
     offsetX: 0,
-    footPrint: { width: 3, height: 2 },
+    footPrint: { width: 1, height: 1 },
   },
   {
-    id: "bioPalm-1",
-    tileId: 867,
+    id: "bioPalm-4",
+    tileId: 626,
     assetKey: "bioPalmtree",
 
     displayName: "Purple Palm",
@@ -63,16 +80,16 @@ export const initialDecorations: Decoration[] = [
 
     gridX: 0,
     gridY: 12,
-    width: 75,
-    height: 90,
-    offsetY: -80,
+    width: 120,
+    height: 140,
+    offsetY: -45,
     offsetX: 0,
-    footPrint: { width: 3, height: 2 },
+    footPrint: { width: 1, height: 1 },
   },
 
   {
-    id: "bioPalm-1",
-    tileId: 868,
+    id: "bioPalm-5",
+    tileId: 736,
     assetKey: "bioPalmtree",
 
     displayName: "Purple Palm",
@@ -81,11 +98,45 @@ export const initialDecorations: Decoration[] = [
 
     gridX: 0,
     gridY: 12,
-    width: 75,
-    height: 90,
-    offsetY: -80,
+    width: 120,
+    height: 140,
+    offsetY: -45,
     offsetX: 0,
-    footPrint: { width: 3, height: 2 },
+    footPrint: { width: 1, height: 1 },
+  },
+  {
+    id: "bioPalm-6",
+    tileId: 351,
+    assetKey: "bioPalmtree",
+
+    displayName: "Purple Palm",
+    description:
+      "A native photosynthetic organism commonly found throughout the surrounding ecosystem.",
+
+    gridX: 0,
+    gridY: 12,
+    width: 120,
+    height: 140,
+    offsetY: -45,
+    offsetX: 0,
+    footPrint: { width: 1, height: 1 },
+  },
+  {
+    id: "bioPalm-7",
+    tileId: 818,
+    assetKey: "bioPalmtree",
+
+    displayName: "Purple Palm",
+    description:
+      "A native photosynthetic organism commonly found throughout the surrounding ecosystem.",
+
+    gridX: 0,
+    gridY: 12,
+    width: 120,
+    height: 140,
+    offsetY: -45,
+    offsetX: 0,
+    footPrint: { width: 1, height: 1 },
   },
 
   {

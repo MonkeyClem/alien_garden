@@ -19,13 +19,15 @@ export type PlantAssetsKey =
   | "synapticVineStageOne"
   | "synapticVineStageTwo";
 
-export type OverlayAssets = "veins" | "spores" | "smallRock";
 
 export type IconsAssetKey = "bioMass" | "bioEnergy" | "biologicalData" | "open_mission_button" | "close_mission_button"
 
 export type NarrativeImageKey = "transmissionOperator"
 
+export type PlayableCharacterKey = "playable_char_static"
+
 export type BackgroundAssets = "mapBackground" | "midground" | "midgroundTwo" | "midgroundThree" |"midgroundFour"| "midgroundFillerOne" |"foreground"
 
-export type AssetsKey = DecorationAssetsKey | PlantAssetsKey | OverlayAssets | BackgroundAssets | IconsAssetKey | NarrativeImageKey;
+export type AssetsKey = DecorationAssetsKey | PlantAssetsKey | BackgroundAssets | IconsAssetKey | NarrativeImageKey | PlayableCharacterKey;
+
 export type GameAssets = Record<AssetsKey, HTMLImageElement >;

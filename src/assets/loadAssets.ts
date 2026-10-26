@@ -5,9 +5,11 @@ export const loadAssets = async () => {
   const bioBatteryOn = await loadImage("/assets/PNG/Assets/bioBattery_On.png")
   const bioBatteryOnGlow = await  loadImage("/assets/PNG/Assets/bioBattery_On_Glow.png") 
   
-  const bioPalmtree = await loadImage("/assets/PNG/Assets/bioPalmtree.png");
+  const bioPalmtree = await loadImage("/assets/PNG/Assets/bioPalmthree.png");
   const trapStore = await loadImage("/assets/PNG/Assets/trapStore.png");
   const bioTerminal = await loadImage("/assets/PNG/Assets/bioTerminal.png");
+
+  const playable_char_static = await loadImage("/assets/PNG/Assets/playable_char_static.png")
 
   const reactorMushroomStageOne = await loadImage(
     "/assets/PNG/Assets/reactor_mushroom_stage_one.png",
@@ -31,10 +33,6 @@ export const loadAssets = async () => {
   const alienGround = await loadImage("/assets/PNG/Assets/alienGround.png");
   const alienGroundTwo = await loadImage("/assets/PNG/Assets/alien_ground_two.png");
   const alienGroundThree = await loadImage("/assets/PNG/Assets/alien_ground_three.png");
-
-  const veins = await loadImage("/assets/PNG/Assets/veins.png");
-  const spores = await loadImage("/assets/PNG/Assets/spores.png");
-  const smallRock = await loadImage("/assets/PNG/Assets/smallRock.png");
 
   const spacePod = await loadImage("/assets/PNG/Assets/spacePod.png");
 
@@ -64,6 +62,8 @@ export const loadAssets = async () => {
 
   const transmissionOperator = await loadImage("/assets/PNG/Assets/transmissionOperator.png")
   return {
+    playable_char_static,
+
     bioBattery,
     bioBatteryOn,
     bioBatteryOnGlow,
@@ -71,6 +71,7 @@ export const loadAssets = async () => {
     bioPalmtree,
     trapStore,
     bioTerminal,
+
 
     reactorMushroomStageOne,
     reactorMushroomStageTwo,
@@ -86,10 +87,6 @@ export const loadAssets = async () => {
     alienGround,
     alienGroundTwo,
     alienGroundThree,
-
-    veins,
-    spores,
-    smallRock,
 
     spacePod,
 
