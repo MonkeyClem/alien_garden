@@ -22,6 +22,8 @@ import {
 import type { Mission, MissionId, MissionsProgress } from "./game/missions/mission.types";
 import { completeObjective } from "./game/missions/missionProgression/completeObjective";
 import { missionConfig } from "./game/missions/mission.config";
+import { transmissionsConfig } from "./components/Hud/Transmissions/TransmissionModal/transmissions.config";
+import type { Transmission } from "./components/Hud/Transmissions/transmissions.type";
 
 function App() {
   const [tiles, setTiles] = useState<Tile[]>(() => generateGrid());
@@ -83,6 +85,11 @@ function App() {
   const currentMission: Mission<MissionId> = missionConfig[currentMissionId];
 
   const currentMissionProgress = missionsProgress[currentMissionId];
+
+  const [isTransmissionModalOpen, setIsTransmissionModalOpen] = useState<boolean>(true);
+  const [currentTransmission, setCurrentTransmission] = useState<Transmission>(
+    transmissionsConfig.firstTransmission,
+  );
 
   const advanceToSecondMission = (): void => {
     setCurrentMissionId("secondMission");
@@ -173,37 +180,6 @@ function App() {
     }
   };
 
-  // const handleBioBatteryActivation = () => {
-  //   const canBeActivated = canActivateBioBattery(
-  //     bioBatteryStatus,
-  //     unlockedAbilities,
-  //     ressources,
-  //   );
-  //   if (canBeActivated === false) return;
-
-  //   setBioBatteryStatus("active");
-  //   setRessources(previousRessources => ({
-  //     ...previousRessources,
-  //     bioEnergy: previousRessources.bioEnergy - BIO_BATTERY_ACTIVATION_COST,
-  //   }));
-
-  //   setMissionsProgress(prev => ({
-  //     ...prev,
-  //     firstMission: completeObjective<"firstMission">(
-  //       prev.firstMission,
-  //       "activateBioBattery",
-  //     ),
-  //   }));
-
-  //   window.alert("LA BIOBATTERY EST ACTIVEE !");
-
-  //   const isCurrentMissionCompleted = currentMission.objectives.every(
-  //     obj => currentMissionProgress[obj.id] === true,
-  //   );
-
-  //   advanceToSecondMission(isCurrentMissionCompleted);
-  // };
-
   const handleBioBatteryActivation = () => {
     const canBeActivated = canActivateBioBattery(
       bioBatteryStatus,
@@ -226,8 +202,6 @@ function App() {
       ),
     }));
 
-    window.alert("LA BIOBATTERY EST ACTIVEE !");
-
     const isCurrentMissionCompleted = currentMission.objectives.every(
       obj => currentMissionProgress[obj.id] === true,
     );
@@ -243,12 +217,11 @@ function App() {
 
   useEffect(() => {
     if (currentMissionId === "firstMission" && isFirstMissionCompleted) {
+      setCurrentTransmission(transmissionsConfig.secondTransmission);
+      setIsTransmissionModalOpen(true);
       setCurrentMissionId("secondMission");
     }
   }, [currentMissionId, isFirstMissionCompleted]);
-  const handleHUDContainerSize = (viewport: Viewport) => {
-    setHUDContainerSize(viewport);
-  };
 
   useEffect(() => {
     if (newlyUnlockedAbility === null) return;
@@ -259,6 +232,10 @@ function App() {
 
     return () => window.clearTimeout(timeOutId);
   }, [newlyUnlockedAbility]);
+
+  const handleHUDContainerSize = (viewport: Viewport) => {
+    setHUDContainerSize(viewport);
+  };
 
   const handleBioBatteryAnalyze = () => {
     setMissionsProgress(prev => ({
@@ -292,6 +269,9 @@ function App() {
             mission={mission}
             missionsProgress={missionsProgress}
             currentMissionId={currentMissionId}
+            isTransmissionModalOpen={isTransmissionModalOpen}
+            currentTransmission={currentTransmission}
+
             setInventory={setInventory}
             setSelectionType={setSelectionType}
             setIsSelectedTileOccupied={setIsSelectedTileOccupied}
@@ -302,6 +282,7 @@ function App() {
             handlePlantSeed={handlePlantSpecie}
             setUnlockedSpecies={setUnlockedSpecies}
             handleBioBatteryActivation={handleBioBatteryActivation}
+            setIsTransmissionModalOpen={setIsTransmissionModalOpen}
           />
           <Canvas
             handleTileSelection={handleTileSelection}

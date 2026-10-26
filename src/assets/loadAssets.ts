@@ -61,6 +61,8 @@ export const loadAssets = async () => {
     "/assets/PNG/Assets/close_mission_button.png",
   );
 
+
+  const transmissionOperator = await loadImage("/assets/PNG/Assets/transmissionOperator.png")
   return {
     bioBattery,
     bioBatteryOn,
@@ -106,6 +108,8 @@ export const loadAssets = async () => {
     bioMass,
     bioEnergy,
     biologicalData,
+
+    transmissionOperator
   };
 };
 

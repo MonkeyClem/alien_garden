@@ -9,6 +9,7 @@ import RessourcesScreen from "./RessourcesScreen/RessourcesScreen";
 import MissionModal from "./MissionModal/MissionModal";
 import type HUDProps from "./HUD.interface";
 import PlantHud from "./ContextualHuds/PlantHud/PlantHud";
+import TransmissionModal from "./Transmissions/TransmissionModal/TransmissionModal";
 
 export default function HUD({
   selectedTile,
@@ -28,8 +29,8 @@ export default function HUD({
   mission,
   missionsProgress,
   currentMissionId,
-  // currentMissionObjectives,
-  // currentMissionProgress,
+  isTransmissionModalOpen,
+  currentTransmission,
   setInventory,
   setSelectionType,
   handleSpecieSelection,
@@ -38,6 +39,7 @@ export default function HUD({
   setIsHarvestButtonActive,
   setIsSelectedTileOccupied,
   handleBioBatteryActivation,
+  setIsTransmissionModalOpen,
 }: HUDProps) {
   const [isInventoryOpen, setIsInventoryOpen] = useState<boolean>(false);
 
@@ -98,6 +100,25 @@ export default function HUD({
           setIsInventoryOpen={setIsInventoryOpen}
           handleSeedSelection={handleSpecieSelection}
         />
+        {isTransmissionModalOpen && (
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              zIndex: 10004,
+              background: "transparent",
+              pointerEvents: "auto",
+            }}
+          />
+        )}
+
+        {isTransmissionModalOpen && (
+          <TransmissionModal
+            assets={assets}
+            currentTransmission={currentTransmission}
+            setIsTransmissionModalOpen={setIsTransmissionModalOpen}
+          />
+        )}
       </div>
 
       {/* CREER LE COMPOSANT DEDIE  */}

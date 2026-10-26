@@ -12,6 +12,7 @@ import type {
   MissionId,
   MissionsProgress,
 } from "../../game/missions/mission.types";
+import type { Transmission } from "./Transmissions/transmissions.type";
 
 export default interface HUDProps {
   selectedTile: Tile | null;
@@ -31,6 +32,8 @@ export default interface HUDProps {
   mission: Mission<MissionId>;
   missionsProgress: MissionsProgress;
   currentMissionId: MissionId;
+  isTransmissionModalOpen: boolean;
+  currentTransmission: Transmission;
   setInventory: React.Dispatch<SetStateAction<Inventory>>;
   setSelectionType: React.Dispatch<SetStateAction<selectionType>>;
   handlePlantSeed: (selectedSpecie: Species, selectedTile: Tile) => void;
@@ -41,4 +44,5 @@ export default interface HUDProps {
   setRessources: React.Dispatch<React.SetStateAction<Ressources>>;
   setUnlockedSpecies: React.Dispatch<React.SetStateAction<Species[]>>;
   handleBioBatteryActivation: () => void;
+  setIsTransmissionModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
