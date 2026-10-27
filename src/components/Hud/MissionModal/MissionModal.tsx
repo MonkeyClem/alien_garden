@@ -13,22 +13,6 @@ export default function MissionModal({
   const currentMissionProgress = missionsProgress[currentMissionId];
   const currentMission = missionConfig[currentMissionId];
 
-  // const [currentMissionProgress, setCurrentMissionProgress] = useState<MissionProgress>(
-  //   missionsProgress[currentMissionId],
-  // );
-
-  // const [currentMission, setCurrentMission] = useState<Mission<MissionId>>(
-  //   missionConfig[currentMissionId],
-  // );
-
-  // useEffect(() => {
-  //   setCurrentMission(missionConfig["secondMission"]);
-  // }, [currentMissionId]);
-
-  // useEffect(() => {
-  //   setCurrentMissionProgress(missionsProgress[currentMissionId]);
-  // }, [currentMissionId]);
-
   console.log("currentMission :", currentMission.objectives);
 
   return isMissionModalOpen ? (

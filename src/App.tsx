@@ -234,7 +234,17 @@ function App() {
   }, [newlyUnlockedAbility]);
 
   const handleHUDContainerSize = (viewport: Viewport) => {
-    setHUDContainerSize(viewport);
+    setHUDContainerSize(prev => {
+      if (
+        prev?.scale === viewport.scale &&
+        prev?.offsetX === viewport.offsetX &&
+        prev?.offsetY === viewport.offsetY
+      ) {
+        return prev;
+      }
+
+      return viewport;
+    });
   };
 
   const handleBioBatteryAnalyze = () => {

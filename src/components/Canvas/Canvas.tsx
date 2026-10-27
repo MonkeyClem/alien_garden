@@ -83,13 +83,13 @@ export default function Canvas({
   const plantsRef = useRef<Plant[]>(plants);
   const assetsRef = useRef<GameAssets>(assets);
 
-  const playerRef = useRef<Player>({
-    gridX: 2,
-    gridY: 9,
-    targetGridX: 5,
-    targetGridY: 5,
-    speed: 3,
-  });
+  // const playerRef = useRef<Player>({
+  //   gridX: 2,
+  //   gridY: 9,
+  //   targetGridX: 5,
+  //   targetGridY: 5,
+  //   speed: 3,
+  // });
 
   useEffect(() => {
     tilesRef.current = tiles;
@@ -141,7 +141,7 @@ export default function Canvas({
         assetsRef.current,
         bioBatteryStatus,
       );
-      drawStaticChar(ctx, assets, playerRef);
+      // drawStaticChar(ctx, assets, playerRef);
 
       drawForeground(ctx, assetsRef.current);
 
@@ -212,6 +212,8 @@ export default function Canvas({
       } else {
         setSelectionType("empty");
         setIsSelectedTileOccupied(false);
+        // playerRef.current.targetGridX = selectedTile.gridX;
+        // playerRef.current.targetGridY = selectedTile.gridY;
       }
 
       if (selectedSpecie && !clickedObject) {
