@@ -111,10 +111,13 @@ export default function TransmissionModal({
             {currentTransmission.texts[currentTransmissionIndex] && (
               <button
                 style={{
-                  background: "transparent",
-                  border: "none",
                   cursor: "pointer",
                   color: "#89dcf1",
+                  background: "rgba(7,13,31,0.94)",
+                  // border: "1px solid #087E98",
+                  border: "1px solid #89dcf1",
+                  padding: "0.5rem",
+                  borderRadius: 5,
                 }}
                 onClick={() => {
                   if (currentTransmissionIndex === currentTransmission.texts.length - 1) {
@@ -122,7 +125,7 @@ export default function TransmissionModal({
                   } else setCurrentTransmissionIndex(currentTransmissionIndex + 1);
                 }}
               >
-                CONTINUER {">"}{" "}
+                CONTINUER {">"}
               </button>
             )}
           </div>

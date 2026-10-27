@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type RefObject } from "react";
 import styles from "./canvas.module.css";
 import findTile from "../../game/grid/findTile";
 import type { GameAssets } from "../../assets/assetTypes";
@@ -16,7 +16,20 @@ import { drawWorldBorders } from "../../rendering/environment/drawWorldBorders";
 import { getViewport } from "../../rendering/viewport/getViewport";
 import { screenToWorld } from "../../rendering/viewport/screenToWorld";
 import type { CanvasProps } from "./Canvas.interface";
-import { HALF_TILE_HEIGHT } from "../../game/grid/grid.constants";
+import {
+  GRID_ORIGIN_X,
+  GRID_ORIGIN_Y,
+  HALF_TILE_HEIGHT,
+  HALF_TILE_WIDTH,
+} from "../../game/grid/grid.constants";
+
+export interface Player {
+  gridX: number;
+  gridY: number;
+  targetGridX: number;
+  targetGridY: number;
+  speed: number;
+}
 
 export default function Canvas({
   handleTileSelection,
@@ -34,20 +47,34 @@ export default function Canvas({
 }: CanvasProps) {
   const drawStaticChar = (
     ctx: CanvasRenderingContext2D,
-    tile: Tile,
     assets: GameAssets,
+    player: RefObject<Player>,
   ) => {
     const image = assets.playable_char_static;
 
-    console.log("TILE ====> ", tile);
+    const width = 152;
+    const height = 152;
 
-    const width = 126;
-    const height = 126;
+    const worldX =
+      GRID_ORIGIN_X + (player.current.gridX - player.current.gridY) * HALF_TILE_WIDTH;
 
-    const x = tile.x - width / 2;
-    const y = tile.y - height + HALF_TILE_HEIGHT;
+    const worldY =
+      GRID_ORIGIN_Y + (player.current.gridX + player.current.gridY) * HALF_TILE_HEIGHT;
+
+    const x = worldX - width / 2;
+    const y = worldY - height;
 
     ctx.drawImage(image, x, y, width, height);
+
+    ctx.drawImage(image, x, y, width, height);
+
+    ctx.beginPath();
+    ctx.arc(worldX, worldY, 5, 0, 2 * Math.PI);
+    ctx.fillStyle = "red";
+    ctx.fill();
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = "blue";
+    ctx.stroke();
   };
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -55,6 +82,14 @@ export default function Canvas({
   const tilesRef = useRef<Tile[]>(tiles);
   const plantsRef = useRef<Plant[]>(plants);
   const assetsRef = useRef<GameAssets>(assets);
+
+  const playerRef = useRef<Player>({
+    gridX: 2,
+    gridY: 9,
+    targetGridX: 5,
+    targetGridY: 5,
+    speed: 3,
+  });
 
   useEffect(() => {
     tilesRef.current = tiles;
@@ -80,7 +115,7 @@ export default function Canvas({
 
     let animationFrameId: number;
 
-    const render = (time: number) => {
+    const render = (timeStamp: number) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const viewport = getViewport(canvas.width, canvas.height);
 
@@ -99,13 +134,14 @@ export default function Canvas({
 
       drawDepthSortedWorld(
         ctx,
-        time,
+        timeStamp,
         plantsRef.current,
         initialDecorations,
         tilesRef.current,
         assetsRef.current,
         bioBatteryStatus,
       );
+      drawStaticChar(ctx, assets, playerRef);
 
       drawForeground(ctx, assetsRef.current);
 
@@ -113,13 +149,12 @@ export default function Canvas({
 
       drawWorldBorders(ctx, canvas.width, canvas.height, viewport);
 
-      drawStaticChar(ctx, tilesRef.current[70], assets);
-
       animationFrameId = requestAnimationFrame(render);
     };
 
     // render();
     animationFrameId = requestAnimationFrame(render);
+    console.log("animationFrameId : ", animationFrameId);
 
     return () => {
       cancelAnimationFrame(animationFrameId);
