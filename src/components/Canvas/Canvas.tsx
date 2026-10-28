@@ -66,8 +66,49 @@ export default function Canvas({
 
     ctx.drawImage(image, x, y, width, height);
 
-    ctx.drawImage(image, x, y, width, height);
+    ctx.beginPath();
+    ctx.arc(worldX, worldY, 5, 0, 2 * Math.PI);
+    ctx.fillStyle = "red";
+    ctx.fill();
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = "blue";
+    ctx.stroke();
+  };
 
+  const updatePlayerPosition = (
+    ctx: CanvasRenderingContext2D,
+    player: Player,
+    deltaTime: number,
+  ) => {
+    //  Calculer la différence entre la position actuelle et la destination (dx et dy).
+    const playerActualPosX = player.gridX;
+    const playerActualPosY = player.gridY;
+
+    const destinationPosX = player.targetGridX;
+    const destinationPosY = player.targetGridY;
+
+    const distanceLeftX = destinationPosX - playerActualPosX;
+    const distanceLeftY = destinationPosY - playerActualPosY;
+    // Calculer la distance restante avec Math.hypot(dx, dy).
+
+    const distanceLeft = Math.hypot(distanceLeftX, distanceLeftY);
+    // Calculer la distance maximale parcourue pendant cette frame avec player.speed * deltaTime.
+    const maxDistance = player.speed * deltaTime;
+    // Si le personnage peut atteindre sa destination pendant cette frame, positionner exactement gridX et gridY sur la destination
+    if (distanceLeft <= maxDistance) {
+      player.gridX = player.targetGridX;
+      player.gridY = player.targetGridY;
+      return;
+    }
+    // Sinon, avancer dans la direction de la destination en normalisant le vecteur (dx, dy).
+    const directionX = distanceLeftX / distanceLeft;
+    const directionY = distanceLeftY / distanceLeft;
+
+    player.gridX += directionX * maxDistance;
+    player.gridY += directionY * maxDistance;
+
+    const worldX = GRID_ORIGIN_X + (player.targetGridX - player.gridY) * HALF_TILE_WIDTH;
+    const worldY = GRID_ORIGIN_Y + (player.targetGridX + player.gridY) * HALF_TILE_HEIGHT;
     ctx.beginPath();
     ctx.arc(worldX, worldY, 5, 0, 2 * Math.PI);
     ctx.fillStyle = "red";
@@ -83,13 +124,13 @@ export default function Canvas({
   const plantsRef = useRef<Plant[]>(plants);
   const assetsRef = useRef<GameAssets>(assets);
 
-  // const playerRef = useRef<Player>({
-  //   gridX: 2,
-  //   gridY: 9,
-  //   targetGridX: 5,
-  //   targetGridY: 5,
-  //   speed: 3,
-  // });
+  const playerRef = useRef<Player>({
+    gridX: 2,
+    gridY: 9,
+    targetGridX: 2,
+    targetGridY: 9,
+    speed: 4,
+  });
 
   useEffect(() => {
     tilesRef.current = tiles;
@@ -114,8 +155,17 @@ export default function Canvas({
     if (!ctx) return;
 
     let animationFrameId: number;
-
+    let previousTimeStamp: number | null = null;
     const render = (timeStamp: number) => {
+      const deltaTime =
+        previousTimeStamp === null
+          ? 0
+          : Math.min((timeStamp - previousTimeStamp) / 1000, 0.05);
+
+      previousTimeStamp = timeStamp;
+
+      updatePlayerPosition(ctx, playerRef.current, deltaTime);
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const viewport = getViewport(canvas.width, canvas.height);
 
@@ -141,7 +191,7 @@ export default function Canvas({
         assetsRef.current,
         bioBatteryStatus,
       );
-      // drawStaticChar(ctx, assets, playerRef);
+      drawStaticChar(ctx, assets, playerRef);
 
       drawForeground(ctx, assetsRef.current);
 
@@ -212,13 +262,17 @@ export default function Canvas({
       } else {
         setSelectionType("empty");
         setIsSelectedTileOccupied(false);
-        // playerRef.current.targetGridX = selectedTile.gridX;
-        // playerRef.current.targetGridY = selectedTile.gridY;
       }
 
       if (selectedSpecie && !clickedObject) {
         handlePlantSpecie(selectedSpecie, selectedTile);
         return;
+      }
+
+      if (!clickedObject) {
+        playerRef.current.targetGridX = selectedTile.gridX;
+        playerRef.current.targetGridY = selectedTile.gridY;
+        // updatePlayerPosition(ctx, assets, playerRef)
       }
 
       const plant = findPlantOnTile(selectedTileId, plants);
