@@ -36,40 +36,6 @@ export const initialDecorations: Decoration[] = [
     footPrint: { width: 1, height: 1 },
   },
   {
-    id: "bioPalm-2",
-    tileId: 308,
-    assetKey: "bioPalmtree",
-
-    displayName: "Purple Palm",
-    description:
-      "A native photosynthetic organism commonly found throughout the surrounding ecosystem.",
-
-    gridX: 0,
-    gridY: 12,
-    width: 120,
-    height: 140,
-    offsetY: -45,
-    offsetX: 0,
-    footPrint: { width: 1, height: 1 },
-  },
-  {
-    id: "bioPalm-3",
-    tileId: 528,
-    assetKey: "bioPalmtree",
-
-    displayName: "Purple Palm",
-    description:
-      "A native photosynthetic organism commonly found throughout the surrounding ecosystem.",
-
-    gridX: 0,
-    gridY: 12,
-    width: 120,
-    height: 140,
-    offsetY: -45,
-    offsetX: 0,
-    footPrint: { width: 1, height: 1 },
-  },
-  {
     id: "bioPalm-4",
     tileId: 626,
     assetKey: "bioPalmtree",

@@ -29,6 +29,9 @@ export interface Player {
   targetGridX: number;
   targetGridY: number;
   speed: number;
+
+  animationFrame: number;
+  animationElapsed: number;
 }
 
 export default function Canvas({
@@ -45,15 +48,28 @@ export default function Canvas({
   selectedSpecie,
   bioBatteryStatus,
 }: CanvasProps) {
+  const updatePlayerAnimation = (player: Player, deltaTime: number) => {
+    const frameDuration = 1 / 6;
+
+    player.animationElapsed += deltaTime;
+
+    while (player.animationElapsed >= frameDuration) {
+      player.animationFrame = (player.animationFrame + 1) % 4;
+      player.animationElapsed -= frameDuration;
+    }
+  };
+
   const drawStaticChar = (
     ctx: CanvasRenderingContext2D,
     assets: GameAssets,
     player: RefObject<Player>,
   ) => {
-    const image = assets.playable_char_static;
+    const image = assets.walking_character;
 
-    const width = 152;
-    const height = 152;
+    const staticCharImage = assets.playable_char_static;
+
+    const width = 56;
+    const height = 72;
 
     const worldX =
       GRID_ORIGIN_X + (player.current.gridX - player.current.gridY) * HALF_TILE_WIDTH;
@@ -64,7 +80,32 @@ export default function Canvas({
     const x = worldX - width / 2;
     const y = worldY - height;
 
-    ctx.drawImage(image, x, y, width, height);
+    const frameWidth = image.width / 4;
+    const frameHeight = image.height;
+
+    const frameIndex = player.current.animationFrame;
+
+    const sourceX = frameIndex * frameWidth;
+    const sourceY = 0;
+
+    ctx.drawImage(image, sourceX, sourceY, frameWidth, frameHeight, x, y, width, height);
+
+    // ctx.drawImage(
+    //   image, // Image source
+
+    //   sourceX, // sourceX, // Position X du découpage dans l'image
+    //   sourceY, //sourceY, // Position Y du découpage dans l'image
+    //   543, // Largeur du morceau à découper
+    //   790, // Hauteur du morceau à découper
+
+    //   x, // Position X sur le Canvas
+    //   y, // Position Y sur le Canvas
+    //   width, // Largeur affichée
+    //   height, // Hauteur affichée
+    // );
+
+    //Perso static fonctionnel
+    // ctx.drawImage(image, x, y, width, height);
 
     ctx.beginPath();
     ctx.arc(worldX, worldY, 5, 0, 2 * Math.PI);
@@ -130,6 +171,9 @@ export default function Canvas({
     targetGridX: 2,
     targetGridY: 9,
     speed: 4,
+
+    animationElapsed: 0,
+    animationFrame: 0,
   });
 
   useEffect(() => {
@@ -165,6 +209,7 @@ export default function Canvas({
       previousTimeStamp = timeStamp;
 
       updatePlayerPosition(ctx, playerRef.current, deltaTime);
+      updatePlayerAnimation(playerRef.current, deltaTime);
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const viewport = getViewport(canvas.width, canvas.height);

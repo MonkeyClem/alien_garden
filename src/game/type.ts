@@ -28,6 +28,8 @@ export type DecorationDepthItem = {
   tile: Tile;
 };
 
+
+
 export type DepthItem = PlantDepthItem | DecorationDepthItem;
 
 export type WorldObjectOnTile =

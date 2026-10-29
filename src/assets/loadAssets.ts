@@ -7,9 +7,12 @@ export const loadAssets = async () => {
   
   const bioPalmtree = await loadImage("/assets/PNG/Assets/bioPalmthree.png");
   const trapStore = await loadImage("/assets/PNG/Assets/trapStore.png");
-  const bioTerminal = await loadImage("/assets/PNG/Assets/bioTerminal.png");
+  const bio_terminal = await loadImage("/assets/PNG/Assets/bio_terminal.png");
+
+  const green_house = await loadImage("/assets/PNG/Assets/green_house.png")
 
   const playable_char_static = await loadImage("/assets/PNG/Assets/playable_char_static.png")
+  const walking_character = await loadImage("/assets/PNG/Assets/walking_character.png")
 
   const reactorMushroomStageOne = await loadImage(
     "/assets/PNG/Assets/reactor_mushroom_stage_one.png",
@@ -59,10 +62,12 @@ export const loadAssets = async () => {
     "/assets/PNG/Assets/close_mission_button.png",
   );
 
-
   const transmissionOperator = await loadImage("/assets/PNG/Assets/transmissionOperator.png")
+
   return {
     playable_char_static,
+    walking_character,
+    green_house,
 
     bioBattery,
     bioBatteryOn,
@@ -70,7 +75,7 @@ export const loadAssets = async () => {
 
     bioPalmtree,
     trapStore,
-    bioTerminal,
+    bio_terminal,
 
 
     reactorMushroomStageOne,

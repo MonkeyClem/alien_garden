@@ -1,5 +1,5 @@
 export type DecorationAssetsKey =
-  | "bioTerminal"
+  | "bio_terminal"
   | "bioPalmtree"
   | "trapStore"
   | "bioBattery"
@@ -10,7 +10,8 @@ export type DecorationAssetsKey =
   | "alienGroundTwo"
   | "alienGroundThree"
   | "spacePod"
-  | "firstMapLake";
+  | "firstMapLake"
+  | "green_house"
 
 export type PlantAssetsKey =
   | "reactorMushroomStageOne"
@@ -24,7 +25,7 @@ export type IconsAssetKey = "bioMass" | "bioEnergy" | "biologicalData" | "open_m
 
 export type NarrativeImageKey = "transmissionOperator"
 
-export type PlayableCharacterKey = "playable_char_static"
+export type PlayableCharacterKey = "playable_char_static" | "walking_character"
 
 export type BackgroundAssets = "mapBackground" | "midground" | "midgroundTwo" | "midgroundThree" |"midgroundFour"| "midgroundFillerOne" |"foreground"
 
