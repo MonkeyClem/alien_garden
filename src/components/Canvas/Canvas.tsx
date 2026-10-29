@@ -32,6 +32,8 @@ export interface Player {
 
   animationFrame: number;
   animationElapsed: number;
+
+  isMoving: boolean;
 }
 
 export default function Canvas({
@@ -59,68 +61,68 @@ export default function Canvas({
     }
   };
 
-  const drawStaticChar = (
+  const drawPlayer = (
     ctx: CanvasRenderingContext2D,
     assets: GameAssets,
     player: RefObject<Player>,
   ) => {
-    const image = assets.walking_character;
-
-    const staticCharImage = assets.playable_char_static;
-
-    const width = 56;
-    const height = 72;
-
     const worldX =
       GRID_ORIGIN_X + (player.current.gridX - player.current.gridY) * HALF_TILE_WIDTH;
 
     const worldY =
       GRID_ORIGIN_Y + (player.current.gridX + player.current.gridY) * HALF_TILE_HEIGHT;
 
+    const width = 56;
+    const height = 72;
+
     const x = worldX - width / 2;
     const y = worldY - height;
 
-    const frameWidth = image.width / 4;
-    const frameHeight = image.height;
+    const isMoving: boolean =
+      player.current.gridX != player.current.targetGridX ||
+      player.current.gridY != player.current.targetGridY;
 
-    const frameIndex = player.current.animationFrame;
+    let image: HTMLImageElement;
 
-    const sourceX = frameIndex * frameWidth;
-    const sourceY = 0;
+    if (isMoving) {
+      player.current.isMoving = true;
+      image = assets.walking_character;
 
-    ctx.drawImage(image, sourceX, sourceY, frameWidth, frameHeight, x, y, width, height);
+      const frameWidth = image.width / 4;
+      const frameHeight = image.height;
 
-    // ctx.drawImage(
-    //   image, // Image source
+      const frameIndex = player.current.animationFrame;
 
-    //   sourceX, // sourceX, // Position X du découpage dans l'image
-    //   sourceY, //sourceY, // Position Y du découpage dans l'image
-    //   543, // Largeur du morceau à découper
-    //   790, // Hauteur du morceau à découper
+      const sourceX = frameIndex * frameWidth;
+      const sourceY = 0;
 
-    //   x, // Position X sur le Canvas
-    //   y, // Position Y sur le Canvas
-    //   width, // Largeur affichée
-    //   height, // Hauteur affichée
-    // );
+      ctx.drawImage(
+        image,
+        sourceX,
+        sourceY,
+        frameWidth,
+        frameHeight,
+        x,
+        y + 5,
+        width,
+        height,
+      );
+    } else {
+      player.current.isMoving = false;
+      image = assets.playable_char_static;
+      ctx.drawImage(image, x, y + 5, width, height);
+    }
 
-    //Perso static fonctionnel
-    // ctx.drawImage(image, x, y, width, height);
-
-    ctx.beginPath();
-    ctx.arc(worldX, worldY, 5, 0, 2 * Math.PI);
-    ctx.fillStyle = "red";
-    ctx.fill();
-    ctx.lineWidth = 4;
-    ctx.strokeStyle = "blue";
-    ctx.stroke();
+    // ctx.beginPath();
+    // ctx.arc(worldX, worldY, 5, 0, 2 * Math.PI);
+    // ctx.fillStyle = "red";
+    // ctx.fill();
+    // ctx.lineWidth = 4;
+    // ctx.strokeStyle = "blue";
+    // ctx.stroke();
   };
 
-  const updatePlayerPosition = (
-    ctx: CanvasRenderingContext2D,
-    player: Player,
-    deltaTime: number,
-  ) => {
+  const updatePlayerPosition = (player: Player, deltaTime: number) => {
     //  Calculer la différence entre la position actuelle et la destination (dx et dy).
     const playerActualPosX = player.gridX;
     const playerActualPosY = player.gridY;
@@ -148,15 +150,15 @@ export default function Canvas({
     player.gridX += directionX * maxDistance;
     player.gridY += directionY * maxDistance;
 
-    const worldX = GRID_ORIGIN_X + (player.targetGridX - player.gridY) * HALF_TILE_WIDTH;
-    const worldY = GRID_ORIGIN_Y + (player.targetGridX + player.gridY) * HALF_TILE_HEIGHT;
-    ctx.beginPath();
-    ctx.arc(worldX, worldY, 5, 0, 2 * Math.PI);
-    ctx.fillStyle = "red";
-    ctx.fill();
-    ctx.lineWidth = 4;
-    ctx.strokeStyle = "blue";
-    ctx.stroke();
+    // const worldX = GRID_ORIGIN_X + (player.targetGridX - player.gridY) * HALF_TILE_WIDTH;
+    // const worldY = GRID_ORIGIN_Y + (player.targetGridX + player.gridY) * HALF_TILE_HEIGHT;
+    // ctx.beginPath();
+    // ctx.arc(worldX, worldY, 5, 0, 2 * Math.PI);
+    // ctx.fillStyle = "red";
+    // ctx.fill();
+    // ctx.lineWidth = 4;
+    // ctx.strokeStyle = "blue";
+    // ctx.stroke();
   };
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -174,6 +176,8 @@ export default function Canvas({
 
     animationElapsed: 0,
     animationFrame: 0,
+
+    isMoving: false,
   });
 
   useEffect(() => {
@@ -208,7 +212,7 @@ export default function Canvas({
 
       previousTimeStamp = timeStamp;
 
-      updatePlayerPosition(ctx, playerRef.current, deltaTime);
+      updatePlayerPosition(playerRef.current, deltaTime);
       updatePlayerAnimation(playerRef.current, deltaTime);
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -236,7 +240,7 @@ export default function Canvas({
         assetsRef.current,
         bioBatteryStatus,
       );
-      drawStaticChar(ctx, assets, playerRef);
+      drawPlayer(ctx, assets, playerRef);
 
       drawForeground(ctx, assetsRef.current);
 
