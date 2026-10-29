@@ -2,7 +2,7 @@ import type { Decoration } from "./decoration.type";
 
 export const initialDecorations: Decoration[] = [
   {
-    id: "bioBattery-1",
+    id: "battery_01",
     tileId: 1,
     assetKey: "bioBattery",
 
@@ -19,7 +19,7 @@ export const initialDecorations: Decoration[] = [
     footPrint: { width: 7, height: 6 },
   },
   {
-    id: "bioPalm-1",
+    id: "bio_palm_01",
     tileId: 140,
     assetKey: "bioPalmtree",
 

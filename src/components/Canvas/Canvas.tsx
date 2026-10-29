@@ -1,7 +1,7 @@
 import { useEffect, useRef, type RefObject } from "react";
 import styles from "./canvas.module.css";
 import findTile from "../../game/grid/findTile";
-import type { GameAssets } from "../../assets/assetTypes";
+import type { DecorationAssetsKey, GameAssets } from "../../assets/assetTypes";
 import type { Tile } from "../../game/grid/tiles.types";
 import drawAllTiles, { drawTileState } from "../../rendering/tiles/drawAllTiles";
 import { initialDecorations } from "../../game/decorations/initialDecorations";
@@ -16,6 +16,7 @@ import { drawWorldBorders } from "../../rendering/environment/drawWorldBorders";
 import { getViewport } from "../../rendering/viewport/getViewport";
 import { screenToWorld } from "../../rendering/viewport/screenToWorld";
 import type { CanvasProps } from "./Canvas.interface";
+import { getOccupiedTileIds } from "../../game/decorations/getOccupiedTilesIds";
 import {
   GRID_ORIGIN_X,
   GRID_ORIGIN_Y,
@@ -60,7 +61,6 @@ export default function Canvas({
       player.animationElapsed -= frameDuration;
     }
   };
-
   const drawPlayer = (
     ctx: CanvasRenderingContext2D,
     assets: GameAssets,
@@ -121,7 +121,6 @@ export default function Canvas({
     // ctx.strokeStyle = "blue";
     // ctx.stroke();
   };
-
   const updatePlayerPosition = (player: Player, deltaTime: number) => {
     //  Calculer la différence entre la position actuelle et la destination (dx et dy).
     const playerActualPosX = player.gridX;
@@ -179,6 +178,43 @@ export default function Canvas({
 
     isMoving: false,
   });
+
+  const occupiedTileIds = new Set(
+    initialDecorations.flatMap(decoration => getOccupiedTileIds(decoration)),
+  );
+
+  const getWalkableNeighbors = (
+    gridX: number,
+    gridY: number,
+    tiles: Tile[],
+    occupiedTileIds: Set<number>,
+  ): Tile[] => {
+    const directions = [
+      { dx: 1, dy: 0 },
+      { dx: -1, dy: 0 },
+      { dx: 0, dy: 1 },
+      { dx: 0, dy: -1 },
+    ];
+
+    const walkableNeighbors: Tile[] = [];
+
+    directions.forEach(direction => {
+      const neighborX = gridX + direction.dx;
+      const neighborY = gridY + direction.dy;
+
+      const neighbor = tiles.find(
+        tile => tile.gridX === neighborX && tile.gridY === neighborY,
+      );
+
+      if (!neighbor) return;
+
+      if (occupiedTileIds.has(neighbor.id)) return;
+
+      walkableNeighbors.push(neighbor);
+    });
+
+    return walkableNeighbors;
+  };
 
   useEffect(() => {
     tilesRef.current = tiles;
@@ -319,10 +355,34 @@ export default function Canvas({
       }
 
       if (!clickedObject) {
+        const walkableNeighbors = getWalkableNeighbors(
+          selectedTile.gridX,
+          selectedTile.gridY,
+          tiles,
+          occupiedTileIds,
+        );
+        console.log("walkableNeighbors : ", walkableNeighbors);
+
         playerRef.current.targetGridX = selectedTile.gridX;
         playerRef.current.targetGridY = selectedTile.gridY;
         // updatePlayerPosition(ctx, assets, playerRef)
       }
+      const walkableNeighbors = getWalkableNeighbors(
+        selectedTile.gridX,
+        selectedTile.gridY,
+        tiles,
+        occupiedTileIds,
+      );
+      console.log(
+        "\n",
+        "\n",
+        "selectedTile ==>",
+        selectedTile,
+        "walkableNeighbors : ",
+        walkableNeighbors,
+        "\n",
+        "\n",
+      );
 
       const plant = findPlantOnTile(selectedTileId, plants);
 

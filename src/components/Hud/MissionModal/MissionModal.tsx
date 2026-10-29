@@ -166,7 +166,7 @@ export default function MissionModal({
             right: "2rem",
           }}
         >
-          Activer la Bio Battery{" "}
+          {currentMission.title}
         </p>
         <div
           onClick={() => setIsMissionModalOpen(true)}
