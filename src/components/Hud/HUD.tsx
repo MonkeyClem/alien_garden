@@ -100,6 +100,7 @@ export default function HUD({
           setIsInventoryOpen={setIsInventoryOpen}
           handleSeedSelection={handleSpecieSelection}
         />
+
         {isTransmissionModalOpen && (
           <div
             style={{
