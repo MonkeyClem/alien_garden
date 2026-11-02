@@ -24,6 +24,8 @@ import {
   HALF_TILE_WIDTH,
 } from "../../game/grid/grid.constants";
 
+export type PlayerDirections = "left" | "right" | "top" | "bottom";
+
 export interface Player {
   gridX: number;
   gridY: number;
@@ -33,8 +35,10 @@ export interface Player {
 
   animationFrame: number;
   animationElapsed: number;
+  animationState: "static" | "walking";
 
   isMoving: boolean;
+  direction: PlayerDirections;
 
   playerPath: Tile[];
 }
@@ -64,6 +68,7 @@ export default function Canvas({
   const updatePlayerAnimation = (player: Player, deltaTime: number) => {
     const frameDuration = 1 / 6;
 
+    if (player.playerPath.length === 0) return;
     player.animationElapsed += deltaTime;
 
     while (player.animationElapsed >= frameDuration) {
@@ -72,68 +77,53 @@ export default function Canvas({
     }
   };
 
-  // const updatePlayerPosition = (player: Player, deltaTime: number) => {
-  //   const playerActualPosX = player.gridX;
-  //   const playerActualPosY = player.gridY;
+  const getPlayerDirection = (player: Player): PlayerDirections => {
+    if (player.targetGridX > player.gridX) {
+      return "right";
+    }
+    if (player.targetGridX < player.gridX) {
+      return "left";
+    }
+    if (player.targetGridY > player.gridY) {
+      return "bottom";
+    }
+    if (player.targetGridY < player.gridY) {
+      return "top";
+    } else return player.direction;
+  };
 
-  //   const destinationPosX = player.targetGridX;
-  //   const destinationPosY = player.targetGridY;
-
-  //   const distanceLeftX = destinationPosX - playerActualPosX;
-  //   const distanceLeftY = destinationPosY - playerActualPosY;
-
-  //   // Calculer la distance restante avec Math.hypot(dx, dy).
-
-  //   const distanceLeft = Math.hypot(distanceLeftX, distanceLeftY);
-  //   // Calculer la distance maximale parcourue pendant cette frame avec player.speed * deltaTime.
-  //   const maxDistance = player.speed * deltaTime;
-  //   // Si le personnage peut atteindre sa destination pendant cette frame, positionner exactement gridX et gridY sur la destination
-  //   if (distanceLeft <= maxDistance) {
-  //     player.gridX = player.targetGridX;
-  //     player.gridY = player.targetGridY;
-  //     return;
-  //   }
-
-  //   if (player.playerPath.length === 0) {
-  //     return;
-  //   }
-  //   if (player.playerPath.length != 0) {
-  //     if (player.targetGridX === player.gridX && player.targetGridY === player.gridY) {
-  //       if (distanceLeft <= maxDistance) {
-  //         player.gridX = player.targetGridX;
-  //         player.gridY = player.targetGridY;
-  //         return;
-  //       }
-  //     }
-  //   }
-  //   //  Calculer la différence entre la position actuelle et la destination (dx et dy).
-
-  //   // Sinon, avancer dans la direction de la destination en normalisant le vecteur (dx, dy).
-  //   const directionX = distanceLeftX / distanceLeft;
-  //   const directionY = distanceLeftY / distanceLeft;
-
-  //   player.gridX += directionX * maxDistance;
-  //   player.gridY += directionY * maxDistance;
-
-  //   // const worldX = GRID_ORIGIN_X + (player.targetGridX - player.gridY) * HALF_TILE_WIDTH;
-  //   // const worldY = GRID_ORIGIN_Y + (player.targetGridX + player.gridY) * HALF_TILE_HEIGHT;
-  //   // ctx.beginPath();
-  //   // ctx.arc(worldX, worldY, 5, 0, 2 * Math.PI);
-  //   // ctx.fillStyle = "red";
-  //   // ctx.fill();
-  //   // ctx.lineWidth = 4;
-  //   // ctx.strokeStyle = "blue";
-  //   // ctx.stroke();
-  // };
+  const getPlayerSprite = (player: Player, assets: GameAssets): HTMLImageElement => {
+    if (player.animationState === "static") return assets.playable_char_static;
+    switch (player.direction) {
+      case "bottom":
+        return assets.walking_character;
+      case "top":
+        return assets.walking_character;
+      case "left":
+        return assets.walking_character;
+      case "right":
+        return assets.walking_character;
+      default:
+        return assets.playable_char_static;
+    }
+  };
 
   const updatePlayerPosition = (player: Player, deltaTime: number) => {
     if (player.playerPath.length === 0) {
+      player.animationState = "static";
+
       return;
+    } else {
+      player.animationState = "walking";
     }
+
     const nextTile = player.playerPath[0];
 
     player.targetGridX = nextTile.gridX;
     player.targetGridY = nextTile.gridY;
+
+    const playerDirection = getPlayerDirection(player);
+    player.direction = playerDirection;
 
     const distanceLeftX = player.targetGridX - player.gridX;
     const distanceLeftY = player.targetGridY - player.gridY;
@@ -173,48 +163,38 @@ export default function Canvas({
     const x = worldX - width / 2;
     const y = worldY - height;
 
-    const isMoving: boolean =
-      player.current.gridX != player.current.targetGridX ||
-      player.current.gridY != player.current.targetGridY;
-
-    let image: HTMLImageElement;
-
-    if (isMoving) {
-      player.current.isMoving = true;
-      image = assets.walking_character;
-
-      const frameWidth = image.width / 4;
-      const frameHeight = image.height;
-
-      const frameIndex = player.current.animationFrame;
-
-      const sourceX = frameIndex * frameWidth;
-      const sourceY = 0;
-
-      ctx.drawImage(
-        image,
-        sourceX,
-        sourceY,
-        frameWidth,
-        frameHeight,
-        x,
-        y + 5,
-        width,
-        height,
-      );
+    if (player.current.playerPath.length === 0) {
+      player.current.animationState = "static";
     } else {
-      player.current.isMoving = false;
-      image = assets.playable_char_static;
-      ctx.drawImage(image, x, y + 5, width, height);
+      player.current.animationState = "walking";
     }
 
-    // ctx.beginPath();
-    // ctx.arc(worldX, worldY, 5, 0, 2 * Math.PI);
-    // ctx.fillStyle = "red";
-    // ctx.fill();
-    // ctx.lineWidth = 4;
-    // ctx.strokeStyle = "blue";
-    // ctx.stroke();
+    const image = getPlayerSprite(player.current, assets);
+
+    const frameWidth = image.width / 4;
+    const frameHeight = image.height;
+
+    const frameIndex = player.current.animationFrame;
+
+    const sourceX = frameIndex * frameWidth;
+    const sourceY = 0;
+
+    if (player.current.animationState === "static") {
+      ctx.drawImage(image, x, y + 5, width, height);
+      return;
+    }
+
+    ctx.drawImage(
+      image,
+      sourceX,
+      sourceY,
+      frameWidth,
+      frameHeight,
+      x,
+      y + 5,
+      width,
+      height,
+    );
   };
 
   const occupiedTileIds = new Set(
@@ -418,8 +398,10 @@ export default function Canvas({
 
     animationElapsed: 0,
     animationFrame: 0,
+    animationState: "static",
 
     isMoving: false,
+    direction: "right",
 
     playerPath: [],
   });
@@ -561,27 +543,6 @@ export default function Canvas({
         handlePlantSpecie(selectedSpecie, selectedTile);
         return;
       }
-
-      // if (!clickedObject) {
-      //   const walkableNeighbors = getWalkableNeighbors(
-      //     selectedTile.gridX,
-      //     selectedTile.gridY,
-      //     tiles,
-      //     occupiedTileIds,
-      //   );
-      //   console.log("walkableNeighbors : ", walkableNeighbors);
-
-      //   playerRef.current.targetGridX = selectedTile.gridX;
-      //   playerRef.current.targetGridY = selectedTile.gridY;
-      //   // updatePlayerPosition(ctx, assets, playerRef)
-      // }
-
-      // const walkableNeighbors = getWalkableNeighbors(
-      //   selectedTile.gridX,
-      //   selectedTile.gridY,
-      //   tiles,
-      //   occupiedTileIds,
-      // );
 
       const playerTile = tiles.find(
         tile =>
