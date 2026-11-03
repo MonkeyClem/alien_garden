@@ -13,6 +13,10 @@ export const loadAssets = async () => {
 
   const playable_char_static = await loadImage("/assets/PNG/Assets/playable_char_static.png")
   const walking_character = await loadImage("/assets/PNG/Assets/walking_character.png")
+  const walking_character_left = await loadImage("/assets/PNG/Assets/walking_character_left.png")
+  const walking_character_top = await loadImage("/assets/PNG/Assets/walking_character_top.png")
+  const walking_character_bottom = await loadImage("/assets/PNG/Assets/walking_character_bottom.png")
+
 
   const reactorMushroomStageOne = await loadImage(
     "/assets/PNG/Assets/reactor_mushroom_stage_one.png",
@@ -68,6 +72,9 @@ export const loadAssets = async () => {
     playable_char_static,
     walking_character,
     green_house,
+    walking_character_left,
+    walking_character_top,
+    walking_character_bottom,
 
     bioBattery,
     bioBatteryOn,

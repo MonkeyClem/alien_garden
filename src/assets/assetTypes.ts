@@ -25,7 +25,7 @@ export type IconsAssetKey = "bioMass" | "bioEnergy" | "biologicalData" | "open_m
 
 export type NarrativeImageKey = "transmissionOperator"
 
-export type PlayableCharacterKey = "playable_char_static" | "walking_character"
+export type PlayableCharacterKey = "playable_char_static" | "walking_character" | "walking_character_left" | "walking_character_bottom" | "walking_character_top"
 
 export type BackgroundAssets = "mapBackground" | "midground" | "midgroundTwo" | "midgroundThree" |"midgroundFour"| "midgroundFillerOne" |"foreground"
 

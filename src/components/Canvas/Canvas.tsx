@@ -96,11 +96,11 @@ export default function Canvas({
     if (player.animationState === "static") return assets.playable_char_static;
     switch (player.direction) {
       case "bottom":
-        return assets.walking_character;
+        return assets.walking_character_bottom;
       case "top":
-        return assets.walking_character;
+        return assets.walking_character_top;
       case "left":
-        return assets.walking_character;
+        return assets.walking_character_left;
       case "right":
         return assets.walking_character;
       default:
@@ -111,7 +111,6 @@ export default function Canvas({
   const updatePlayerPosition = (player: Player, deltaTime: number) => {
     if (player.playerPath.length === 0) {
       player.animationState = "static";
-
       return;
     } else {
       player.animationState = "walking";
@@ -170,6 +169,17 @@ export default function Canvas({
     }
 
     const image = getPlayerSprite(player.current, assets);
+
+    if (
+      player.current.direction === "left" &&
+      player.current.animationState === "walking"
+    ) {
+      console.log({
+        selectedImage: image.src,
+        expectedImage: assets.walking_character_left.src,
+        isLeftSheet: image === assets.walking_character_left,
+      });
+    }
 
     const frameWidth = image.width / 4;
     const frameHeight = image.height;
