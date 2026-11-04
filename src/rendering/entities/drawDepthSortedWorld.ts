@@ -1,12 +1,24 @@
 import type { GameAssets } from "../../assets/assetTypes";
-
 import type { Decoration } from "../../game/decorations/decoration.type";
+import { HALF_TILE_HEIGHT, TILE_HEIGHT } from "../../game/grid/grid.constants";
 import type { Tile } from "../../game/grid/tiles.types";
 import type { Plant } from "../../game/plants/plants.type";
-import type { PlantDepthItem, DecorationDepthItem, DepthItem } from "../../game/type";
+import type {
+  PlantDepthItem,
+  DecorationDepthItem,
+  DepthItem,
+  Player,
+} from "../../game/type";
+import { GRID_ORIGIN_Y } from "../../game/world/world.constant";
 import { drawDecoration } from "./drawDecorations";
 import { drawPlant } from "./drawPlants";
+import drawPlayer from "./player/drawPlayer";
 
+export type PlayerDepthItem = {
+  depth: number;
+  player: Player;
+  type: "player";
+};
 export const drawDepthSortedWorld = (
   ctx: CanvasRenderingContext2D,
   time: number,
@@ -15,6 +27,7 @@ export const drawDepthSortedWorld = (
   tiles: Tile[],
   assets: GameAssets,
   bioBatteryStatus: "active" | "inactive",
+  player: Player,
 ) => {
   const createPlantDepthItem = (plant: Plant, tiles: Tile[]) => {
     const foundTile = tiles.find(tile => tile.id === plant.tileId);
@@ -29,6 +42,38 @@ export const drawDepthSortedWorld = (
     };
 
     return plantDepthItem;
+  };
+
+  // const createPlayerDepthItem = (player: Player, tiles: Tile[]): PlayerDepthItem => {
+  //   const playerTile = { gridX: player.gridX, gridY: player.gridY };
+  //   const foundTile = tiles.find(
+  //     tile => tile.gridX === playerTile.gridX && tile.gridY === playerTile.gridY,
+  //   );
+
+  //   if (!foundTile)
+  //     return {
+  //       type: "player",
+  //       depth: (player.gridX + player.gridY) * HALF_TILE_HEIGHT + TILE_HEIGHT,
+  //       player: player,
+  //     };
+
+  //   const playerDepthItem: PlayerDepthItem = {
+  //     type: "player",
+  //     depth: foundTile.y - TILE_HEIGHT,
+  //     //      depth: (player.gridX + player.gridY) * HALF_TILE_HEIGHT + TILE_HEIGHT,
+  //     player: player,
+  //   };
+
+  //   return playerDepthItem;
+  // };
+
+  const createPlayerDepthItem = (player: Player): PlayerDepthItem => {
+    return {
+      type: "player",
+      depth:
+        GRID_ORIGIN_Y + (player.gridX + player.gridY) * HALF_TILE_HEIGHT - TILE_HEIGHT,
+      player,
+    };
   };
 
   const createDecorationDepthItem = (
@@ -69,7 +114,13 @@ export const drawDepthSortedWorld = (
     decorationDepthItems.push(result);
   });
 
-  const depthItems: DepthItem[] = [...decorationDepthItems, ...plantDepthItems];
+  const playerDepthItem: PlayerDepthItem = createPlayerDepthItem(player);
+
+  const depthItems: DepthItem[] = [
+    ...decorationDepthItems,
+    ...plantDepthItems,
+    playerDepthItem,
+  ];
 
   const sortedDepthItems = depthItems.sort((a, b) => a.depth - b.depth);
 
@@ -83,6 +134,9 @@ export const drawDepthSortedWorld = (
     }
     if (item.type === "plant") {
       drawPlant(ctx, item.plant, item.tile, assets);
+    }
+    if (item.type === "player") {
+      drawPlayer(ctx, assets, player);
     }
   });
 };

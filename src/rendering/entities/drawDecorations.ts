@@ -11,11 +11,9 @@ export const drawDecoration = (
   assets: GameAssets,
 ) => {
   const image = assets[decoration.assetKey];
-
   const x = tile.x - decoration.width / 2 + decoration.offsetX;
 
   const y = tile.y - decoration.height / 2 + HALF_TILE_HEIGHT + decoration.offsetY;
-
   ctx.drawImage(image, x, y, decoration.width, decoration.height);
 
   if (decoration.assetKey === "bioBatteryOn") {

@@ -1,9 +1,10 @@
+import type { PlayerDepthItem } from "../rendering/entities/drawDepthSortedWorld";
 import type { Decoration } from "./decorations/decoration.type";
 import type { Tile } from "./grid/tiles.types";
 import type { Plant } from "./plants/plants.type";
 
 //DECORATIONS ASSETS
-export type selectionType = "empty" | "plant" | "decoration" | null;
+export type selectionType = "empty" | "plant" | "decoration" | "player" | null;
 
 export type BioBatteryStatus = "active" | "inactive";
 
@@ -28,9 +29,7 @@ export type DecorationDepthItem = {
   tile: Tile;
 };
 
-
-
-export type DepthItem = PlantDepthItem | DecorationDepthItem;
+export type DepthItem = PlantDepthItem | DecorationDepthItem | PlayerDepthItem;
 
 export type WorldObjectOnTile =
   | {
@@ -40,4 +39,36 @@ export type WorldObjectOnTile =
   | {
       type: "decoration";
       object: Decoration;
+    }
+  | {
+      type: "player";
+      object: Player;
     };
+
+////////PLAYER RELATED TYPES///////
+export type PlayerDirections = "left" | "right" | "top" | "bottom";
+
+export interface Player {
+  gridX: number;
+  gridY: number;
+  targetGridX: number;
+  targetGridY: number;
+  speed: number;
+
+  animationFrame: number;
+  animationElapsed: number;
+  animationState: "static" | "walking";
+
+  isMoving: boolean;
+  direction: PlayerDirections;
+
+  playerPath: Tile[];
+}
+
+export interface PathNode {
+  tileOnPath: Tile;
+  costOfPath: number;
+  heuristic: number;
+  totalCost: number;
+  reachedFromNode: PathNode | null;
+}
