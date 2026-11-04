@@ -19,90 +19,107 @@ export const initialDecorations: Decoration[] = [
     footPrint: { width: 7, height: 6 },
   },
   {
-    id: "bio_palm_01",
-    tileId: 140,
-    assetKey: "bioPalmtree",
+    id: "storage_box_one",
+    tileId: 20,
+    assetKey: "storage_box_one",
 
-    displayName: "Purple Palm",
+    displayName: "Storage Box",
     description:
-      "A native photosynthetic organism commonly found throughout the surrounding ecosystem.",
+      "A box, brought by your civilization. The content could've been anything",
 
     gridX: 0,
-    gridY: 12,
-    width: 240,
-    height: 240,
-    offsetY: -45,
-    offsetX: 0,
-    footPrint: { width: 1, height: 1 },
+    gridY: 22,
+    width: 160,
+    height: 125,
+    offsetY: -15,
+    offsetX: 10,
+    footPrint: { width: 2, height: 2 },
   },
   {
-    id: "bioPalm-4",
-    tileId: 626,
-    assetKey: "bioPalmtree",
+    id: "storage_box_two_back",
+    tileId: 22,
+    assetKey: "storage_box_two_face",
 
-    displayName: "Purple Palm",
+    displayName: "Storage Box",
     description:
-      "A native photosynthetic organism commonly found throughout the surrounding ecosystem.",
+      "A box, brought by your civilization. The content could've been anything",
 
     gridX: 0,
-    gridY: 12,
+    gridY: 22,
     width: 120,
-    height: 140,
-    offsetY: -45,
+    height: 95,
+    offsetY: -15,
+    offsetX: 10,
+    footPrint: { width: 3, height: 3 },
+  },
+  {
+    id: "bioScanner",
+    tileId: 47,
+    assetKey: "bioScanner",
+
+    displayName: "Bio Scanner",
+    description:
+      "A biological energy storage unit designed to collect and redistribute BioEnergy.",
+
+    gridX: 0,
+    gridY: 24,
+    width: 120,
+    height: 110,
+    offsetY: -20,
     offsetX: 0,
-    footPrint: { width: 1, height: 1 },
+    footPrint: { width: 3, height: 3 },
+  },
+  {
+    id: "bioScanner",
+    tileId: 47,
+    assetKey: "bioScanner",
+
+    displayName: "Bio Scanner",
+    description:
+      "A biological energy storage unit designed to collect and redistribute BioEnergy.",
+
+    gridX: 0,
+    gridY: 24,
+    width: 120,
+    height: 110,
+    offsetY: -20,
+    offsetX: 0,
+    footPrint: { width: 3, height: 3 },
+  },
+  {
+    id: "bioScanner",
+    tileId: 231,
+    assetKey: "power_relay",
+
+    displayName: "Bio Scanner",
+    description:
+      "A biological energy storage unit designed to collect and redistribute BioEnergy.",
+
+    gridX: 0,
+    gridY: 24,
+    width: 67.5,
+    height: 67.5,
+    offsetY: -15,
+    offsetX: 0,
+    footPrint: { width: 2, height: 2 },
   },
 
   {
-    id: "bioPalm-5",
-    tileId: 736,
-    assetKey: "bioPalmtree",
+    id: "outPostHQ",
+    tileId: 374,
+    assetKey: "outPostHQ",
 
-    displayName: "Purple Palm",
+    displayName: "Bio Scanner",
     description:
-      "A native photosynthetic organism commonly found throughout the surrounding ecosystem.",
+      "A biological energy storage unit designed to collect and redistribute BioEnergy.",
 
     gridX: 0,
-    gridY: 12,
-    width: 120,
-    height: 140,
-    offsetY: -45,
+    gridY: 24,
+    width: 250,
+    height: 250,
+    offsetY: 0,
     offsetX: 0,
-    footPrint: { width: 1, height: 1 },
-  },
-  {
-    id: "bioPalm-6",
-    tileId: 351,
-    assetKey: "bioPalmtree",
-
-    displayName: "Purple Palm",
-    description:
-      "A native photosynthetic organism commonly found throughout the surrounding ecosystem.",
-
-    gridX: 0,
-    gridY: 12,
-    width: 120,
-    height: 140,
-    offsetY: -45,
-    offsetX: 0,
-    footPrint: { width: 1, height: 1 },
-  },
-  {
-    id: "bioPalm-7",
-    tileId: 818,
-    assetKey: "bioPalmtree",
-
-    displayName: "Purple Palm",
-    description:
-      "A native photosynthetic organism commonly found throughout the surrounding ecosystem.",
-
-    gridX: 0,
-    gridY: 12,
-    width: 120,
-    height: 140,
-    offsetY: -45,
-    offsetX: 0,
-    footPrint: { width: 1, height: 1 },
+    footPrint: { width: 2, height: 2 },
   },
 
   {
@@ -110,13 +127,13 @@ export const initialDecorations: Decoration[] = [
     tileId: 12,
     assetKey: "spacePod",
 
-    displayName: "Expedition Pod",
+    displayName: "Seed Pod",
     description: "A compact expedition module deployed to support planetary exploration.",
 
     gridX: 0,
     gridY: 12,
-    width: 225,
-    height: 200,
+    width: 125,
+    height: 150,
     offsetY: -45,
     offsetX: -10,
     footPrint: { width: 3, height: 3 },

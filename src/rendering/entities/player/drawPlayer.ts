@@ -13,8 +13,11 @@ export default function drawPlayer(
 
   const worldY = GRID_ORIGIN_Y + (player.gridX + player.gridY) * HALF_TILE_HEIGHT;
 
-  const width = 56;
-  const height = 72;
+  const width = 48;
+  const height = 64;
+
+  // const width = 56;
+  // const height = 72;
 
   const x = worldX - width / 2;
   const y = worldY - height;

@@ -8,6 +8,7 @@ export const loadAssets = async () => {
   const bioPalmtree = await loadImage("/assets/PNG/Assets/bioPalmthree.png");
   const trapStore = await loadImage("/assets/PNG/Assets/trapStore.png");
   const bio_terminal = await loadImage("/assets/PNG/Assets/bio_terminal.png");
+  const bioScanner = await loadImage("/assets/PNG/Assets/bioScanner.png");
 
   const green_house = await loadImage("/assets/PNG/Assets/green_house.png")
 
@@ -41,7 +42,14 @@ export const loadAssets = async () => {
   const alienGroundTwo = await loadImage("/assets/PNG/Assets/alien_ground_two.png");
   const alienGroundThree = await loadImage("/assets/PNG/Assets/alien_ground_three.png");
 
-  const spacePod = await loadImage("/assets/PNG/Assets/spacePod.png");
+  const spacePod = await loadImage("/assets/PNG/Assets/spacePod_.png");
+  const storage_box_one = await loadImage("/assets/PNG/Assets/storage_box_one.png");
+
+    const storage_box_two_back = await loadImage("/assets/PNG/Assets/storage_box_two_back.png");
+      const storage_box_two_face = await loadImage("/assets/PNG/Assets/storage_box_two_face.png");
+      const power_relay = await loadImage("/assets/PNG/Assets/power_relay.png")
+const outPostHQ = await loadImage("/assets/PNG/Assets/outPostHQ.png")
+
 
   const mapBackground = await loadImage("/assets/PNG/Assets/mapBackground.jpg");
   const midground = await loadImage("/assets/PNG/Assets/midground.png");
@@ -79,6 +87,13 @@ export const loadAssets = async () => {
     bioBattery,
     bioBatteryOn,
     bioBatteryOnGlow,
+
+    bioScanner,
+     storage_box_one ,
+     storage_box_two_face,
+     storage_box_two_back,
+     power_relay,
+     outPostHQ,
 
     bioPalmtree,
     trapStore,

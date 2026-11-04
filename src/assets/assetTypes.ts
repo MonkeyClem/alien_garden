@@ -12,6 +12,12 @@ export type DecorationAssetsKey =
   | "spacePod"
   | "firstMapLake"
   | "green_house"
+  | "bioScanner"
+  | "storage_box_one"
+  | "storage_box_two_back"
+  | "storage_box_two_face"
+  | "power_relay"
+  | "outPostHQ"
 
 export type PlantAssetsKey =
   | "reactorMushroomStageOne"
