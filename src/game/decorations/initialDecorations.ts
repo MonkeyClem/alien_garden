@@ -35,6 +35,25 @@ export const initialDecorations: Decoration[] = [
     offsetX: 10,
     footPrint: { width: 2, height: 2 },
   },
+
+  {
+    id: "storage_box_one",
+    tileId: 165,
+    assetKey: "storage_box_one",
+
+    displayName: "Storage Box",
+    description:
+      "A box, brought by your civilization. The content could've been anything",
+
+    gridX: 0,
+    gridY: 22,
+    width: 160,
+    height: 125,
+    offsetY: -15,
+    offsetX: 10,
+    footPrint: { width: 2, height: 2 },
+  },
+
   {
     id: "storage_box_two_back",
     tileId: 22,
@@ -52,39 +71,40 @@ export const initialDecorations: Decoration[] = [
     offsetX: 10,
     footPrint: { width: 3, height: 3 },
   },
-  {
-    id: "bioScanner",
-    tileId: 47,
-    assetKey: "bioScanner",
 
-    displayName: "Bio Scanner",
+  {
+    id: "storage_box_two_back",
+    tileId: 501,
+    assetKey: "storage_box_two_face",
+
+    displayName: "Storage Box",
     description:
-      "A biological energy storage unit designed to collect and redistribute BioEnergy.",
+      "A box, brought by your civilization. The content could've been anything",
 
     gridX: 0,
-    gridY: 24,
+    gridY: 22,
     width: 120,
-    height: 110,
-    offsetY: -20,
-    offsetX: 0,
+    height: 95,
+    offsetY: -15,
+    offsetX: 10,
     footPrint: { width: 3, height: 3 },
   },
+
   {
     id: "bioScanner",
     tileId: 47,
     assetKey: "bioScanner",
 
     displayName: "Bio Scanner",
-    description:
-      "A biological energy storage unit designed to collect and redistribute BioEnergy.",
+    description: "A scanning unit designed to collect info on any given specie",
 
     gridX: 0,
     gridY: 24,
-    width: 120,
-    height: 110,
+    width: 90,
+    height: 80,
     offsetY: -20,
     offsetX: 0,
-    footPrint: { width: 3, height: 3 },
+    footPrint: { width: 2, height: 2 },
   },
   {
     id: "bioScanner",
@@ -92,21 +112,69 @@ export const initialDecorations: Decoration[] = [
     assetKey: "power_relay",
 
     displayName: "Bio Scanner",
-    description:
-      "A biological energy storage unit designed to collect and redistribute BioEnergy.",
+    description: "A biological energy storage unit.",
 
     gridX: 0,
     gridY: 24,
-    width: 67.5,
+    width: 75,
     height: 67.5,
-    offsetY: -15,
+    offsetY: -20,
+    offsetX: 0,
+    footPrint: { width: 2, height: 2 },
+  },
+  {
+    id: "bioScanner",
+    tileId: 291,
+    assetKey: "power_relay",
+
+    displayName: "Bio Scanner",
+    description: "A biological energy storage unit.",
+
+    gridX: 0,
+    gridY: 24,
+    width: 75,
+    height: 67.5,
+    offsetY: -20,
+    offsetX: 0,
+    footPrint: { width: 2, height: 2 },
+  },
+
+  {
+    id: "bioScanner",
+    tileId: 234,
+    assetKey: "power_relay",
+
+    displayName: "Bio Scanner",
+    description: "A biological energy storage unit.",
+
+    gridX: 0,
+    gridY: 24,
+    width: 75,
+    height: 70,
+    offsetY: -10,
+    offsetX: 0,
+    footPrint: { width: 2, height: 2 },
+  },
+  {
+    id: "bioScanner",
+    tileId: 294,
+    assetKey: "power_relay",
+
+    displayName: "Bio Scanner",
+    description: "A biological energy storage unit.",
+
+    gridX: 0,
+    gridY: 24,
+    width: 75,
+    height: 70,
+    offsetY: -10,
     offsetX: 0,
     footPrint: { width: 2, height: 2 },
   },
 
   {
     id: "outPostHQ",
-    tileId: 374,
+    tileId: 616,
     assetKey: "outPostHQ",
 
     displayName: "Bio Scanner",
@@ -115,11 +183,14 @@ export const initialDecorations: Decoration[] = [
 
     gridX: 0,
     gridY: 24,
-    width: 250,
-    height: 250,
+    // CORRECT_RATIO
+    // width: 380,
+    // height: 220,
+    width: 504,
+    height: 336,
     offsetY: 0,
     offsetX: 0,
-    footPrint: { width: 2, height: 2 },
+    footPrint: { width: 9, height: 9 },
   },
 
   {
@@ -138,6 +209,40 @@ export const initialDecorations: Decoration[] = [
     offsetX: -10,
     footPrint: { width: 3, height: 3 },
   },
+
+  {
+    id: "trapstore-1",
+    tileId: 373,
+    assetKey: "trapStore",
+
+    displayName: "Store",
+    description: "A store.",
+
+    gridX: 0,
+    gridY: 12,
+    width: 259,
+    height: 153,
+    offsetY: -45,
+    offsetX: -10,
+    footPrint: { width: 3, height: 3 },
+  },
+
+  {
+    id: "NPC-1",
+    tileId: 401,
+    assetKey: "NPC_one",
+
+    displayName: "Store",
+    description: "A store.",
+
+    gridX: 0,
+    gridY: 12,
+    width: 64,
+    height: 78,
+    offsetY: -40,
+    offsetX: 0,
+    footPrint: { width: 1, height: 1 },
+  },
   {
     id: "lake_1",
     tileId: 391,
@@ -154,5 +259,105 @@ export const initialDecorations: Decoration[] = [
     offsetY: 60,
     offsetX: 15,
     footPrint: { width: 9, height: 5 },
+  },
+
+  {
+    id: "vegetal_mass_one-1",
+    tileId: 246,
+    assetKey: "vegetal_mass_one",
+
+    displayName: "Store",
+    description: "A store.",
+
+    gridX: 0,
+    gridY: 12,
+    width: 75,
+    height: 45,
+    offsetY: -20,
+    offsetX: 0,
+    footPrint: { width: 1, height: 1 },
+  },
+  {
+    id: "vegetal_mass_one-2",
+    tileId: 287,
+    assetKey: "vegetal_mass_one",
+
+    displayName: "Store",
+    description: "A store.",
+
+    gridX: 0,
+    gridY: 12,
+    width: 100,
+    height: 55,
+    offsetY: -20,
+    offsetX: 0,
+    footPrint: { width: 1, height: 1 },
+  },
+  {
+    id: "vegetal_mass_one-2",
+    tileId: 731,
+    assetKey: "vegetal_mass_one",
+
+    displayName: "Store",
+    description: "A store.",
+
+    gridX: 0,
+    gridY: 12,
+    width: 100,
+    height: 55,
+    offsetY: -20,
+    offsetX: 0,
+    footPrint: { width: 1, height: 1 },
+  },
+
+  {
+    id: "rock_mass_one-1",
+    tileId: 476,
+    assetKey: "rock_mass_one",
+
+    displayName: "Store",
+    description: "A store.",
+
+    gridX: 0,
+    gridY: 12,
+    width: 100,
+    height: 120,
+    offsetY: -20,
+    offsetX: 0,
+    footPrint: { width: 1, height: 1 },
+  },
+
+  {
+    id: "rock_mass_one-2",
+    tileId: 693,
+    assetKey: "rock_mass_one",
+
+    displayName: "Store",
+    description: "A store.",
+
+    gridX: 0,
+    gridY: 12,
+    width: 200,
+    height: 240,
+    offsetY: -20,
+    offsetX: 0,
+    footPrint: { width: 1, height: 1 },
+  },
+
+  {
+    id: "rock_mass_one-2",
+    tileId: 161,
+    assetKey: "rock_mass_two",
+
+    displayName: "Store",
+    description: "A store.",
+
+    gridX: 0,
+    gridY: 12,
+    width: 100,
+    height: 120,
+    offsetY: -40,
+    offsetX: 0,
+    footPrint: { width: 2, height: 2 },
   },
 ];

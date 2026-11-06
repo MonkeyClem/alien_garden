@@ -1,0 +1,78 @@
+# ALIEN GARDEN — BUILDING ASSET GENERATION V1
+
+Create a new isometric 2.5D pixel-art building for the video game **Alien Garden**.
+
+**CRITICAL: Use the supplied final OutpostHQ asset as the authoritative geometric reference.**
+
+The new building must use exactly the same ground-plane perspective, footprint edge slopes, camera orientation and ground-contact geometry as the reference building.
+
+## 1. Mandatory ground geometry
+
+- Game grid: **3:1 isometric diamond projection**.
+- Individual ground tile dimensions: **60 px wide × 20 px high**.
+- Ground-plane directions: **+18.435° and -18.435° relative to horizontal**.
+- Ground-plane edge slopes: **+1/3 and -1/3**.
+- Vertical structural edges must remain vertical.
+- All foundation edges must remain parallel to the corresponding grid directions.
+- The building must sit naturally on the ground, without appearing to float or rotate relative to the grid.
+- Every ground-contact corner must align with the intended grid footprint.
+
+**Do not use conventional 2:1 isometric perspective or 30-degree ground-plane edges.**
+
+## 2. Reference asset
+
+Use the attached approved OutpostHQ as a strict reference for:
+
+- Ground-contact perspective.
+- Foundation proportions.
+- Direction and inclination of both visible façades.
+- Relationship between building width, depth and vertical height.
+- Pixel-art rendering, outlines, shading and architectural detailing.
+
+**Preserve its geometric projection, not necessarily its architectural design.**
+
+The new building may have a different silhouette, roof, function and decorative elements, but its foundation must follow the same projection.
+
+## 3. Art direction
+
+Alien Garden is a retro-futuristic science-fiction RPG inspired by late-1990s and early-2000s JRPG pixel art.
+
+Human outpost architecture uses:
+
+- Off-white and cream metallic panels.
+- Dark graphite structural components.
+- Orange industrial accents.
+- Cyan illuminated windows, sensors and equipment.
+- Detailed but readable pixel-art shading.
+- Consistent outlines and pixel density.
+
+The building should visually belong to the same scientific outpost as the approved OutpostHQ, Seed Bank and BioScanner.
+
+## 4. Building specification
+
+Building type: [BUILDING TYPE]
+
+Intended footprint: [WIDTH × DEPTH IN GRID CELLS]
+
+Architectural details: [DESCRIPTION]
+
+Relative size: [SMALL / MEDIUM / LARGE]
+
+## 5. Output requirements
+
+- One standalone building asset.
+- Transparent PNG background with real alpha transparency.
+- No terrain, vegetation, painted ground texture or grid lines.
+- No perspective-distorting decorative base.
+- No oversized stairs or platforms extending beyond the intended footprint.
+- Keep the complete building visible.
+- Preserve clean, readable pixel-art details.
+
+**PRIORITY ORDER:**
+
+1. Exact ground-plane geometry.
+2. Consistent building proportions.
+3. Art-direction consistency.
+4. Architectural details.
+
+If a decorative element conflicts with the required ground geometry, simplify or remove that element rather than changing the projection.

@@ -18,6 +18,11 @@ export type DecorationAssetsKey =
   | "storage_box_two_face"
   | "power_relay"
   | "outPostHQ"
+  | "NPC_one"
+  | "vegetal_mass_one"
+  | "vegetal_mass_two"
+  | "rock_mass_one"
+  | "rock_mass_two";
 
 export type PlantAssetsKey =
   | "reactorMushroomStageOne"
@@ -26,15 +31,37 @@ export type PlantAssetsKey =
   | "synapticVineStageOne"
   | "synapticVineStageTwo";
 
+export type IconsAssetKey =
+  | "bioMass"
+  | "bioEnergy"
+  | "biologicalData"
+  | "open_mission_button"
+  | "close_mission_button";
 
-export type IconsAssetKey = "bioMass" | "bioEnergy" | "biologicalData" | "open_mission_button" | "close_mission_button"
+export type NarrativeImageKey = "transmissionOperator";
 
-export type NarrativeImageKey = "transmissionOperator"
+export type PlayableCharacterKey =
+  | "playable_char_static"
+  | "walking_character"
+  | "walking_character_left"
+  | "walking_character_bottom"
+  | "walking_character_top";
 
-export type PlayableCharacterKey = "playable_char_static" | "walking_character" | "walking_character_left" | "walking_character_bottom" | "walking_character_top"
+export type BackgroundAssets =
+  | "mapBackground"
+  | "midground"
+  | "midgroundTwo"
+  | "midgroundThree"
+  | "midgroundFour"
+  | "midgroundFillerOne"
+  | "foreground";
 
-export type BackgroundAssets = "mapBackground" | "midground" | "midgroundTwo" | "midgroundThree" |"midgroundFour"| "midgroundFillerOne" |"foreground"
+export type AssetsKey =
+  | DecorationAssetsKey
+  | PlantAssetsKey
+  | BackgroundAssets
+  | IconsAssetKey
+  | NarrativeImageKey
+  | PlayableCharacterKey;
 
-export type AssetsKey = DecorationAssetsKey | PlantAssetsKey | BackgroundAssets | IconsAssetKey | NarrativeImageKey | PlayableCharacterKey;
-
-export type GameAssets = Record<AssetsKey, HTMLImageElement >;
+export type GameAssets = Record<AssetsKey, HTMLImageElement>;

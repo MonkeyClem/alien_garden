@@ -2,22 +2,29 @@ import { loadImage } from "./loadImage";
 
 export const loadAssets = async () => {
   const bioBattery = await loadImage("/assets/PNG/Assets/biobattery.png");
-  const bioBatteryOn = await loadImage("/assets/PNG/Assets/bioBattery_On.png")
-  const bioBatteryOnGlow = await  loadImage("/assets/PNG/Assets/bioBattery_On_Glow.png") 
-  
+  const bioBatteryOn = await loadImage("/assets/PNG/Assets/bioBattery_On.png");
+  const bioBatteryOnGlow = await loadImage("/assets/PNG/Assets/bioBattery_On_Glow.png");
+
   const bioPalmtree = await loadImage("/assets/PNG/Assets/bioPalmthree.png");
   const trapStore = await loadImage("/assets/PNG/Assets/trapStore.png");
   const bio_terminal = await loadImage("/assets/PNG/Assets/bio_terminal.png");
   const bioScanner = await loadImage("/assets/PNG/Assets/bioScanner.png");
 
-  const green_house = await loadImage("/assets/PNG/Assets/green_house.png")
+  const green_house = await loadImage("/assets/PNG/Assets/green_house.png");
 
-  const playable_char_static = await loadImage("/assets/PNG/Assets/playable_char_static.png")
-  const walking_character = await loadImage("/assets/PNG/Assets/walking_character.png")
-  const walking_character_left = await loadImage("/assets/PNG/Assets/walking_character_left.png")
-  const walking_character_top = await loadImage("/assets/PNG/Assets/walking_character_top.png")
-  const walking_character_bottom = await loadImage("/assets/PNG/Assets/walking_character_bottom.png")
-
+  const playable_char_static = await loadImage(
+    "/assets/PNG/Assets/playable_char_static.png",
+  );
+  const walking_character = await loadImage("/assets/PNG/Assets/walking_character.png");
+  const walking_character_left = await loadImage(
+    "/assets/PNG/Assets/walking_character_left.png",
+  );
+  const walking_character_top = await loadImage(
+    "/assets/PNG/Assets/walking_character_top.png",
+  );
+  const walking_character_bottom = await loadImage(
+    "/assets/PNG/Assets/walking_character_bottom.png",
+  );
 
   const reactorMushroomStageOne = await loadImage(
     "/assets/PNG/Assets/reactor_mushroom_stage_one.png",
@@ -45,11 +52,14 @@ export const loadAssets = async () => {
   const spacePod = await loadImage("/assets/PNG/Assets/spacePod_.png");
   const storage_box_one = await loadImage("/assets/PNG/Assets/storage_box_one.png");
 
-    const storage_box_two_back = await loadImage("/assets/PNG/Assets/storage_box_two_back.png");
-      const storage_box_two_face = await loadImage("/assets/PNG/Assets/storage_box_two_face.png");
-      const power_relay = await loadImage("/assets/PNG/Assets/power_relay.png")
-const outPostHQ = await loadImage("/assets/PNG/Assets/outPostHQ.png")
-
+  const storage_box_two_back = await loadImage(
+    "/assets/PNG/Assets/storage_box_two_back.png",
+  );
+  const storage_box_two_face = await loadImage(
+    "/assets/PNG/Assets/storage_box_two_face.png",
+  );
+  const power_relay = await loadImage("/assets/PNG/Assets/power_relay.png");
+  const outPostHQ = await loadImage("/assets/PNG/Assets/outPostHQ.png");
 
   const mapBackground = await loadImage("/assets/PNG/Assets/mapBackground.jpg");
   const midground = await loadImage("/assets/PNG/Assets/midground.png");
@@ -74,7 +84,17 @@ const outPostHQ = await loadImage("/assets/PNG/Assets/outPostHQ.png")
     "/assets/PNG/Assets/close_mission_button.png",
   );
 
-  const transmissionOperator = await loadImage("/assets/PNG/Assets/transmissionOperator.png")
+  const transmissionOperator = await loadImage(
+    "/assets/PNG/Assets/transmissionOperator.png",
+  );
+
+  const NPC_one = await loadImage("/assets/PNG/Assets/NPC_one.png");
+
+  const vegetal_mass_one = await loadImage("/assets/PNG/Assets/vegetal_mass_one.png");
+  const rock_mass_one = await loadImage("/assets/PNG/Assets/rock_mass_one.png");
+
+  const vegetal_mass_two = await loadImage("/assets/PNG/Assets/vegetal_mass_two.png");
+  const rock_mass_two = await loadImage("/assets/PNG/Assets/rock_mass_two.png");
 
   return {
     playable_char_static,
@@ -89,16 +109,15 @@ const outPostHQ = await loadImage("/assets/PNG/Assets/outPostHQ.png")
     bioBatteryOnGlow,
 
     bioScanner,
-     storage_box_one ,
-     storage_box_two_face,
-     storage_box_two_back,
-     power_relay,
-     outPostHQ,
+    storage_box_one,
+    storage_box_two_face,
+    storage_box_two_back,
+    power_relay,
+    outPostHQ,
 
     bioPalmtree,
     trapStore,
     bio_terminal,
-
 
     reactorMushroomStageOne,
     reactorMushroomStageTwo,
@@ -133,7 +152,13 @@ const outPostHQ = await loadImage("/assets/PNG/Assets/outPostHQ.png")
     bioEnergy,
     biologicalData,
 
-    transmissionOperator
+    transmissionOperator,
+
+    NPC_one,
+    vegetal_mass_one,
+    rock_mass_one,
+
+    vegetal_mass_two,
+    rock_mass_two,
   };
 };
-
