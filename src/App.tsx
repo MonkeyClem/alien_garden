@@ -24,6 +24,9 @@ import { completeObjective } from "./game/missions/missionProgression/completeOb
 import { missionConfig } from "./game/missions/mission.config";
 import { transmissionsConfig } from "./components/Hud/Transmissions/TransmissionModal/transmissions.config";
 import type { Transmission } from "./components/Hud/Transmissions/transmissions.type";
+import findPlayerPath from "./game/pathfinding/findPlayerPath";
+import { initialDecorations } from "./game/decorations/initialDecorations";
+import { getOccupiedTileIds } from "./game/decorations/getOccupiedTilesIds";
 
 function App() {
   const [tiles, setTiles] = useState<Tile[]>(() => generateGrid());
@@ -90,23 +93,6 @@ function App() {
   const [currentTransmission, setCurrentTransmission] = useState<Transmission>(
     transmissionsConfig.firstTransmission,
   );
-
-  // const player: Player = {
-  //   gridX: 2,
-  //   gridY: 9,
-  //   targetGridX: 2,
-  //   targetGridY: 9,
-  //   speed: 4,
-
-  //   animationElapsed: 0,
-  //   animationFrame: 0,
-  //   animationState: "static",
-
-  //   isMoving: false,
-  //   direction: "right",
-
-  //   playerPath: [],
-  // };
 
   const playerRef = useRef<Player>({
     gridX: 2,
@@ -212,6 +198,10 @@ function App() {
   };
 
   const handleBioBatteryActivation = (player: Player) => {
+    const occupiedTileIds = new Set(
+      initialDecorations.flatMap(decoration => getOccupiedTileIds(decoration)),
+    );
+
     const canBeActivated = canActivateBioBattery(
       bioBatteryStatus,
       unlockedAbilities,
@@ -224,17 +214,27 @@ function App() {
     );
     if (!playerTile) return;
     const foundTile: Tile | undefined = tiles.find(
-      tile => tile.gridX === playerTile.gridX && playerTile.gridY === playerTile.gridY,
+      tile => tile.gridX === playerTile.gridX && tile.gridY === playerTile.gridY,
     );
     if (!foundTile) return;
 
-    player.playerPath = [
-      {
-        ...foundTile,
-        gridX: 6,
-        gridY: 3,
-      },
-    ];
+    const destinationTile = tiles.find(tile => tile.gridX === 6 && tile.gridY === 3);
+    if (!destinationTile) return;
+
+    if (destinationTile === foundTile) {
+      //Alors on ne déplace pas le joueur.
+    }
+
+    const playerPath = findPlayerPath(foundTile, destinationTile, tiles, occupiedTileIds);
+
+    // player.playerPath = [
+    //   {
+    //     ...foundTile,
+    //     gridX: 6,
+    //     gridY: 3,
+    //   },
+    // ];
+    player.playerPath = playerPath;
     // setBioBatteryStatus("active");
     // setRessources(previousRessources => ({
     //   ...previousRessources,
