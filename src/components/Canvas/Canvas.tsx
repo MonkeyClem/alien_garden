@@ -18,7 +18,6 @@ import { screenToWorld } from "../../rendering/viewport/screenToWorld";
 import type { CanvasProps } from "./Canvas.interface";
 import { getOccupiedTileIds } from "../../game/decorations/getOccupiedTilesIds";
 import findPlayerPath from "../../game/pathfinding/findPlayerPath";
-import type { Player } from "../../game/type";
 import updatePlayerAnimation from "../../animations/updatePlayerAnimation";
 import updatePlayerPosition from "../../game/player/updatePayerPosition";
 
@@ -35,6 +34,7 @@ export default function Canvas({
   assets,
   selectedSpecie,
   bioBatteryStatus,
+  player,
 }: CanvasProps) {
   const occupiedTileIds = new Set(
     initialDecorations.flatMap(decoration => getOccupiedTileIds(decoration)),
@@ -45,23 +45,6 @@ export default function Canvas({
   const tilesRef = useRef<Tile[]>(tiles);
   const plantsRef = useRef<Plant[]>(plants);
   const assetsRef = useRef<GameAssets>(assets);
-
-  const playerRef = useRef<Player>({
-    gridX: 2,
-    gridY: 9,
-    targetGridX: 2,
-    targetGridY: 9,
-    speed: 4,
-
-    animationElapsed: 0,
-    animationFrame: 0,
-    animationState: "static",
-
-    isMoving: false,
-    direction: "right",
-
-    playerPath: [],
-  });
 
   useEffect(() => {
     tilesRef.current = tiles;
@@ -94,8 +77,8 @@ export default function Canvas({
           : Math.min((timeStamp - previousTimeStamp) / 1000, 0.05);
 
       previousTimeStamp = timeStamp;
-      updatePlayerPosition(playerRef.current, deltaTime);
-      updatePlayerAnimation(playerRef.current, deltaTime);
+      updatePlayerPosition(player.current, deltaTime);
+      updatePlayerAnimation(player.current, deltaTime);
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const viewport = getViewport(canvas.width, canvas.height);
@@ -121,7 +104,7 @@ export default function Canvas({
         tilesRef.current,
         assetsRef.current,
         bioBatteryStatus,
-        playerRef.current,
+        player.current,
       );
       // drawPlayer(ctx, assets, player);
 
@@ -203,8 +186,7 @@ export default function Canvas({
 
       const playerTile = tiles.find(
         tile =>
-          tile.gridX === playerRef.current.gridX &&
-          tile.gridY === playerRef.current.gridY,
+          tile.gridX === player.current.gridX && tile.gridY === player.current.gridY,
       );
 
       if (!clickedObject && playerTile) {
@@ -215,7 +197,7 @@ export default function Canvas({
           occupiedTileIds,
         );
 
-        playerRef.current.playerPath = playerPath.slice(1);
+        player.current.playerPath = playerPath.slice(1);
       }
 
       const plant = findPlantOnTile(selectedTileId, plants);

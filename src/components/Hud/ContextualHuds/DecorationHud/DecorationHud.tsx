@@ -8,6 +8,7 @@ import type DecorationHudProps from "./DecorationHud.interface";
 import styles from "./decoration.module.css";
 
 export default function DecorationHud({
+  player,
   decorationOnTile,
   assets,
   inventory,
@@ -71,7 +72,7 @@ export default function DecorationHud({
                       ressources,
                     )
                   }
-                  onClick={() => handleBioBatteryActivation()}
+                  onClick={() => handleBioBatteryActivation(player.current)}
                 >
                   Activer ({BIO_BATTERY_ACTIVATION_COST} Bio Energie)
                 </button>

@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import Canvas from "./components/Canvas/Canvas";
 import HUD from "./components/Hud/HUD";
-import { type Ressources } from "./game/type";
+import { type Ressources, type Player } from "./game/type";
 import { type selectionType } from "./game/type";
 import type { GameAssets } from "./assets/assetTypes";
 import { loadAssets } from "./assets/loadAssets";
@@ -90,6 +90,37 @@ function App() {
   const [currentTransmission, setCurrentTransmission] = useState<Transmission>(
     transmissionsConfig.firstTransmission,
   );
+
+  // const player: Player = {
+  //   gridX: 2,
+  //   gridY: 9,
+  //   targetGridX: 2,
+  //   targetGridY: 9,
+  //   speed: 4,
+
+  //   animationElapsed: 0,
+  //   animationFrame: 0,
+  //   animationState: "static",
+
+  //   isMoving: false,
+  //   direction: "right",
+
+  //   playerPath: [],
+  // };
+
+  const playerRef = useRef<Player>({
+    gridX: 2,
+    gridY: 9,
+    targetGridX: 2,
+    targetGridY: 9,
+    speed: 4,
+    animationElapsed: 0,
+    animationFrame: 0,
+    animationState: "static",
+    isMoving: false,
+    direction: "right",
+    playerPath: [],
+  });
 
   const advanceToSecondMission = (): void => {
     setCurrentMissionId("secondMission");
@@ -180,35 +211,51 @@ function App() {
     }
   };
 
-  const handleBioBatteryActivation = () => {
+  const handleBioBatteryActivation = (player: Player) => {
     const canBeActivated = canActivateBioBattery(
       bioBatteryStatus,
       unlockedAbilities,
       ressources,
     );
-    if (canBeActivated === false) return;
+    // if (canBeActivated === false) return;
 
-    setBioBatteryStatus("active");
-    setRessources(previousRessources => ({
-      ...previousRessources,
-      bioEnergy: previousRessources.bioEnergy - BIO_BATTERY_ACTIVATION_COST,
-    }));
-
-    setMissionsProgress(prev => ({
-      ...prev,
-      firstMission: completeObjective<"firstMission">(
-        prev.firstMission,
-        "activateBioBattery",
-      ),
-    }));
-
-    const isCurrentMissionCompleted = currentMission.objectives.every(
-      obj => currentMissionProgress[obj.id] === true,
+    const playerTile: Tile | undefined = tiles.find(
+      tile => tile.gridX === player.gridX && tile.gridY === player.gridY,
     );
+    if (!playerTile) return;
+    const foundTile: Tile | undefined = tiles.find(
+      tile => tile.gridX === playerTile.gridX && playerTile.gridY === playerTile.gridY,
+    );
+    if (!foundTile) return;
 
-    if (isCurrentMissionCompleted === true) {
-      advanceToSecondMission();
-    }
+    player.playerPath = [
+      {
+        ...foundTile,
+        gridX: 6,
+        gridY: 3,
+      },
+    ];
+    // setBioBatteryStatus("active");
+    // setRessources(previousRessources => ({
+    //   ...previousRessources,
+    //   bioEnergy: previousRessources.bioEnergy - BIO_BATTERY_ACTIVATION_COST,
+    // }));
+
+    // setMissionsProgress(prev => ({
+    //   ...prev,
+    //   firstMission: completeObjective<"firstMission">(
+    //     prev.firstMission,
+    //     "activateBioBattery",
+    //   ),
+    // }));
+
+    // const isCurrentMissionCompleted = currentMission.objectives.every(
+    //   obj => currentMissionProgress[obj.id] === true,
+    // );
+
+    // if (isCurrentMissionCompleted === true) {
+    //   advanceToSecondMission();
+    // }
   };
 
   const isFirstMissionCompleted = missionConfig.firstMission.objectives.every(
@@ -281,7 +328,7 @@ function App() {
             currentMissionId={currentMissionId}
             isTransmissionModalOpen={isTransmissionModalOpen}
             currentTransmission={currentTransmission}
-
+            player={playerRef}
             setInventory={setInventory}
             setSelectionType={setSelectionType}
             setIsSelectedTileOccupied={setIsSelectedTileOccupied}
@@ -307,6 +354,7 @@ function App() {
             tiles={tiles}
             selectedSpecie={selectedSpecie}
             bioBatteryStatus={bioBatteryStatus}
+            player={playerRef}
           />
         </>
       ) : (

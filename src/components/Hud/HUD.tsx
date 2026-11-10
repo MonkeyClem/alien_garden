@@ -12,6 +12,7 @@ import PlantHud from "./ContextualHuds/PlantHud/PlantHud";
 import TransmissionModal from "./Transmissions/TransmissionModal/TransmissionModal";
 
 export default function HUD({
+  player,
   selectedTile,
   inventory,
   assets,
@@ -146,6 +147,7 @@ export default function HUD({
               ressources={ressources}
               bioBatteryStatus={bioBatteryStatus}
               unlockedAbilities={unlockedAbilities}
+              player={player}
               handleBioBatteryActivation={handleBioBatteryActivation}
               setInventory={setInventory}
             />

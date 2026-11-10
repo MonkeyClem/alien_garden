@@ -3,7 +3,7 @@ import type { GameAssets } from "../../assets/assetTypes";
 import type { Tile } from "../../game/grid/tiles.types";
 import type { Inventory } from "../../game/inventory/inventory.type";
 import type { Species, Plant } from "../../game/plants/plants.type";
-import type { selectionType, Ressources } from "../../game/type";
+import type { selectionType, Ressources, Player } from "../../game/type";
 import type { Viewport } from "../../rendering/viewport/viewport.type";
 import type { SetStateAction } from "react";
 import type { Ability, UnlockedAbilities } from "../../game/abilities/abilities.type";
@@ -15,6 +15,7 @@ import type {
 import type { Transmission } from "./Transmissions/transmissions.type";
 
 export default interface HUDProps {
+  player: React.RefObject<Player>;
   selectedTile: Tile | null;
   inventory: Inventory;
   assets: GameAssets;
@@ -43,6 +44,6 @@ export default interface HUDProps {
   setIsSelectedTileOccupied: (value: boolean) => void;
   setRessources: React.Dispatch<React.SetStateAction<Ressources>>;
   setUnlockedSpecies: React.Dispatch<React.SetStateAction<Species[]>>;
-  handleBioBatteryActivation: () => void;
+  handleBioBatteryActivation: (player: Player) => void;
   setIsTransmissionModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
