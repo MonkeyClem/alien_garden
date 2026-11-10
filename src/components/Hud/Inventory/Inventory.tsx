@@ -10,7 +10,7 @@ export default function InventoryComponents({
 }: InventoryProps) {
   return (
     <div style={{ position: "absolute", left: 0, top: "5rem", pointerEvents: "auto" }}>
-      {/* <div
+      <div
         style={{
           display: "flex",
           flexDirection: "column",
@@ -89,7 +89,7 @@ export default function InventoryComponents({
             </button>
           );
         })}
-      </div> */}
+      </div>
     </div>
   );
 }
