@@ -28,6 +28,7 @@ export default function Canvas({
   handleTileSelection,
   setTiles,
   setSelectionType,
+  setSelectedSpecie,
   setIsSelectedTileOccupied,
   handlePlantSpecie,
   handleHUDContainerSize,
@@ -283,9 +284,24 @@ export default function Canvas({
     handlePlantSpecie,
   ]);
 
+  useEffect(() => {
+    const resetSelection = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setSelectionType(null);
+        setSelectedSpecie(null);
+      }
+    };
+
+    window.addEventListener("keydown", resetSelection);
+
+    return () => {
+      window.removeEventListener("keydown", resetSelection);
+    };
+  }, [setSelectionType]);
+
   return (
     <>
-      <canvas ref={canvasRef} className={styles.canvas} />
+      <canvas ref={canvasRef} className={styles.canvas} id="canvas" />
     </>
   );
 }

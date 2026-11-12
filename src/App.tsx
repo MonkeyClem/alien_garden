@@ -341,6 +341,8 @@ function App() {
     }));
   };
 
+  
+
   return (
     <>
       {assets ? (
@@ -383,6 +385,7 @@ function App() {
           <Canvas
             handleTileSelection={handleTileSelection}
             setSelectionType={setSelectionType}
+            setSelectedSpecie={setSelectedSpecie}
             setTiles={setTiles}
             setIsSelectedTileOccupied={setIsSelectedTileOccupied}
             handlePlantSpecie={handlePlantSpecie}

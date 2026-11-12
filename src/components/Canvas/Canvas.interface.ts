@@ -9,6 +9,7 @@ import type { BioBatteryAnimationSequence } from "../../App";
 
 export interface CanvasProps {
   handleTileSelection: (tile: Tile) => void;
+  setSelectedSpecie: React.Dispatch<React.SetStateAction<Species | null>>;
   setTiles: (value: Tile[] | ((prev: Tile[]) => Tile[])) => void;
   setSelectionType: React.Dispatch<SetStateAction<selectionType>>;
   setIsSelectedTileOccupied: (value: boolean) => void;
