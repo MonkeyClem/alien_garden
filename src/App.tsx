@@ -27,6 +27,7 @@ import findPlayerPath from "./game/pathfinding/findPlayerPath";
 import { initialDecorations } from "./game/decorations/initialDecorations";
 import { getOccupiedTileIds } from "./game/decorations/getOccupiedTilesIds";
 import type { Tile } from "./game/grid/tiles.types";
+import BattleScreen from "./components/BattleScreen/BattleScreen";
 
 function findBioBatteryPath(
   tiles: Tile[],
@@ -90,6 +91,8 @@ const handleBioBatteryActivation = (
   }
 };
 
+export type GameState = "exploration" | "battle";
+
 export type BioBatteryAnimationPhase = "idle" | "walking" | "discharging";
 
 export type BioBatteryAnimationSequence = {
@@ -98,6 +101,8 @@ export type BioBatteryAnimationSequence = {
 };
 
 function App() {
+  const [gameState, setGameState] = useState<GameState>("exploration");
+
   const bioBatteryAnimationSequenceRef = useRef<BioBatteryAnimationSequence>({
     phase: "idle",
     elapsed: 0,
@@ -341,65 +346,71 @@ function App() {
     }));
   };
 
-  
-
   return (
     <>
       {assets ? (
         <>
-          <HUD
-            bioBatteryAnimationSequence={bioBatteryAnimationSequenceRef}
-            selectedTile={selectedTile}
-            tiles={tiles}
-            inventory={inventory}
-            selectedSpecie={selectedSpecie}
-            plants={plants}
-            ressources={ressources}
-            isHarvestButtonActive={isHarvestButtonActive}
-            selectionType={selectionType}
-            assets={assets}
-            isSelectedTileOccupied={isSelectedTileOccupied}
-            unlockedSpecies={unlockedSpecies}
-            HUDContainerSize={HUDContainerSize}
-            newlyUnlockedAbility={newlyUnlockedAbility}
-            bioBatteryStatus={bioBatteryStatus}
-            unlockedAbilities={unlockedAbilities}
-            mission={mission}
-            missionsProgress={missionsProgress}
-            currentMissionId={currentMissionId}
-            isTransmissionModalOpen={isTransmissionModalOpen}
-            currentTransmission={currentTransmission}
-            player={playerRef}
-            setInventory={setInventory}
-            setSelectionType={setSelectionType}
-            setIsSelectedTileOccupied={setIsSelectedTileOccupied}
-            handleSpecieSelection={handleSpecieSelection}
-            setIsHarvestButtonActive={setIsHarvestButtonActive}
-            handleRessourcesUpdate={handleRessourcesUpdate}
-            setRessources={setRessources}
-            handlePlantSeed={handlePlantSpecie}
-            setUnlockedSpecies={setUnlockedSpecies}
-            handleBioBatteryActivation={handleBioBatteryActivation}
-            setIsTransmissionModalOpen={setIsTransmissionModalOpen}
-          />
-          <Canvas
-            handleTileSelection={handleTileSelection}
-            setSelectionType={setSelectionType}
-            setSelectedSpecie={setSelectedSpecie}
-            setTiles={setTiles}
-            setIsSelectedTileOccupied={setIsSelectedTileOccupied}
-            handlePlantSpecie={handlePlantSpecie}
-            handleHUDContainerSize={handleHUDContainerSize}
-            handleBioBatteryAnalyze={handleBioBatteryAnalyze}
-            onBioBatteryActivationComplete={onBioBatteryActivationComplete}
-            plants={plants}
-            assets={assets}
-            tiles={tiles}
-            selectedSpecie={selectedSpecie}
-            bioBatteryStatus={bioBatteryStatus}
-            bioBatteryAnimationSequenceRef={bioBatteryAnimationSequenceRef}
-            player={playerRef}
-          />
+          {gameState === "exploration" ? (
+            <>
+              {" "}
+              <HUD
+                bioBatteryAnimationSequence={bioBatteryAnimationSequenceRef}
+                selectedTile={selectedTile}
+                tiles={tiles}
+                inventory={inventory}
+                selectedSpecie={selectedSpecie}
+                plants={plants}
+                ressources={ressources}
+                isHarvestButtonActive={isHarvestButtonActive}
+                selectionType={selectionType}
+                assets={assets}
+                isSelectedTileOccupied={isSelectedTileOccupied}
+                unlockedSpecies={unlockedSpecies}
+                HUDContainerSize={HUDContainerSize}
+                newlyUnlockedAbility={newlyUnlockedAbility}
+                bioBatteryStatus={bioBatteryStatus}
+                unlockedAbilities={unlockedAbilities}
+                mission={mission}
+                missionsProgress={missionsProgress}
+                currentMissionId={currentMissionId}
+                isTransmissionModalOpen={isTransmissionModalOpen}
+                currentTransmission={currentTransmission}
+                player={playerRef}
+                setInventory={setInventory}
+                setSelectionType={setSelectionType}
+                setIsSelectedTileOccupied={setIsSelectedTileOccupied}
+                handleSpecieSelection={handleSpecieSelection}
+                setIsHarvestButtonActive={setIsHarvestButtonActive}
+                handleRessourcesUpdate={handleRessourcesUpdate}
+                setRessources={setRessources}
+                handlePlantSeed={handlePlantSpecie}
+                setUnlockedSpecies={setUnlockedSpecies}
+                handleBioBatteryActivation={handleBioBatteryActivation}
+                setIsTransmissionModalOpen={setIsTransmissionModalOpen}
+              />
+              <Canvas
+                handleTileSelection={handleTileSelection}
+                setSelectionType={setSelectionType}
+                setSelectedSpecie={setSelectedSpecie}
+                setTiles={setTiles}
+                setIsSelectedTileOccupied={setIsSelectedTileOccupied}
+                handlePlantSpecie={handlePlantSpecie}
+                handleHUDContainerSize={handleHUDContainerSize}
+                handleBioBatteryAnalyze={handleBioBatteryAnalyze}
+                onBioBatteryActivationComplete={onBioBatteryActivationComplete}
+                setGameState={setGameState}
+                plants={plants}
+                assets={assets}
+                tiles={tiles}
+                selectedSpecie={selectedSpecie}
+                bioBatteryStatus={bioBatteryStatus}
+                bioBatteryAnimationSequenceRef={bioBatteryAnimationSequenceRef}
+                player={playerRef}
+              />
+            </>
+          ) : (
+            <BattleScreen />
+          )}
         </>
       ) : (
         "Chargement.."

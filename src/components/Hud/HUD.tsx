@@ -58,7 +58,7 @@ export default function HUD({
   useEffect(() => {
     setIsHarvestButtonActive(!!plantOnTile && getPlantStage(plantOnTile) === 3);
   }, [plantOnTile, plants, setIsHarvestButtonActive]);
-  
+
   return (
     <>
       <div

@@ -34,6 +34,7 @@ export default function Canvas({
   handleHUDContainerSize,
   handleBioBatteryAnalyze,
   onBioBatteryActivationComplete,
+  setGameState,
   tiles,
   plants,
   assets,
@@ -302,6 +303,15 @@ export default function Canvas({
   return (
     <>
       <canvas ref={canvasRef} className={styles.canvas} id="canvas" />
+      <button
+        style={{
+          zIndex: 12000,
+          position: "absolute",
+        }}
+        onClick={() => setGameState("battle")}
+      >
+        SWITCH GAME STATE
+      </button>
     </>
   );
 }
