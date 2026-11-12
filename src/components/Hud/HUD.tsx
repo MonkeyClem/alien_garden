@@ -13,6 +13,7 @@ import TransmissionModal from "./Transmissions/TransmissionModal/TransmissionMod
 
 export default function HUD({
   player,
+  tiles,
   selectedTile,
   inventory,
   assets,
@@ -32,6 +33,7 @@ export default function HUD({
   currentMissionId,
   isTransmissionModalOpen,
   currentTransmission,
+  bioBatteryAnimationSequence,
   setInventory,
   setSelectionType,
   handleSpecieSelection,
@@ -148,6 +150,8 @@ export default function HUD({
               bioBatteryStatus={bioBatteryStatus}
               unlockedAbilities={unlockedAbilities}
               player={player}
+              tiles={tiles}
+              bioBatteryAnimationSequence={bioBatteryAnimationSequence}
               handleBioBatteryActivation={handleBioBatteryActivation}
               setInventory={setInventory}
             />

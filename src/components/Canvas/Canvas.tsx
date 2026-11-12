@@ -11,7 +11,10 @@ import { findWorldObjectOnTile } from "../../game/grid/findWorldObjectOnTile";
 import drawBackground from "../../rendering/environment/drawBackground";
 import { drawForeground } from "../../rendering/environment/drawForeground";
 import { drawMidground } from "../../rendering/environment/drawMidground";
-import { drawDepthSortedWorld } from "../../rendering/entities/drawDepthSortedWorld";
+import {
+  drawDepthSortedWorld,
+  drawElectricArc,
+} from "../../rendering/entities/drawDepthSortedWorld";
 import { drawWorldBorders } from "../../rendering/environment/drawWorldBorders";
 import { getViewport } from "../../rendering/viewport/getViewport";
 import { screenToWorld } from "../../rendering/viewport/screenToWorld";
@@ -29,11 +32,13 @@ export default function Canvas({
   handlePlantSpecie,
   handleHUDContainerSize,
   handleBioBatteryAnalyze,
+  onBioBatteryActivationComplete,
   tiles,
   plants,
   assets,
   selectedSpecie,
   bioBatteryStatus,
+  bioBatteryAnimationSequenceRef,
   player,
 }: CanvasProps) {
   const occupiedTileIds = new Set(
@@ -80,6 +85,13 @@ export default function Canvas({
       updatePlayerPosition(player.current, deltaTime);
       updatePlayerAnimation(player.current, deltaTime);
 
+      const sequence = bioBatteryAnimationSequenceRef.current;
+
+      if (sequence.phase === "walking" && player.current.playerPath.length === 0) {
+        sequence.phase = "discharging";
+        sequence.elapsed = 0;
+      }
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const viewport = getViewport(canvas.width, canvas.height);
 
@@ -104,9 +116,30 @@ export default function Canvas({
         tilesRef.current,
         assetsRef.current,
         bioBatteryStatus,
+        bioBatteryAnimationSequenceRef,
         player.current,
       );
-      // drawPlayer(ctx, assets, player);
+
+      if (sequence.phase === "discharging") {
+        sequence.elapsed += deltaTime;
+
+        const playerTile = tiles.find(
+          tile =>
+            tile.gridX === Math.round(player.current.gridX) &&
+            tile.gridY === Math.round(player.current.gridY),
+        );
+
+        if (playerTile) {
+          drawElectricArc(ctx, { x: playerTile.x, y: playerTile.y }, { x: 700, y: 240 });
+        }
+
+        if (sequence.elapsed >= 0.6) {
+          sequence.phase = "idle";
+          sequence.elapsed = 0;
+
+          onBioBatteryActivationComplete();
+        }
+      }
 
       drawForeground(ctx, assetsRef.current);
 

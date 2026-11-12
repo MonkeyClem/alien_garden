@@ -1,13 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type RefObject } from "react";
 import "./App.css";
 import Canvas from "./components/Canvas/Canvas";
 import HUD from "./components/Hud/HUD";
-import { type Ressources, type Player } from "./game/type";
+import { type Ressources, type Player, type BioBatteryStatus } from "./game/type";
 import { type selectionType } from "./game/type";
 import type { GameAssets } from "./assets/assetTypes";
 import { loadAssets } from "./assets/loadAssets";
 import { generateGrid } from "./game/grid/generateGrid";
-import type { Tile } from "./game/grid/tiles.types";
 import { Species, type Plant, type ResourceYield } from "./game/plants/plants.type";
 import { SPECIES_CONFIG } from "./game/plants/speciesConfig";
 import type { Viewport } from "./rendering/viewport/viewport.type";
@@ -27,8 +26,83 @@ import type { Transmission } from "./components/Hud/Transmissions/transmissions.
 import findPlayerPath from "./game/pathfinding/findPlayerPath";
 import { initialDecorations } from "./game/decorations/initialDecorations";
 import { getOccupiedTileIds } from "./game/decorations/getOccupiedTilesIds";
+import type { Tile } from "./game/grid/tiles.types";
+
+function findBioBatteryPath(
+  tiles: Tile[],
+  player: Player,
+  occupiedTilesIds: Set<number>,
+) {
+  //On trouve la tuile définie pour allumer la bioBattery. Si on ne trouve rien, on sort de la fonction
+  const playerTile: Tile | undefined = tiles.find(
+    tile => tile.gridX === player.gridX && tile.gridY === player.gridY,
+  );
+  if (!playerTile) return;
+  const foundTile: Tile | undefined = tiles.find(
+    tile => tile.gridX === playerTile.gridX && tile.gridY === playerTile.gridY,
+  );
+  if (!foundTile) return;
+
+  const destinationTile = tiles.find(tile => tile.gridX === 6 && tile.gridY === 3);
+  if (!destinationTile || destinationTile === foundTile) return;
+
+  //Assignation du chemin vers la Battery :
+  const playerPath = findPlayerPath(foundTile, destinationTile, tiles, occupiedTilesIds);
+  return playerPath;
+}
+
+const handleBioBatteryActivation = (
+  player: Player,
+  bioBatteryAnimationSequenceRef: RefObject<BioBatteryAnimationSequence>,
+  bioBatteryStatus: BioBatteryStatus,
+  unlockedAbilities: UnlockedAbilities,
+  ressources: Ressources,
+  tiles: Tile[],
+) => {
+  if (bioBatteryAnimationSequenceRef.current.phase !== "idle") return;
+
+  const occupiedTileIds = new Set(
+    initialDecorations.flatMap(decoration => getOccupiedTileIds(decoration)),
+  );
+  //On commence par vérifier si les conditions sont remplies, si c'est pas le cas, on sort de la fonction
+  const canBeActivated = canActivateBioBattery(
+    bioBatteryStatus,
+    unlockedAbilities,
+    ressources,
+  );
+  if (canBeActivated === false) return;
+
+  const playerPath = findBioBatteryPath(tiles, player, occupiedTileIds);
+  if (!playerPath) return;
+  player.playerPath = playerPath;
+  bioBatteryAnimationSequenceRef.current.phase = "walking";
+  bioBatteryAnimationSequenceRef.current.elapsed = 0;
+
+  //On déclenche l'animation une fois le joueur arrivé à destination
+  //Probablement prévoir une ref partagée entre HUD et Canvas pour cette partie, qui communique l'état d'avancée de notre fonction handleBio..
+  // afin de déclencher le drawingt au moment adéquat dans Canvas
+  if (
+    playerPath.length === 0 &&
+    bioBatteryAnimationSequenceRef.current.phase === "walking"
+  ) {
+    bioBatteryAnimationSequenceRef.current.phase = "discharging";
+    bioBatteryAnimationSequenceRef.current.elapsed = 0;
+  }
+};
+
+export type BioBatteryAnimationPhase = "idle" | "walking" | "discharging";
+
+export type BioBatteryAnimationSequence = {
+  phase: BioBatteryAnimationPhase;
+  elapsed: number;
+};
 
 function App() {
+  const bioBatteryAnimationSequenceRef = useRef<BioBatteryAnimationSequence>({
+    phase: "idle",
+    elapsed: 0,
+  });
+
   const [tiles, setTiles] = useState<Tile[]>(() => generateGrid());
   const [inventory, setInventory] = useState<Inventory>({
     species: {
@@ -197,65 +271,28 @@ function App() {
     }
   };
 
-  const handleBioBatteryActivation = (player: Player) => {
-    const occupiedTileIds = new Set(
-      initialDecorations.flatMap(decoration => getOccupiedTileIds(decoration)),
+  const onBioBatteryActivationComplete = () => {
+    setBioBatteryStatus("active");
+    setRessources(previousRessources => ({
+      ...previousRessources,
+      bioEnergy: previousRessources.bioEnergy - BIO_BATTERY_ACTIVATION_COST,
+    }));
+
+    setMissionsProgress(prev => ({
+      ...prev,
+      firstMission: completeObjective<"firstMission">(
+        prev.firstMission,
+        "activateBioBattery",
+      ),
+    }));
+
+    const isCurrentMissionCompleted = currentMission.objectives.every(
+      obj => currentMissionProgress[obj.id] === true,
     );
 
-    const canBeActivated = canActivateBioBattery(
-      bioBatteryStatus,
-      unlockedAbilities,
-      ressources,
-    );
-    // if (canBeActivated === false) return;
-
-    const playerTile: Tile | undefined = tiles.find(
-      tile => tile.gridX === player.gridX && tile.gridY === player.gridY,
-    );
-    if (!playerTile) return;
-    const foundTile: Tile | undefined = tiles.find(
-      tile => tile.gridX === playerTile.gridX && tile.gridY === playerTile.gridY,
-    );
-    if (!foundTile) return;
-
-    const destinationTile = tiles.find(tile => tile.gridX === 6 && tile.gridY === 3);
-    if (!destinationTile) return;
-
-    if (destinationTile === foundTile) {
-      //Alors on ne déplace pas le joueur.
+    if (isCurrentMissionCompleted === true) {
+      advanceToSecondMission();
     }
-
-    const playerPath = findPlayerPath(foundTile, destinationTile, tiles, occupiedTileIds);
-
-    // player.playerPath = [
-    //   {
-    //     ...foundTile,
-    //     gridX: 6,
-    //     gridY: 3,
-    //   },
-    // ];
-    player.playerPath = playerPath;
-    // setBioBatteryStatus("active");
-    // setRessources(previousRessources => ({
-    //   ...previousRessources,
-    //   bioEnergy: previousRessources.bioEnergy - BIO_BATTERY_ACTIVATION_COST,
-    // }));
-
-    // setMissionsProgress(prev => ({
-    //   ...prev,
-    //   firstMission: completeObjective<"firstMission">(
-    //     prev.firstMission,
-    //     "activateBioBattery",
-    //   ),
-    // }));
-
-    // const isCurrentMissionCompleted = currentMission.objectives.every(
-    //   obj => currentMissionProgress[obj.id] === true,
-    // );
-
-    // if (isCurrentMissionCompleted === true) {
-    //   advanceToSecondMission();
-    // }
   };
 
   const isFirstMissionCompleted = missionConfig.firstMission.objectives.every(
@@ -309,7 +346,9 @@ function App() {
       {assets ? (
         <>
           <HUD
+            bioBatteryAnimationSequence={bioBatteryAnimationSequenceRef}
             selectedTile={selectedTile}
+            tiles={tiles}
             inventory={inventory}
             selectedSpecie={selectedSpecie}
             plants={plants}
@@ -349,11 +388,13 @@ function App() {
             handlePlantSpecie={handlePlantSpecie}
             handleHUDContainerSize={handleHUDContainerSize}
             handleBioBatteryAnalyze={handleBioBatteryAnalyze}
+            onBioBatteryActivationComplete={onBioBatteryActivationComplete}
             plants={plants}
             assets={assets}
             tiles={tiles}
             selectedSpecie={selectedSpecie}
             bioBatteryStatus={bioBatteryStatus}
+            bioBatteryAnimationSequenceRef={bioBatteryAnimationSequenceRef}
             player={playerRef}
           />
         </>

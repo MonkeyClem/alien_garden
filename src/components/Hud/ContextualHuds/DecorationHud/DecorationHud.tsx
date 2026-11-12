@@ -1,7 +1,4 @@
-import {
-  BIO_BATTERY_ACTIVATION_COST,
-  canActivateBioBattery,
-} from "../../../../game/canActivateBioBattery";
+import { canActivateBioBattery } from "../../../../game/canActivateBioBattery";
 import refillReactorMushroomSeeds from "../../../../game/inventory/refillReactorMushroomSeeds";
 import { SPECIES_CONFIG } from "../../../../game/plants/speciesConfig";
 import type DecorationHudProps from "./DecorationHud.interface";
@@ -15,6 +12,8 @@ export default function DecorationHud({
   ressources,
   bioBatteryStatus,
   unlockedAbilities,
+  tiles,
+  bioBatteryAnimationSequence,
   setInventory,
   handleBioBatteryActivation,
 }: DecorationHudProps) {
@@ -72,9 +71,20 @@ export default function DecorationHud({
                       ressources,
                     )
                   }
-                  onClick={() => handleBioBatteryActivation(player.current)}
+                  onClick={() =>
+                    handleBioBatteryActivation(
+                      player.current,
+                      bioBatteryAnimationSequence,
+                      bioBatteryStatus,
+                      unlockedAbilities,
+                      ressources,
+                      tiles,
+                    )
+                  }
                 >
-                  Activer ({BIO_BATTERY_ACTIVATION_COST} Bio Energie)
+                  Activer (1 Electric Discharge)
+                  {/* ({BIO_BATTERY_ACTIVATION_COST} Bio
+                  Energie) */}
                 </button>
               </div>
             </div>

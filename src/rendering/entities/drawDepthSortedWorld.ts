@@ -1,3 +1,4 @@
+import type React from "react";
 import type { GameAssets } from "../../assets/assetTypes";
 import type { Decoration } from "../../game/decorations/decoration.type";
 import { HALF_TILE_HEIGHT, TILE_HEIGHT } from "../../game/grid/grid.constants";
@@ -13,6 +14,58 @@ import { GRID_ORIGIN_Y } from "../../game/world/world.constant";
 import { drawDecoration } from "./drawDecorations";
 import { drawPlant } from "./drawPlants";
 import drawPlayer from "./player/drawPlayer";
+import type { BioBatteryAnimationSequence } from "../../App";
+
+type Point = {
+  x: number;
+  y: number;
+};
+
+export function drawElectricArc(ctx: CanvasRenderingContext2D, start: Point, end: Point) {
+  const segments = 12;
+
+  const dx = end.x - start.x;
+  const dy = end.y - start.y;
+
+  const length = Math.hypot(dx, dy);
+  if (length === 0) return;
+
+  // Vecteur perpendiculaire à l'arc
+  const normalX = -dy / length;
+  const normalY = dx / length;
+
+  ctx.save();
+
+  ctx.beginPath();
+  ctx.moveTo(start.x, start.y);
+
+  for (let i = 1; i < segments; i++) {
+    const t = i / segments;
+
+    const baseX = start.x + dx * t;
+    const baseY = start.y + dy * t;
+
+    const offset = (Math.random() - 0.5) * 12;
+
+    ctx.lineTo(baseX + normalX * offset, baseY + normalY * offset);
+  }
+
+  ctx.lineTo(end.x, end.y);
+
+  // Halo extérieur
+  ctx.strokeStyle = "#35D9F3";
+  ctx.lineWidth = 5;
+  ctx.globalAlpha = 0.35;
+  ctx.stroke();
+
+  // Cœur lumineux
+  ctx.strokeStyle = "#D9FFFF";
+  ctx.lineWidth = 2;
+  ctx.globalAlpha = 1;
+  ctx.stroke();
+
+  ctx.restore();
+}
 
 export type PlayerDepthItem = {
   depth: number;
@@ -27,6 +80,7 @@ export const drawDepthSortedWorld = (
   tiles: Tile[],
   assets: GameAssets,
   bioBatteryStatus: "active" | "inactive",
+  bioBatteryAnimationSequenceRef: React.RefObject<BioBatteryAnimationSequence>,
   player: Player,
 ) => {
   const createPlantDepthItem = (plant: Plant, tiles: Tile[]) => {
@@ -43,29 +97,6 @@ export const drawDepthSortedWorld = (
 
     return plantDepthItem;
   };
-
-  // const createPlayerDepthItem = (player: Player, tiles: Tile[]): PlayerDepthItem => {
-  //   const playerTile = { gridX: player.gridX, gridY: player.gridY };
-  //   const foundTile = tiles.find(
-  //     tile => tile.gridX === playerTile.gridX && tile.gridY === playerTile.gridY,
-  //   );
-
-  //   if (!foundTile)
-  //     return {
-  //       type: "player",
-  //       depth: (player.gridX + player.gridY) * HALF_TILE_HEIGHT + TILE_HEIGHT,
-  //       player: player,
-  //     };
-
-  //   const playerDepthItem: PlayerDepthItem = {
-  //     type: "player",
-  //     depth: foundTile.y - TILE_HEIGHT,
-  //     //      depth: (player.gridX + player.gridY) * HALF_TILE_HEIGHT + TILE_HEIGHT,
-  //     player: player,
-  //   };
-
-  //   return playerDepthItem;
-  // };
 
   const createPlayerDepthItem = (player: Player): PlayerDepthItem => {
     return {
@@ -127,9 +158,13 @@ export const drawDepthSortedWorld = (
   sortedDepthItems.forEach(item => {
     if (item.type === "decoration") {
       const decorationToDraw =
-        item.decoration.assetKey === "bioBattery" && bioBatteryStatus === "active"
+        item.decoration.assetKey === "bioBattery" &&
+        bioBatteryStatus === "active" &&
+        (bioBatteryAnimationSequenceRef.current.phase === "discharging" ||
+          bioBatteryAnimationSequenceRef.current.phase === "idle")
           ? { ...item.decoration, assetKey: "bioBatteryOn" as const }
           : item.decoration;
+
       drawDecoration(ctx, time, decorationToDraw, item.tile, assets);
     }
     if (item.type === "plant") {

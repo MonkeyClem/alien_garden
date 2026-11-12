@@ -5,6 +5,7 @@ import type { Species, Plant } from "../../game/plants/plants.type";
 import type { Player, selectionType } from "../../game/type";
 import type { Viewport } from "../../rendering/viewport/viewport.type";
 import type React from "react";
+import type { BioBatteryAnimationSequence } from "../../App";
 
 export interface CanvasProps {
   handleTileSelection: (tile: Tile) => void;
@@ -14,10 +15,12 @@ export interface CanvasProps {
   handlePlantSpecie: (selectedSpecies: Species, selectedTile: Tile) => void;
   handleHUDContainerSize: (viewport: Viewport) => void;
   handleBioBatteryAnalyze: (value: boolean) => void;
+  onBioBatteryActivationComplete: () => void;
   tiles: Tile[];
   assets: GameAssets;
   plants: Plant[];
   selectedSpecie: Species | null;
   player: React.RefObject<Player>;
   bioBatteryStatus: "active" | "inactive";
+  bioBatteryAnimationSequenceRef: React.RefObject<BioBatteryAnimationSequence>;
 }
