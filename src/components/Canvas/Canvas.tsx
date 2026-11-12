@@ -297,7 +297,7 @@ export default function Canvas({
     return () => {
       window.removeEventListener("keydown", resetSelection);
     };
-  }, [setSelectionType]);
+  }, [setSelectionType, setSelectedSpecie]);
 
   return (
     <>
