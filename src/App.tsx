@@ -29,6 +29,36 @@ import { getOccupiedTileIds } from "./game/decorations/getOccupiedTilesIds";
 import type { Tile } from "./game/grid/tiles.types";
 import BattleScreen from "./components/BattleScreen/BattleScreen";
 
+export type BattlePhase = "enemyTurn" | "playerTurn" | "defeat" | "victory";
+
+export type PlayerStats = {
+  healthPoint: number;
+  maxHealthpoint: number;
+};
+
+export type BattleAbility = {
+  id: string;
+  name: string;
+  damage: number;
+};
+
+export type BattleAbilityId = "eletricDischarge" | "stomping";
+
+export type PlayerBattleAbilities = Record<BattleAbilityId, BattleAbility>;
+
+export type Fighter = {
+  id: string;
+  name: string;
+  healthPoint: number;
+  maxHealthPoint: number;
+};
+
+export type BattleState = {
+  player: Fighter;
+  enemy: Fighter;
+  phase: BattlePhase;
+};
+
 function findBioBatteryPath(
   tiles: Tile[],
   player: Player,
@@ -102,6 +132,24 @@ export type BioBatteryAnimationSequence = {
 
 function App() {
   const [gameState, setGameState] = useState<GameState>("exploration");
+  const [playerStats, setPlayerStats] = useState<PlayerStats>({
+    healthPoint: 100,
+    maxHealthpoint: 100,
+  });
+
+  const [playerBattleAbilities, setPlayerBattleAbilities] =
+    useState<PlayerBattleAbilities>({
+      eletricDischarge: {
+        id: "eletricDischarge",
+        name: "Décharge Electrique",
+        damage: 25,
+      },
+      stomping: {
+        id: "stomping",
+        name: " stomping",
+        damage: 25,
+      },
+    });
 
   const bioBatteryAnimationSequenceRef = useRef<BioBatteryAnimationSequence>({
     phase: "idle",
@@ -409,7 +457,10 @@ function App() {
               />
             </>
           ) : (
-            <BattleScreen />
+            <BattleScreen
+              playerStats={playerStats}
+              playerBattleAbilities={playerBattleAbilities}
+            />
           )}
         </>
       ) : (
