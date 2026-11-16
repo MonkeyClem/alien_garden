@@ -54,7 +54,8 @@ export type BackgroundAssets =
   | "midgroundThree"
   | "midgroundFour"
   | "midgroundFillerOne"
-  | "foreground";
+  | "foreground"
+  | "battleScene_firstMap";
 
 export type AssetsKey =
   | DecorationAssetsKey

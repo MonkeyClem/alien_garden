@@ -458,8 +458,11 @@ function App() {
             </>
           ) : (
             <BattleScreen
+              HUDContainerSize={HUDContainerSize}
               playerStats={playerStats}
               playerBattleAbilities={playerBattleAbilities}
+              assets={assets}
+              handleHUDContainerSize={handleHUDContainerSize}
             />
           )}
         </>

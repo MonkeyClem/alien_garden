@@ -96,6 +96,10 @@ export const loadAssets = async () => {
   const vegetal_mass_two = await loadImage("/assets/PNG/Assets/vegetal_mass_two.png");
   const rock_mass_two = await loadImage("/assets/PNG/Assets/rock_mass_two.png");
 
+  const battleScene_firstMap = await loadImage(
+    "/assets/PNG/Assets/battleScene_firstMap.png",
+  );
+
   return {
     playable_char_static,
     walking_character,
@@ -160,5 +164,7 @@ export const loadAssets = async () => {
 
     vegetal_mass_two,
     rock_mass_two,
+
+    battleScene_firstMap,
   };
 };
