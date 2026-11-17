@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type JSX } from "react";
 import type { Fighter, PlayerBattleAbilities, PlayerStats } from "../../App";
 import { findEnemy } from "./battle.logic";
 import styles from "../BattleScreen/battleScreen.module.css";
@@ -16,6 +16,47 @@ export interface BattleScreenProps {
 
 export type BattleOptions = "Attaquer" | "Capacités" | "Objets" | "Fuir" | null;
 
+interface HealthBarProps {
+  healthPoint: number;
+  maxHealthPoint: number;
+}
+
+const HealthBar: React.FC<HealthBarProps> = ({
+  healthPoint,
+  maxHealthPoint,
+}): JSX.Element => {
+  const maxHealthPointBarLength = healthPoint;
+  const healthPointBarLength = maxHealthPoint;
+
+  const referenceMaxHP = 100;
+  const barWidth = Math.min((maxHealthPoint / referenceMaxHP) * 100, 100);
+
+  const healthPercentage = Math.max(
+    0,
+    Math.min(maxHealthPoint / referenceMaxHP) * 100,
+    100,
+  );
+
+  return (
+    <div
+      style={{
+        height: 15,
+        border: "2px solid pink",
+        width: `${barWidth}%`,
+        display: "flex",
+      }}
+    >
+      <div
+        style={{
+          height: 15,
+          width: `${healthPercentage}%`,
+          background: "red",
+        }}
+      />
+    </div>
+  );
+};
+
 export default function BattleScreen({
   playerStats,
   playerBattleAbilities,
@@ -31,16 +72,13 @@ export default function BattleScreen({
   };
 
   const [selectedOption, setSelectedOption] = useState<BattleOptions>(null);
-
   const enemy = findEnemy("nebroide");
-
   const viewport = getViewport(window.screen.width, window.screen.height);
-
   handleHUDContainerSize(viewport);
 
   return (
     <div
-      //   className={styles.battleScreenContainer}
+      //className={styles.battleScreenContainer}
       style={{
         overflow: "hidden",
         //Ajouter une image illustrant la map en background
@@ -73,6 +111,7 @@ export default function BattleScreen({
         //   className={styles.enemyInfoContainer}
       >
         <div
+          id="enemyHealthPointBar"
           style={{
             position: "absolute",
             background: "black",
@@ -80,14 +119,16 @@ export default function BattleScreen({
             width: "30%",
             marginTop: "2%",
             right: 25,
+            padding: "1rem",
+            boxSizing: "border-box",
           }}
         >
           {" "}
           <p>{enemy.name}</p>
-          <p>
-            {" "}
-            {enemy.healthPoint} / {enemy.maxHealthPoint}
-          </p>
+          <HealthBar
+            healthPoint={enemy.healthPoint}
+            maxHealthPoint={enemy.maxHealthPoint}
+          />
         </div>
       </div>
       <div
@@ -112,11 +153,19 @@ export default function BattleScreen({
             marginTop: "2%",
             left: 25,
             top: 125,
+            padding: "1rem",
+            boxSizing: "border-box",
           }}
         >
           <p>{playerFighter.name}</p>
           <p>
             {playerFighter.healthPoint} / {playerFighter.maxHealthPoint}
+          </p>
+          <p>
+            <HealthBar
+              healthPoint={enemy.healthPoint}
+              maxHealthPoint={enemy.maxHealthPoint}
+            />{" "}
           </p>
         </div>
 
