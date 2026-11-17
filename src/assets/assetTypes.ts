@@ -1,3 +1,5 @@
+import { EnemyImageKey } from "./assetTypes";
+import { EnemyId } from "./../components/BattleScreen/enemy/enemy.config";
 export type DecorationAssetsKey =
   | "bio_terminal"
   | "bioPalmtree"
@@ -40,12 +42,15 @@ export type IconsAssetKey =
 
 export type NarrativeImageKey = "transmissionOperator";
 
+export type EnemyImageKey = "first_enemy_fightStatic";
+
 export type PlayableCharacterKey =
   | "playable_char_static"
   | "walking_character"
   | "walking_character_left"
   | "walking_character_bottom"
-  | "walking_character_top";
+  | "walking_character_top"
+  | "playable_char_Fightstatic";
 
 export type BackgroundAssets =
   | "mapBackground"
@@ -63,6 +68,7 @@ export type AssetsKey =
   | BackgroundAssets
   | IconsAssetKey
   | NarrativeImageKey
-  | PlayableCharacterKey;
+  | PlayableCharacterKey
+  | EnemyImageKey;
 
 export type GameAssets = Record<AssetsKey, HTMLImageElement>;

@@ -100,6 +100,14 @@ export const loadAssets = async () => {
     "/assets/PNG/Assets/battleScene_firstMap.png",
   );
 
+  const playable_char_Fightstatic = await loadImage(
+    "/assets/PNG/Assets/playable_char_Fightstatic.png",
+  );
+
+  const first_enemy_fightStatic = await loadImage(
+    "/assets/PNG/Assets/first_enemy_fightStatic.png",
+  );
+
   return {
     playable_char_static,
     walking_character,
@@ -166,5 +174,7 @@ export const loadAssets = async () => {
     rock_mass_two,
 
     battleScene_firstMap,
+    playable_char_Fightstatic,
+    first_enemy_fightStatic,
   };
 };

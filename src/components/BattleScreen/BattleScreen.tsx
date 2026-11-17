@@ -1,10 +1,10 @@
 import { useState, type JSX } from "react";
 import type { Fighter, PlayerBattleAbilities, PlayerStats } from "../../App";
 import { findEnemy } from "./battle.logic";
-import styles from "../BattleScreen/battleScreen.module.css";
 import type { Viewport } from "../../rendering/viewport/viewport.type";
 import { getViewport } from "../../rendering/viewport/getViewport";
 import type { GameAssets } from "../../assets/assetTypes";
+import BattleScreenBottomTextBox from "./BattleScreenBottomTextBox/BattleScreenBottomTextBox";
 
 export interface BattleScreenProps {
   playerStats: PlayerStats;
@@ -25,10 +25,7 @@ const HealthBar: React.FC<HealthBarProps> = ({
   healthPoint,
   maxHealthPoint,
 }): JSX.Element => {
-  const maxHealthPointBarLength = healthPoint;
-  const healthPointBarLength = maxHealthPoint;
-
-  const referenceMaxHP = 100;
+  const referenceMaxHP = healthPoint;
   const barWidth = Math.min((maxHealthPoint / referenceMaxHP) * 100, 100);
 
   const healthPercentage = Math.max(
@@ -77,188 +74,132 @@ export default function BattleScreen({
   handleHUDContainerSize(viewport);
 
   return (
-    <div
-      //className={styles.battleScreenContainer}
-      style={{
-        overflow: "hidden",
-        //Ajouter une image illustrant la map en background
-        //   background: "green",
-        display: "flex",
-        flex: 1,
-        flexDirection: "column",
-        justifyContent: "space-between",
-        background: "transparent",
-        backgroundImage: `url(${assets.battleScene_firstMap.src})`,
-        backgroundSize: "cover",
-        borderLeft: HUDContainerSize?.offsetX ? HUDContainerSize.offsetX + 5 : 25,
-        borderRight: HUDContainerSize?.offsetX ? HUDContainerSize.offsetX + 5 : 25,
-
-        top: HUDContainerSize?.offsetY ? HUDContainerSize.offsetY : 10,
-        bottom: HUDContainerSize?.offsetY ? HUDContainerSize.offsetY : 0,
-      }}
-    >
+    <>
       <div
-        //BG devra être transparent
         style={{
-          background: "transparent",
           flex: 1,
-          height: "50%",
-          width: "100%",
-          right: 0,
-          justifySelf: "right",
-          position: "relative",
-        }}
-        //   className={styles.enemyInfoContainer}
-      >
-        <div
-          id="enemyHealthPointBar"
-          style={{
-            position: "absolute",
-            background: "black",
-            marginRight: "2.5%",
-            width: "30%",
-            marginTop: "2%",
-            right: 25,
-            padding: "1rem",
-            boxSizing: "border-box",
-          }}
-        >
-          {" "}
-          <p>{enemy.name}</p>
-          <HealthBar
-            healthPoint={enemy.healthPoint}
-            maxHealthPoint={enemy.maxHealthPoint}
-          />
-        </div>
-      </div>
-      <div
-        //   className={styles.playerInfoContainer}
-        //BG devra être transparent
-        style={{
-          background: "transparent",
-          flex: 1,
-          position: "relative",
-          height: "50%",
-          width: "100%",
           display: "flex",
+          flexDirection: "column",
           justifyContent: "space-between",
+          maxHeight: "100vh",
+
+          background: "transparent",
+          backgroundImage: `url(${assets.battleScene_firstMap.src})`,
+          backgroundSize: "cover",
+
+          borderLeft: HUDContainerSize?.offsetX ? HUDContainerSize.offsetX + 5 : 25,
+          borderRight: HUDContainerSize?.offsetX ? HUDContainerSize.offsetX + 5 : 25,
+
+          top: HUDContainerSize?.offsetY ? HUDContainerSize.offsetY : 10,
+          bottom: HUDContainerSize?.offsetY ? HUDContainerSize.offsetY : 0,
+
+          overflow: "hidden",
         }}
       >
+        {/* A transformer en composant FightParticipantInfoContainer ou autre */}
         <div
           style={{
-            position: "absolute",
-            background: "black",
-            marginRight: "2.5%",
-            width: "30%",
-            marginTop: "2%",
-            left: 25,
-            top: 125,
-            padding: "1rem",
-            boxSizing: "border-box",
+            background: "transparent",
+            flex: 1,
+            height: "50%",
+            width: "100%",
+            position: "relative",
           }}
         >
-          <p>{playerFighter.name}</p>
-          <p>
-            {playerFighter.healthPoint} / {playerFighter.maxHealthPoint}
-          </p>
-          <p>
+          <img
+            src={assets.first_enemy_fightStatic.src}
+            alt="Humanivore"
+            style={{
+              position: "absolute",
+              width: "25%",
+              height: "auto",
+              right: "15%",
+              top: "35%",
+              objectFit: "contain",
+            }}
+          />
+
+          <div
+            id="enemyHealthPointBar"
+            style={{
+              position: "absolute",
+              background: "black",
+              marginRight: "2.5%",
+              width: "30%",
+              marginTop: "2%",
+              left: 25,
+              padding: "1rem",
+              boxSizing: "border-box",
+            }}
+          >
+            <p>{enemy.name}</p>
+            <p>
+              {enemy.healthPoint} / {enemy.maxHealthPoint}
+            </p>
             <HealthBar
               healthPoint={enemy.healthPoint}
               maxHealthPoint={enemy.maxHealthPoint}
-            />{" "}
-          </p>
+            />
+          </div>
         </div>
-
+        {/* A transformer en composant FightParticipantInfoContainer ou autre */}
         <div
-          //   className={styles.battleScreenBottomTextBox}
+          //   className={styles.playerInfoContainer}
+          //BG devra être transparent
           style={{
-            background: "#000",
-            position: "absolute",
-            bottom: 0,
-            left: 0,
-            right: 0,
-            margin: "0 auto",
-            width: "95%",
-            minHeight: 120,
-            borderRadius: 10,
+            background: "transparent",
+            flex: 1,
+            position: "relative",
+            height: "50%",
+            width: "100%",
             display: "flex",
             justifyContent: "space-between",
-            boxSizing: "border-box",
           }}
         >
-          <p>This is the text box</p>
+          <img
+            src={assets.playable_char_Fightstatic.src}
+            alt="Humanivore"
+            style={{
+              position: "absolute",
+              width: "25%",
+              height: "auto",
+              left: "15%",
+              bottom: "25%",
+              objectFit: "contain",
+            }}
+          />
           <div
             style={{
-              background: "purple",
-              justifySelf: "right",
+              position: "absolute",
+              background: "black",
+              marginRight: "2.5%",
               width: "30%",
-              minHeight: 120,
+              marginTop: "2%",
+              right: 0,
+              top: 125,
+              padding: "1rem",
+              boxSizing: "border-box",
             }}
           >
-            {selectedOption === null && (
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  height: "100%",
-                }}
-              >
-                <button onClick={() => setSelectedOption("Attaquer")}>Attaquer</button>
-                <button onClick={() => setSelectedOption("Capacités")}>Capacités</button>
-                <button onClick={() => setSelectedOption("Objets")}>Objets</button>
-                <button onClick={() => setSelectedOption("Fuir")}>Fuir</button>
-                {/* <div>
-                  <p>{playerBattleAbilities.eletricDischarge.name}</p>
-                </div>
-                <div>
-                  <p>{playerBattleAbilities.stomping.name}</p>
-                </div> */}
-              </div>
-            )}
-
-            {selectedOption === "Attaquer" && (
-              <>
-                <div>
-                  <button>{playerBattleAbilities.eletricDischarge.name}</button>
-                </div>
-                <div>
-                  <button>{playerBattleAbilities.stomping.name}</button>
-                </div>
-                <div>
-                  <button onClick={() => setSelectedOption(null)}>Retour</button>
-                </div>
-              </>
-            )}
-
-            {selectedOption === "Capacités" && (
-              <>
-                Aucune capacités pour le moment
-                <div>
-                  <button onClick={() => setSelectedOption(null)}>Retour</button>
-                </div>
-              </>
-            )}
-
-            {selectedOption === "Objets" && (
-              <>
-                Aucun objets pour le moment
-                <div>
-                  <button onClick={() => setSelectedOption(null)}>Retour</button>
-                </div>
-              </>
-            )}
-
-            {selectedOption === "Fuir" && (
-              <>
-                INTRODUIRE LOGIQUE DE TENTATIVE DE FUITE
-                <div>
-                  <button onClick={() => setSelectedOption(null)}>Retour</button>
-                </div>
-              </>
-            )}
+            <p>{playerFighter.name}</p>
+            <p>
+              {playerFighter.healthPoint} / {playerFighter.maxHealthPoint}
+            </p>
+            <p>
+              <HealthBar
+                healthPoint={enemy.healthPoint}
+                maxHealthPoint={enemy.maxHealthPoint}
+              />{" "}
+            </p>
           </div>
         </div>
       </div>
-    </div>
+
+      <BattleScreenBottomTextBox
+        playerBattleAbilities={playerBattleAbilities}
+        selectedOption={selectedOption}
+        setSelectedOption={setSelectedOption}
+      />
+    </>
   );
 }
