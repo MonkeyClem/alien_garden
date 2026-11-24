@@ -132,6 +132,7 @@ export type BioBatteryAnimationSequence = {
 
 function App() {
   const [gameState, setGameState] = useState<GameState>("exploration");
+  const [battlePhase, setBattlePhase] = useState<BattlePhase>("playerTurn");
   const [playerStats, setPlayerStats] = useState<PlayerStats>({
     healthPoint: 100,
     maxHealthpoint: 100,
@@ -462,7 +463,10 @@ function App() {
               playerStats={playerStats}
               playerBattleAbilities={playerBattleAbilities}
               assets={assets}
+              battlePhase={battlePhase}
+              setBattlePhase={setBattlePhase}
               handleHUDContainerSize={handleHUDContainerSize}
+              setGameState={setGameState}
             />
           )}
         </>

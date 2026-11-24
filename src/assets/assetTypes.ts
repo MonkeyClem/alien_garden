@@ -1,5 +1,3 @@
-import { EnemyImageKey } from "./assetTypes";
-import { EnemyId } from "./../components/BattleScreen/enemy/enemy.config";
 export type DecorationAssetsKey =
   | "bio_terminal"
   | "bioPalmtree"

@@ -56,7 +56,6 @@ export default function PlayerInfoBox({
           [alignement]: "15%",
           bottom: alignement === "left" ? 150 : "",
           top: alignement === "left" ? "" : 150,
-
           objectFit: "contain",
         }}
       />

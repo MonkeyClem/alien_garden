@@ -1,19 +1,41 @@
 import type { BattleOptions } from "../BattleScreen";
-import type { PlayerBattleAbilities } from "../../../App";
-import type React from "react";
-import type { SetStateAction } from "react";
+import type {
+  BattlePhase,
+  Fighter,
+  GameState,
+  PlayerBattleAbilities,
+} from "../../../App";
+import { useEffect, type Dispatch, type SetStateAction } from "react";
+import { type EnemyConfig } from "../enemy/enemy.config";
+import { handlePlayerAttack, launchBattle } from "../battle.logic";
 
 export interface BattleScreenBottomTextBoxProps {
   selectedOption: BattleOptions;
   playerBattleAbilities: PlayerBattleAbilities;
-  setSelectedOption: React.Dispatch<SetStateAction<BattleOptions>>;
+  player: Fighter;
+  enemy: EnemyConfig;
+  battlePhase: BattlePhase;
+  setBattlePhase: Dispatch<SetStateAction<BattlePhase>>;
+  setSelectedOption: Dispatch<SetStateAction<BattleOptions>>;
+  setGameState: Dispatch<SetStateAction<GameState>>;
 }
 
 export default function BattleScreenBottomTextBox({
   selectedOption,
   playerBattleAbilities,
+  enemy,
+  player,
+  battlePhase,
+  setBattlePhase,
   setSelectedOption,
+  setGameState,
 }: BattleScreenBottomTextBoxProps) {
+  useEffect(() => {
+    if (selectedOption === "Fuir") {
+      setGameState("exploration");
+    }
+  }, [selectedOption]);
+
   return (
     <div
       //   className={styles.battleScreenBottomTextBox}
@@ -43,6 +65,7 @@ export default function BattleScreenBottomTextBox({
         }}
       >
         <p>This is the text box</p>
+        <p>{battlePhase}</p>
       </div>
       <div
         style={{
@@ -60,23 +83,35 @@ export default function BattleScreenBottomTextBox({
               height: "100%",
             }}
           >
-            <button onClick={() => setSelectedOption("Attaquer")}>Attaquer</button>
+            <button
+              onClick={() => {
+                setSelectedOption("Attaquer");
+                launchBattle(player, enemy);
+              }}
+            >
+              Attaquer
+            </button>
             <button onClick={() => setSelectedOption("Capacités")}>Capacités</button>
             <button onClick={() => setSelectedOption("Objets")}>Objets</button>
             <button onClick={() => setSelectedOption("Fuir")}>Fuir</button>
-            {/* <div>
-                  <p>{playerBattleAbilities.eletricDischarge.name}</p>
-                </div>
-                <div>
-                  <p>{playerBattleAbilities.stomping.name}</p>
-                </div> */}
           </div>
         )}
 
         {selectedOption === "Attaquer" && (
           <>
             <div>
-              <button>{playerBattleAbilities.eletricDischarge.name}</button>
+              <button
+                onClick={() =>
+                  handlePlayerAttack(
+                    playerBattleAbilities.eletricDischarge,
+                    enemy,
+                    battlePhase,
+                    setBattlePhase,
+                  )
+                }
+              >
+                {playerBattleAbilities.eletricDischarge.name}
+              </button>
             </div>
             <div>
               <button>{playerBattleAbilities.stomping.name}</button>
