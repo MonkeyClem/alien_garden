@@ -4,7 +4,7 @@ export interface EnemyAttack {
   damage: number;
 }
 
-export type EnemyId = "nebroide";
+export type EnemyId = "hommenivore";
 
 export interface EnemyConfig {
   id: EnemyId;
@@ -15,9 +15,9 @@ export interface EnemyConfig {
 }
 
 export const enemyConfig: Record<EnemyId, EnemyConfig> = {
-  nebroide: {
-    id: "nebroide",
-    name: "Nébroïdes",
+  hommenivore: {
+    id: "hommenivore",
+    name: "HommeNivore",
     healthPoint: 100,
     maxHealthPoint: 100,
     attacks: [
