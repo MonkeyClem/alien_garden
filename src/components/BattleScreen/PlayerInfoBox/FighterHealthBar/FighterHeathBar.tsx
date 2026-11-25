@@ -8,12 +8,12 @@ export default function FighterHealthBar({
   maxHealthPoint,
 }: FighterHealthBarProps) {
   const referenceMaxHP = healthPoint;
+
   const barWidth = Math.min((maxHealthPoint / referenceMaxHP) * 100, 100);
 
   const healthPercentage = Math.max(
     0,
-    Math.min(maxHealthPoint / referenceMaxHP) * 100,
-    100,
+    Math.min(100, (healthPoint / maxHealthPoint) * 100),
   );
 
   return (

@@ -118,7 +118,14 @@ export default function BattleScreenBottomTextBox({
               </button>
             </div>
             <div>
-              <button disabled={battlePhase != "playerTurn"}>
+              <button
+                onClick={() => {
+                  const newBattle = playerRound(playerBattleAbilities.stomping, battle);
+
+                  setBattle(newBattle);
+                }}
+                disabled={battlePhase != "playerTurn"}
+              >
                 {playerBattleAbilities.stomping.name}
               </button>
             </div>

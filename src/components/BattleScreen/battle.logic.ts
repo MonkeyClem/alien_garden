@@ -30,6 +30,7 @@ export function enemyRound(battle: BattleState) {
   };
   const newBattle: BattleState = {
     ...battle,
+    phase: "playerTurn",
     player: newPlayer,
   };
   return newBattle;
