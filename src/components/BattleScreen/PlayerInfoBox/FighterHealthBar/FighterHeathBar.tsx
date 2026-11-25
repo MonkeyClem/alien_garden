@@ -25,7 +25,7 @@ export default function FighterHealthBar({
     Math.min(100, (healthPoint / maxHealthPoint) * 100),
   );
 
-  const barColor = defineHealthBarColor(healthPercentage);
+  const barColor = defineHealthBarColor(healthPercentage > 0 ? healthPercentage : 0);
 
   return (
     <div

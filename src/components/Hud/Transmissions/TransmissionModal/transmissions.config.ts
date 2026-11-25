@@ -7,7 +7,7 @@ export const transmissionsConfig: Record<TransmissionId, Transmission> = {
     texts: [
       "Unité d'exploration E-416,\nNous détectons une interruption de l'alimentation de la Bio Batterie et avons besoin de votre intervention.",
       "Des spores de champignons réacteurs sont présents à bord votre pod d'expédition.\nVotre équipement autorise le transport simultané de trois spécimens",
-      "Nous reviendrons vers vous une fois l'alimentation restaurée.\n\nL'humanité n'oubliera pas",
+      "Nous reviendrons vers vous une fois l'alimentation restaurée",
     ],
   },
   secondTransmission: {

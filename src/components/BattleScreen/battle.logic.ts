@@ -5,20 +5,21 @@ export const findEnemy = (enemyId: EnemyId) => {
   return enemyConfig[enemyId];
 };
 
-export function shouldBattleContinue(battle: BattleState) {
-  return Boolean(battle.enemy.healthPoint > 0 && battle.player.healthPoint > 0);
+export function shouldBattleContinue(battle: BattleState): boolean {
+  return battle.enemy.healthPoint > 0 && battle.player.healthPoint > 0;
 }
+
 export function launchBattle(player: Fighter, enemy: Fighter): BattleState {
   const battle: BattleState = {
     player: player,
     enemy: enemy,
     phase: "playerTurn",
   };
-  console.log("LA BATAILLE EST LANCEE " + JSON.stringify(battle));
+  window.alert("LA BATAILLE EST LANCEE " + JSON.stringify(battle));
   return battle;
 }
 
-export function enemyRound(battle: BattleState) {
+export function handleEnemyRound(battle: BattleState) {
   const enemy = findEnemy(battle.enemy.id as EnemyId);
   const enemyAttackDamage = enemy.attacks[0].damage;
 
@@ -36,7 +37,15 @@ export function enemyRound(battle: BattleState) {
   return newBattle;
 }
 
-export function playerRound(
+export const handleEnemyRoundDelay = (battle: BattleState): Promise<BattleState> => {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(handleEnemyRound(battle));
+    }, 2500);
+  });
+};
+
+export function handlePlayerRound(
   playerAttack: BattleAbility,
   battle: BattleState,
 ): BattleState {
@@ -51,21 +60,8 @@ export function playerRound(
   const updatedBattle = {
     ...battle,
     enemy: newEnemy,
+    phase: "enemyTurn" as BattlePhase,
   };
 
-  if (shouldBattleContinue(updatedBattle)) {
-    let newBattle = {
-      ...updatedBattle,
-      phase: "enemyTurn" as BattlePhase,
-    };
-    newBattle = enemyRound(newBattle);
-    if (newBattle.player.healthPoint > 0) {
-      return newBattle;
-    } else {
-      window.alert("Le combat est terminé");
-      return newBattle;
-    }
-  } else {
-    return battle;
-  }
+  return updatedBattle;
 }

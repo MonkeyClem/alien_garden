@@ -1,33 +1,56 @@
 import type { BattleOptions } from "../BattleScreen";
 import type {
-  BattlePhase,
+  BattleAbility,
   BattleState,
-  Fighter,
   GameState,
   PlayerBattleAbilities,
 } from "../../../App";
 import { useEffect, type Dispatch, type SetStateAction } from "react";
-import { type EnemyConfig } from "../enemy/enemy.config";
-import { playerRound } from "../battle.logic";
+import {
+  handleEnemyRoundDelay,
+  handlePlayerRound,
+  shouldBattleContinue,
+} from "../battle.logic";
 
 export interface BattleScreenBottomTextBoxProps {
   selectedOption: BattleOptions;
   playerBattleAbilities: PlayerBattleAbilities;
-  player: Fighter;
-  enemy: EnemyConfig;
-  enemyFighter: Fighter;
-  battlePhase: BattlePhase;
   battle: BattleState;
   setSelectedOption: Dispatch<SetStateAction<BattleOptions>>;
   setGameState: Dispatch<SetStateAction<GameState>>;
-  setBattle: Dispatch<SetStateAction<BattleState>>;
+  setBattle: Dispatch<SetStateAction<BattleState | null>>;
+}
+
+async function handleBattleSequence(
+  playerAttack: BattleAbility,
+  battle: BattleState,
+  setBattle: Dispatch<SetStateAction<BattleState | null>>,
+) {
+  // Orchestration du combat dans sa globalité
+  let battleShouldContinue = shouldBattleContinue(battle);
+  if (!battleShouldContinue) {
+    window.alert("FIGHT OVER");
+    return battle;
+  }
+
+  const battleAfterPlayerRound = handlePlayerRound(playerAttack, battle);
+  setBattle(battleAfterPlayerRound);
+
+  battleShouldContinue = shouldBattleContinue(battleAfterPlayerRound);
+
+  if (!battleShouldContinue) return battleAfterPlayerRound;
+
+  const battleAfterEnemyRound = await handleEnemyRoundDelay(battleAfterPlayerRound);
+  setBattle(battleAfterEnemyRound);
+  battleShouldContinue = shouldBattleContinue(battleAfterEnemyRound);
+
+  if (!battleShouldContinue) return;
 }
 
 export default function BattleScreenBottomTextBox({
   selectedOption,
   playerBattleAbilities,
   battle,
-  battlePhase,
   setSelectedOption,
   setGameState,
   setBattle,
@@ -96,7 +119,13 @@ export default function BattleScreenBottomTextBox({
             </button>
             <button onClick={() => setSelectedOption("Capacités")}>Capacités</button>
             <button onClick={() => setSelectedOption("Objets")}>Objets</button>
-            <button onClick={() => setSelectedOption("Fuir")}>Fuir</button>
+            <button
+              onClick={() => {
+                setSelectedOption("Fuir");
+              }}
+            >
+              Fuir
+            </button>
           </div>
         )}
 
@@ -105,14 +134,13 @@ export default function BattleScreenBottomTextBox({
             <div>
               <button
                 onClick={() => {
-                  const newBattle = playerRound(
+                  handleBattleSequence(
                     playerBattleAbilities.eletricDischarge,
                     battle,
+                    setBattle,
                   );
-
-                  setBattle(newBattle);
                 }}
-                disabled={battlePhase != "playerTurn"}
+                disabled={battle.phase != "playerTurn"}
               >
                 {playerBattleAbilities.eletricDischarge.name}
               </button>
@@ -120,11 +148,9 @@ export default function BattleScreenBottomTextBox({
             <div>
               <button
                 onClick={() => {
-                  const newBattle = playerRound(playerBattleAbilities.stomping, battle);
-
-                  setBattle(newBattle);
+                  handleBattleSequence(playerBattleAbilities.stomping, battle, setBattle);
                 }}
-                disabled={battlePhase != "playerTurn"}
+                disabled={battle.phase != "playerTurn"}
               >
                 {playerBattleAbilities.stomping.name}
               </button>
@@ -155,7 +181,7 @@ export default function BattleScreenBottomTextBox({
 
         {selectedOption === "Fuir" && (
           <>
-            INTRODUIRE LOGIQUE DE TENTATIVE DE FUITE
+            TO DO : INTRODUIRE LOGIQUE DE TENTATIVE DE FUITE
             <div>
               <button onClick={() => setSelectedOption(null)}>Retour</button>
             </div>

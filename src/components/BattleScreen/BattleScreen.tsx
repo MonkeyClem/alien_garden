@@ -29,6 +29,8 @@ export default function BattleScreen({
   assets,
   setGameState,
 }: BattleScreenProps) {
+  const [selectedOption, setSelectedOption] = useState<BattleOptions>(null);
+
   const playerFighter: Fighter = {
     healthPoint: playerStats.healthPoint,
     maxHealthPoint: playerStats.maxHealthpoint,
@@ -36,7 +38,6 @@ export default function BattleScreen({
     name: "Unité D'Exploration E-416",
   };
 
-  const [selectedOption, setSelectedOption] = useState<BattleOptions>(null);
   const enemy = findEnemy("hommenivore");
 
   const enemyFighter: Fighter = {
@@ -46,9 +47,11 @@ export default function BattleScreen({
     name: enemy.name,
   };
 
-  const [battle, setBattle] = useState<BattleState>(() =>
+  const [battle, setBattle] = useState<BattleState | null>(() =>
     launchBattle(playerFighter, enemyFighter),
   );
+
+  if (!battle) return;
 
   return (
     <>
@@ -82,11 +85,7 @@ export default function BattleScreen({
       <BattleScreenBottomTextBox
         playerBattleAbilities={playerBattleAbilities}
         selectedOption={selectedOption}
-        enemy={enemy}
         battle={battle}
-        enemyFighter={enemyFighter}
-        player={playerFighter}
-        battlePhase={battle.phase}
         setBattle={setBattle}
         setSelectedOption={setSelectedOption}
         setGameState={setGameState}
