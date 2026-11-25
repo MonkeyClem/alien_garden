@@ -1,25 +1,23 @@
 import { useState, type Dispatch, type SetStateAction } from "react";
-import type {
-  BattlePhase,
-  Fighter,
-  GameState,
-  PlayerBattleAbilities,
-  PlayerStats,
+import {
+  type BattleState,
+  type Fighter,
+  type GameState,
+  type PlayerBattleAbilities,
+  type PlayerStats,
 } from "../../App";
-import { findEnemy } from "./battle.logic";
+import { findEnemy, launchBattle } from "./battle.logic";
 import type { Viewport } from "../../rendering/viewport/viewport.type";
 import type { GameAssets } from "../../assets/assetTypes";
-import BattleScreenBottomTextBox from "./BattleScreenBottomTextBox/BattleScreenBottomTextBox";
 import PlayerInfoBox from "./PlayerInfoBox/PlayerInfoBox";
+import BattleScreenBottomTextBox from "./BattleScreenBottomTextBox/BattleScreenBottomTextBox";
 
 export interface BattleScreenProps {
   playerStats: PlayerStats;
   playerBattleAbilities: PlayerBattleAbilities;
   HUDContainerSize: Viewport | null;
   assets: GameAssets;
-  battlePhase: BattlePhase;
   handleHUDContainerSize: (value: Viewport) => void;
-  setBattlePhase: Dispatch<SetStateAction<BattlePhase>>;
   setGameState: Dispatch<SetStateAction<GameState>>;
 }
 
@@ -29,8 +27,6 @@ export default function BattleScreen({
   playerStats,
   playerBattleAbilities,
   assets,
-  battlePhase,
-  setBattlePhase,
   setGameState,
 }: BattleScreenProps) {
   const playerFighter: Fighter = {
@@ -50,6 +46,10 @@ export default function BattleScreen({
     name: enemy.name,
   };
 
+  const [battle, setBattle] = useState<BattleState>(() =>
+    launchBattle(playerFighter, enemyFighter),
+  );
+
   return (
     <>
       <div
@@ -68,13 +68,13 @@ export default function BattleScreen({
         {/* Enemy */}
         <PlayerInfoBox
           asset={assets.first_enemy_fightStatic}
-          fighter={enemyFighter}
+          fighter={battle.enemy}
           alignement={"right"}
         />
         {/* Player */}
         <PlayerInfoBox
           asset={assets.playable_char_Fightstatic}
-          fighter={playerFighter}
+          fighter={battle.player}
           alignement={"left"}
         />
       </div>
@@ -83,9 +83,11 @@ export default function BattleScreen({
         playerBattleAbilities={playerBattleAbilities}
         selectedOption={selectedOption}
         enemy={enemy}
+        battle={battle}
+        enemyFighter={enemyFighter}
         player={playerFighter}
-        battlePhase={battlePhase}
-        setBattlePhase={setBattlePhase}
+        battlePhase={battle.phase}
+        setBattle={setBattle}
         setSelectedOption={setSelectedOption}
         setGameState={setGameState}
       />

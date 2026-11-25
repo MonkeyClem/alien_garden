@@ -1,34 +1,36 @@
 import type { BattleOptions } from "../BattleScreen";
 import type {
   BattlePhase,
+  BattleState,
   Fighter,
   GameState,
   PlayerBattleAbilities,
 } from "../../../App";
 import { useEffect, type Dispatch, type SetStateAction } from "react";
 import { type EnemyConfig } from "../enemy/enemy.config";
-import { handlePlayerAttack, launchBattle } from "../battle.logic";
+import { playerRound } from "../battle.logic";
 
 export interface BattleScreenBottomTextBoxProps {
   selectedOption: BattleOptions;
   playerBattleAbilities: PlayerBattleAbilities;
   player: Fighter;
   enemy: EnemyConfig;
+  enemyFighter: Fighter;
   battlePhase: BattlePhase;
-  setBattlePhase: Dispatch<SetStateAction<BattlePhase>>;
+  battle: BattleState;
   setSelectedOption: Dispatch<SetStateAction<BattleOptions>>;
   setGameState: Dispatch<SetStateAction<GameState>>;
+  setBattle: Dispatch<SetStateAction<BattleState>>;
 }
 
 export default function BattleScreenBottomTextBox({
   selectedOption,
   playerBattleAbilities,
-  enemy,
-  player,
+  battle,
   battlePhase,
-  setBattlePhase,
   setSelectedOption,
   setGameState,
+  setBattle,
 }: BattleScreenBottomTextBoxProps) {
   useEffect(() => {
     if (selectedOption === "Fuir") {
@@ -65,7 +67,9 @@ export default function BattleScreenBottomTextBox({
         }}
       >
         <p>This is the text box</p>
-        <p>{battlePhase}</p>
+        <p>{battle.phase}</p>
+        <p>ENEMY HP : {battle.enemy.healthPoint}</p>
+        <p>PLAYER HP : {battle.player.healthPoint}</p>
       </div>
       <div
         style={{
@@ -86,7 +90,6 @@ export default function BattleScreenBottomTextBox({
             <button
               onClick={() => {
                 setSelectedOption("Attaquer");
-                launchBattle(player, enemy);
               }}
             >
               Attaquer
@@ -101,20 +104,23 @@ export default function BattleScreenBottomTextBox({
           <>
             <div>
               <button
-                onClick={() =>
-                  handlePlayerAttack(
+                onClick={() => {
+                  const newBattle = playerRound(
                     playerBattleAbilities.eletricDischarge,
-                    enemy,
-                    battlePhase,
-                    setBattlePhase,
-                  )
-                }
+                    battle,
+                  );
+
+                  setBattle(newBattle);
+                }}
+                disabled={battlePhase != "playerTurn"}
               >
                 {playerBattleAbilities.eletricDischarge.name}
               </button>
             </div>
             <div>
-              <button>{playerBattleAbilities.stomping.name}</button>
+              <button disabled={battlePhase != "playerTurn"}>
+                {playerBattleAbilities.stomping.name}
+              </button>
             </div>
             <div>
               <button onClick={() => setSelectedOption(null)}>Retour</button>

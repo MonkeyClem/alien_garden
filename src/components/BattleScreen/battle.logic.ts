@@ -1,49 +1,70 @@
-import type { SetStateAction } from "react";
 import type { BattleAbility, BattlePhase, BattleState, Fighter } from "../../App";
-import { enemyConfig, type EnemyConfig, type EnemyId } from "./enemy/enemy.config";
-
-export const selectEnemyAttack = () => {};
+import { enemyConfig, type EnemyId } from "./enemy/enemy.config";
 
 export const findEnemy = (enemyId: EnemyId) => {
   return enemyConfig[enemyId];
 };
 
-const handlePlayerTurn = () => {};
-
-export const handleBattlePhase = (battlePhase: BattlePhase) => {
-  if (battlePhase === "playerTurn") {
-    handlePlayerTurn();
-  }
-};
-
-export const handlePlayerAttack = (
-  attack: BattleAbility,
-  enemy: EnemyConfig,
-  battlePhase: BattlePhase,
-  setBattlePhase: React.Dispatch<SetStateAction<BattlePhase>>,
-) => {
-  if (battlePhase != "playerTurn") return;
-
-  const damage = attack.damage;
-  enemy.healthPoint -= damage;
-
-  if (enemy.healthPoint > 0) {
-    setBattlePhase("enemyTurn");
-  }
-  if (enemy.healthPoint <= 0) {
-    setBattlePhase("victory");
-  }
-  return battlePhase;
-};
-
-export const launchBattle = (
-  playerFighter: Fighter,
-  enemyFighter: Fighter,
-): BattleState => {
+export function shouldBattleContinue(battle: BattleState) {
+  return Boolean(battle.enemy.healthPoint > 0 && battle.player.healthPoint > 0);
+}
+export function launchBattle(player: Fighter, enemy: Fighter): BattleState {
   const battle: BattleState = {
-    player: playerFighter,
-    enemy: enemyFighter,
+    player: player,
+    enemy: enemy,
     phase: "playerTurn",
   };
+  console.log("LA BATAILLE EST LANCEE " + JSON.stringify(battle));
   return battle;
-};
+}
+
+export function enemyRound(battle: BattleState) {
+  const enemy = findEnemy(battle.enemy.id as EnemyId);
+  const enemyAttackDamage = enemy.attacks[0].damage;
+
+  const newPlayerHP = battle.player.healthPoint - enemyAttackDamage;
+
+  const newPlayer = {
+    ...battle.player,
+    healthPoint: newPlayerHP,
+  };
+  const newBattle: BattleState = {
+    ...battle,
+    player: newPlayer,
+  };
+  return newBattle;
+}
+
+export function playerRound(
+  playerAttack: BattleAbility,
+  battle: BattleState,
+): BattleState {
+  const damage = playerAttack.damage;
+
+  const newEnemyHP = battle.enemy.healthPoint - damage;
+
+  const newEnemy = {
+    ...battle.enemy,
+    healthPoint: newEnemyHP,
+  };
+  const updatedBattle = {
+    ...battle,
+    enemy: newEnemy,
+  };
+
+  if (shouldBattleContinue(updatedBattle)) {
+    let newBattle = {
+      ...updatedBattle,
+      phase: "enemyTurn" as BattlePhase,
+    };
+    newBattle = enemyRound(newBattle);
+    if (newBattle.player.healthPoint > 0) {
+      return newBattle;
+    } else {
+      window.alert("Le combat est terminé");
+      return newBattle;
+    }
+  } else {
+    return battle;
+  }
+}
