@@ -3,6 +3,15 @@ interface FighterHealthBarProps {
   maxHealthPoint: number;
 }
 
+const defineHealthBarColor = (healthPoint: number): string => {
+  if (healthPoint >= 75) {
+    return "green";
+  } else if (healthPoint >= 50 && healthPoint < 75) {
+    return "orange";
+  } else if (healthPoint >= 25 && healthPoint < 50) {
+    return "yellow";
+  } else return "red";
+};
 export default function FighterHealthBar({
   healthPoint,
   maxHealthPoint,
@@ -15,6 +24,8 @@ export default function FighterHealthBar({
     0,
     Math.min(100, (healthPoint / maxHealthPoint) * 100),
   );
+
+  const barColor = defineHealthBarColor(healthPercentage);
 
   return (
     <div
@@ -29,7 +40,8 @@ export default function FighterHealthBar({
         style={{
           height: 15,
           width: `${healthPercentage}%`,
-          background: "red",
+          background: `${barColor}`,
+          transition: "width 700ms ease-out",
         }}
       />
     </div>

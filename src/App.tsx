@@ -147,7 +147,7 @@ function App() {
       stomping: {
         id: "stomping",
         name: " stomping",
-        damage: 25,
+        damage: 10,
       },
     });
 
