@@ -71,7 +71,7 @@ export default function BattleScreenBottomTextBox({
         left: 0,
         right: 0,
         margin: "0 auto",
-        width: "90%",
+        width: "98%",
         minHeight: "10vh",
         maxHeight: "15vh",
         height: "12.5vh",

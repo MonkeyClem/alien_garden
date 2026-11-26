@@ -13,6 +13,7 @@ import PlayerInfoBox from "./PlayerInfoBox/PlayerInfoBox";
 import BattleScreenBottomTextBox from "./BattleScreenBottomTextBox/BattleScreenBottomTextBox";
 import { WORLD_WIDTH, WORLD_HEIGHT } from "../../game/world/world.constant";
 import { getViewport } from "../../rendering/viewport/getViewport";
+import BattleEffectCanvas from "./effects/BattleEffectCanvas";
 
 export interface BattleScreenProps {
   playerStats: PlayerStats;
@@ -24,6 +25,16 @@ export interface BattleScreenProps {
 }
 
 export type BattleOptions = "Attaquer" | "Capacités" | "Objets" | "Fuir" | null;
+
+export type BattlePosition = {
+  x: number;
+  y: number;
+};
+
+export type FighterAnchors = {
+  attackOrigin: BattlePosition;
+  hitTarget: BattlePosition;
+};
 
 export default function BattleScreen({
   playerStats,
@@ -69,6 +80,8 @@ export default function BattleScreen({
     };
   }, [handleHUDContainerSize]);
 
+  const playerAttackOriginPosition: BattlePosition = { x: 575, y: 600 };
+
   if (!battle || !HUDContainerSize) return;
 
   return (
@@ -105,16 +118,17 @@ export default function BattleScreen({
           fighter={battle.player}
           alignement={"left"}
         />
-      </div>
+        <BattleScreenBottomTextBox
+          playerBattleAbilities={playerBattleAbilities}
+          selectedOption={selectedOption}
+          battle={battle}
+          setBattle={setBattle}
+          setSelectedOption={setSelectedOption}
+          setGameState={setGameState}
+        />
 
-      <BattleScreenBottomTextBox
-        playerBattleAbilities={playerBattleAbilities}
-        selectedOption={selectedOption}
-        battle={battle}
-        setBattle={setBattle}
-        setSelectedOption={setSelectedOption}
-        setGameState={setGameState}
-      />
+        <BattleEffectCanvas position={playerAttackOriginPosition} />
+      </div>
     </>
   );
 }

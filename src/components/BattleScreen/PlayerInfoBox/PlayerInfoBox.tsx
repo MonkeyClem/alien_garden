@@ -35,6 +35,8 @@ export default function PlayerInfoBox({
           top: alignement === "left" ? "35%" : "2%",
           padding: "1rem",
           boxSizing: "border-box",
+          border: "2.5px solid #087E9B",
+          borderRadius: 10,
         }}
       >
         <p>{fighter.name}</p>
