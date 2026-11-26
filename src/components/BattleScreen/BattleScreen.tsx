@@ -36,6 +36,8 @@ export type FighterAnchors = {
   hitTarget: BattlePosition;
 };
 
+export type BattleAnimation = "electricArc" | null;
+
 export default function BattleScreen({
   playerStats,
   playerBattleAbilities,
@@ -45,6 +47,15 @@ export default function BattleScreen({
   setGameState,
 }: BattleScreenProps) {
   const [selectedOption, setSelectedOption] = useState<BattleOptions>(null);
+  const [activeBattleAnimation, setActiveBattleAnimation] =
+    useState<BattleAnimation | null>(null);
+
+  const handleActiveAnimation = (animation: BattleAnimation) => {
+    setActiveBattleAnimation(animation);
+  };
+  const handleActiveAnimationComplete = () => {
+    setActiveBattleAnimation(null);
+  };
 
   const playerFighter: Fighter = {
     healthPoint: playerStats.healthPoint,
@@ -122,12 +133,17 @@ export default function BattleScreen({
           playerBattleAbilities={playerBattleAbilities}
           selectedOption={selectedOption}
           battle={battle}
+          handleActiveAnimation={handleActiveAnimation}
           setBattle={setBattle}
           setSelectedOption={setSelectedOption}
           setGameState={setGameState}
         />
 
-        <BattleEffectCanvas position={playerAttackOriginPosition} />
+        <BattleEffectCanvas
+          activeBattleAnimation={activeBattleAnimation}
+          position={playerAttackOriginPosition}
+          handleActiveAnimationComplete={handleActiveAnimationComplete}
+        />
       </div>
     </>
   );

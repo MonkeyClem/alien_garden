@@ -1,4 +1,4 @@
-import type { BattleOptions } from "../BattleScreen";
+import type { BattleAnimation, BattleOptions } from "../BattleScreen";
 import type {
   BattleAbility,
   BattleState,
@@ -19,6 +19,7 @@ export interface BattleScreenBottomTextBoxProps {
   setSelectedOption: Dispatch<SetStateAction<BattleOptions>>;
   setGameState: Dispatch<SetStateAction<GameState>>;
   setBattle: Dispatch<SetStateAction<BattleState | null>>;
+  handleActiveAnimation: (animation: BattleAnimation) => void;
 }
 
 async function handleBattleSequence(
@@ -54,6 +55,7 @@ export default function BattleScreenBottomTextBox({
   setSelectedOption,
   setGameState,
   setBattle,
+  handleActiveAnimation,
 }: BattleScreenBottomTextBoxProps) {
   useEffect(() => {
     if (selectedOption === "Fuir") {
@@ -139,7 +141,9 @@ export default function BattleScreenBottomTextBox({
                     battle,
                     setBattle,
                   );
+                  handleActiveAnimation("electricArc");
                 }}
+
                 disabled={battle.phase != "playerTurn"}
               >
                 {playerBattleAbilities.eletricDischarge.name}

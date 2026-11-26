@@ -1,16 +1,24 @@
 import { useEffect, useRef } from "react";
 import { WORLD_WIDTH, WORLD_HEIGHT } from "../../../game/world/world.constant";
-import type { BattlePosition } from "../BattleScreen";
+import type { BattleAnimation, BattlePosition } from "../BattleScreen";
 import { drawElectricArc } from "../../../rendering/entities/drawDepthSortedWorld";
 
 type BattleEffectsCanvasProps = {
   position: BattlePosition;
+  activeBattleAnimation: BattleAnimation;
+  handleActiveAnimationComplete: () => void;
 };
 
-export default function BattleEffectsCanvas({ position }: BattleEffectsCanvasProps) {
+export default function BattleEffectsCanvas({
+  position,
+  activeBattleAnimation,
+  handleActiveAnimationComplete,
+}: BattleEffectsCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    if (!activeBattleAnimation) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -19,10 +27,27 @@ export default function BattleEffectsCanvas({ position }: BattleEffectsCanvasPro
 
     let animationFrameId: number;
 
-    const render = () => {
+    let startTime: number | null = null;
+    const duration = 1200;
+
+    const render = (timeStamp: number) => {
+      if (startTime === null) {
+        startTime = timeStamp;
+      }
+
+      const elapsed = timeStamp - startTime;
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      drawElectricArc(ctx, position, { x: 1100, y: 290 });
+      if (elapsed >= duration) {
+        handleActiveAnimationComplete();
+        return;
+      }
+
+      if (activeBattleAnimation === "electricArc") {
+        drawElectricArc(ctx, position, { x: 1100, y: 290 });
+      }
+
       animationFrameId = requestAnimationFrame(render);
     };
 
@@ -31,7 +56,7 @@ export default function BattleEffectsCanvas({ position }: BattleEffectsCanvasPro
     return () => {
       cancelAnimationFrame(animationFrameId);
     };
-  }, [position]);
+  }, [activeBattleAnimation]);
 
   return (
     <canvas
