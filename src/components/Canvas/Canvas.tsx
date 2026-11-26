@@ -16,13 +16,13 @@ import {
   drawElectricArc,
 } from "../../rendering/entities/drawDepthSortedWorld";
 import { drawWorldBorders } from "../../rendering/environment/drawWorldBorders";
-import { getViewport } from "../../rendering/viewport/getViewport";
 import { screenToWorld } from "../../rendering/viewport/screenToWorld";
 import type { CanvasProps } from "./Canvas.interface";
 import { getOccupiedTileIds } from "../../game/decorations/getOccupiedTilesIds";
 import findPlayerPath from "../../game/pathfinding/findPlayerPath";
 import updatePlayerAnimation from "../../animations/updatePlayerAnimation";
 import updatePlayerPosition from "../../game/player/updatePayerPosition";
+import { getViewport } from "../../rendering/viewport/getViewport";
 
 export default function Canvas({
   handleTileSelection,
